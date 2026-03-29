@@ -1,0 +1,9 @@
+Add Search (real filtering), filter based on name, number, date, assigned to and from
+Add Cases column dynamic (optional)
+    → instead of 0
+Add Pagination in home page (important later)
+Permission on login based
+    - caller can only add the clients and view them
+    - ops team can add, update, client details and add new cases with related features
+    - admin to have all access to delete any client details as well
+    - admin can also add-delete assigned to and assigned from person
