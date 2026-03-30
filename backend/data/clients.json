@@ -1,35 +1,55 @@
 [
   {
-    "id": "6982306",
+    "id": "2498830",
     "name": "Priyanshu Gupta",
     "phone": "+919832163019",
-    "assigned_to": "Sachin",
+    "assigned_to": "Hari",
     "assigned_from": "Pratha",
-    "created_at": "2026-03-25T19:17:56.077939",
+    "created_at": "2026-03-30T04:22:32.617809",
     "files": [
-      "data/uploads/6982306_priyanshu_gupta_aadhaar.pdf"
-    ]
-  },
-  {
-    "id": "7567753",
-    "name": "Priyanshu Gupta",
-    "phone": "+919832163019",
-    "assigned_to": "Sachin",
-    "assigned_from": "Pratha",
-    "created_at": "2026-03-29T15:28:17.207103",
-    "files": [
-      "data/uploads/7567753_pranjan gupta aadhaar.pdf"
-    ]
-  },
-  {
-    "id": "2796095",
-    "name": "Priyanshu Gupta",
-    "phone": "+919832163019",
-    "assigned_to": "Sachin",
-    "assigned_from": "Pratha",
-    "created_at": "2026-03-29T15:28:17.228459",
-    "files": [
-      "data/uploads/2796095_pranjan gupta aadhaar.pdf"
+      "data/uploads/2498830_priyanshu_gupta_aadhaar_3_11zon.pdf"
+    ],
+    "cases": [
+      {
+        "case_id": "CASE_20260331014158_97AA77",
+        "folio_number": "Test123",
+        "company": "RIL",
+        "case_type": "Duplicate",
+        "status": "initiated",
+        "created_at": "2026-03-30T20:11:58.929251",
+        "form_link": "/cases/Duplicate/CASE_20260331014158_97AA77",
+        "files": []
+      },
+      {
+        "case_id": "CASE_20260331014224_0AA9ED",
+        "folio_number": "Tata123",
+        "company": "TATA",
+        "case_type": "Transmission",
+        "status": "initiated",
+        "created_at": "2026-03-30T20:12:24.511411",
+        "form_link": "/cases/Transmission/CASE_20260331014224_0AA9ED",
+        "files": []
+      },
+      {
+        "case_id": "CASE_20260331014240_ED3541",
+        "folio_number": "Volvo1234",
+        "company": "Volva",
+        "case_type": "Joint",
+        "status": "initiated",
+        "created_at": "2026-03-30T20:12:40.854186",
+        "form_link": "/cases/Joint/CASE_20260331014240_ED3541",
+        "files": []
+      },
+      {
+        "case_id": "CASE_20260331014304_FDE071",
+        "folio_number": "RIL1234",
+        "company": "RIL",
+        "case_type": "Duplicate",
+        "status": "initiated",
+        "created_at": "2026-03-30T20:13:04.631019",
+        "form_link": "/cases/Duplicate/CASE_20260331014304_FDE071",
+        "files": []
+      }
     ]
   }
 ]

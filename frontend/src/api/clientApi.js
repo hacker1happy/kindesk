@@ -12,3 +12,11 @@ export const createClient = (formData) =>
   });
 
 export const getClientById = (id) => API.get(`/clients/${id}`);
+
+// 👉 Create Case
+export const createCase = (clientId, data) =>
+  API.post(`/clients/${clientId}/cases`, data);
+
+// 👉 Get Cases
+export const getCases = (clientId) =>
+  API.get(`/clients/${clientId}/cases`);

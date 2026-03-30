@@ -1,20 +1,35 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getClientById } from "../api/clientApi";
+import { getClientById, getCases } from "../api/clientApi";
 
 export default function ClientDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [client, setClient] = useState(null);
+  const [cases, setCases] = useState([]);
+  const [loadingCases, setLoadingCases] = useState(false);
 
   useEffect(() => {
     loadClient();
+    loadCases();
   }, []);
 
   const loadClient = async () => {
     const res = await getClientById(id);
     setClient(res.data);
+  };
+
+  const loadCases = async () => {
+    try {
+      setLoadingCases(true);
+      const res = await getCases(id);
+      setCases(res.data);
+    } catch (err) {
+      console.error("Error loading cases:", err);
+    } finally {
+      setLoadingCases(false);
+    }
   };
 
   const formatDate = (dateStr) => {
@@ -24,6 +39,11 @@ export default function ClientDetails() {
       month: "short",
       year: "numeric",
     });
+  };
+
+  const handleViewCase = (caseType, caseId) => {
+    const caseTypeLower = caseType.toLowerCase();
+    navigate(`/cases/${caseTypeLower}/${caseId}`);
   };
 
   if (!client) return <p>Loading...</p>;
@@ -44,8 +64,9 @@ export default function ClientDetails() {
             Client ID: {client.id}
           </p>
         </div>
-
-        <button className="btn">+ Add Case</button>
+        <button className="btn" onClick={() => navigate(`/clients/${client.id}/cases`)}>
+          + Add Case
+        </button>
       </div>
 
       {/* Client Info */}
@@ -99,20 +120,67 @@ export default function ClientDetails() {
         )}
       </div>
 
-      {/* Cases */}
+      {/* Cases Table */}
       <div className="info-card">
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h3>Cases</h3>
-          <span className="badge">0 total</span>
+          <span className="badge">{cases.length} total</span>
         </div>
 
-        <div className="case-empty">
-          <p>No cases yet. Add a case to get started.</p>
-
-          <button className="btn" style={{ marginTop: "15px" }}>
-            + Add First Case
-          </button>
-        </div>
+        {loadingCases ? (
+          <p>Loading cases...</p>
+        ) : cases.length === 0 ? (
+          <div className="case-empty">
+            <p>No cases yet. Add a case to get started.</p>
+            <button className="btn" style={{ marginTop: "15px" }} onClick={() => navigate(`/clients/${client.id}/cases`)}>
+              + Add First Case
+            </button>
+          </div>
+        ) : (
+          <div className="cases-table-container">
+            <table className="cases-table">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Case Type</th>
+                  <th>Folio Number</th>
+                  <th>Company Name</th>
+                  <th>Created At</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cases.map((caseItem) => (
+                  <tr key={caseItem.case_id}>
+                    <td>{caseItem.case_id}</td>
+                    <td>
+                      <span className={`case-type-badge case-type-${caseItem.case_type?.toLowerCase()}`}>
+                        {caseItem.case_type}
+                      </span>
+                    </td>
+                    <td>{caseItem.folio_number}</td>
+                    <td>{caseItem.company}</td>
+                    <td>{formatDate(caseItem.created_at)}</td>
+                    <td>
+                      <span className={`status-badge status-${caseItem.status?.toLowerCase() || 'active'}`}>
+                        {caseItem.status || 'Active'}
+                      </span>
+                    </td>
+                    <td>
+                      <button 
+                        className="view-case-btn"
+                        onClick={() => handleViewCase(caseItem.case_type, caseItem.id)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
     </div>
