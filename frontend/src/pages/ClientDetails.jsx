@@ -3,28 +3,38 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getClientById, getCases } from "../api/clientApi";
 
 export default function ClientDetails() {
-  const { id } = useParams();
+  const { id } = useParams(); // clientId
   const navigate = useNavigate();
 
   const [client, setClient] = useState(null);
   const [cases, setCases] = useState([]);
   const [loadingCases, setLoadingCases] = useState(false);
+  const [loadingClient, setLoadingClient] = useState(false);
 
   useEffect(() => {
-    loadClient();
-    loadCases();
-  }, []);
+    if (id) {
+      loadClient();
+      loadCases();
+    }
+  }, [id]);
 
   const loadClient = async () => {
-    const res = await getClientById(id);
-    setClient(res.data);
+    try {
+      setLoadingClient(true);
+      const res = await getClientById(id);
+      setClient(res.data);
+    } catch (err) {
+      console.error("Error loading client:", err);
+    } finally {
+      setLoadingClient(false);
+    }
   };
 
   const loadCases = async () => {
     try {
       setLoadingCases(true);
       const res = await getCases(id);
-      setCases(res.data);
+      setCases(res.data || []);
     } catch (err) {
       console.error("Error loading cases:", err);
     } finally {
@@ -33,6 +43,7 @@ export default function ClientDetails() {
   };
 
   const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
     const date = new Date(dateStr);
     return date.toLocaleDateString("en-IN", {
       day: "2-digit",
@@ -41,12 +52,13 @@ export default function ClientDetails() {
     });
   };
 
-  const handleViewCase = (caseType, caseId) => {
-    const caseTypeLower = caseType.toLowerCase();
-    navigate(`/cases/${caseTypeLower}/${caseId}`);
-  };
+  // ✅ FIX: pass clientId via state
+  const handleViewCase = (caseId) => {
+  navigate(`/clients/${id}/cases/${caseId}`);
+};
 
-  if (!client) return <p>Loading...</p>;
+  if (loadingClient) return <p>Loading client...</p>;
+  if (!client) return <p>Client not found</p>;
 
   return (
     <div className="container">
@@ -64,7 +76,10 @@ export default function ClientDetails() {
             Client ID: {client.id}
           </p>
         </div>
-        <button className="btn" onClick={() => navigate(`/clients/${client.id}/cases`)}>
+        <button
+          className="btn"
+          onClick={() => navigate(`/clients/${client.id}/cases`)}
+        >
           + Add Case
         </button>
       </div>
@@ -76,17 +91,17 @@ export default function ClientDetails() {
         <div className="info-grid">
           <div>
             <p className="label">Phone Number</p>
-            <p className="value">{client.phone}</p>
+            <p className="value">{client.phone || "-"}</p>
           </div>
 
           <div>
             <p className="label">Assigned To</p>
-            <p className="value">{client.assigned_to}</p>
+            <p className="value">{client.assigned_to || "-"}</p>
           </div>
 
           <div>
             <p className="label">Assigned From</p>
-            <p className="value">{client.assigned_from}</p>
+            <p className="value">{client.assigned_from || "-"}</p>
           </div>
 
           <div>
@@ -102,7 +117,7 @@ export default function ClientDetails() {
       <div className="info-card">
         <h3>Global Files</h3>
 
-        {client.files?.length === 0 ? (
+        {!client.files || client.files.length === 0 ? (
           <p>No files uploaded</p>
         ) : (
           client.files.map((file, idx) => (
@@ -112,7 +127,10 @@ export default function ClientDetails() {
                 <small>{formatDate(client.created_at)}</small>
               </div>
 
-              <a href={`http://127.0.0.1:8000/${file}`} download>
+              <a
+                href={`http://127.0.0.1:8000/${file}`}
+                download
+              >
                 ⬇
               </a>
             </div>
@@ -122,7 +140,7 @@ export default function ClientDetails() {
 
       {/* Cases Table */}
       <div className="info-card">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div className="cases-header">
           <h3>Cases</h3>
           <span className="badge">{cases.length} total</span>
         </div>
@@ -132,7 +150,11 @@ export default function ClientDetails() {
         ) : cases.length === 0 ? (
           <div className="case-empty">
             <p>No cases yet. Add a case to get started.</p>
-            <button className="btn" style={{ marginTop: "15px" }} onClick={() => navigate(`/clients/${client.id}/cases`)}>
+            <button
+              className="btn"
+              style={{ marginTop: "15px" }}
+              onClick={() => navigate(`/clients/${client.id}/cases`)}
+            >
               + Add First Case
             </button>
           </div>
@@ -144,33 +166,40 @@ export default function ClientDetails() {
                   <th>Case ID</th>
                   <th>Case Type</th>
                   <th>Folio Number</th>
-                  <th>Company Name</th>
-                  <th>Created At</th>
+                  <th>Company</th>
+                  <th>Created</th>
                   <th>Status</th>
-                  <th>Actions</th>
+                  <th>Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 {cases.map((caseItem) => (
                   <tr key={caseItem.case_id}>
                     <td>{caseItem.case_id}</td>
+
                     <td>
                       <span className={`case-type-badge case-type-${caseItem.case_type?.toLowerCase()}`}>
                         {caseItem.case_type}
                       </span>
                     </td>
+
                     <td>{caseItem.folio_number}</td>
+
                     <td>{caseItem.company}</td>
+
                     <td>{formatDate(caseItem.created_at)}</td>
+
                     <td>
-                      <span className={`status-badge status-${caseItem.status?.toLowerCase() || 'active'}`}>
-                        {caseItem.status || 'Active'}
+                      <span className={`status-badge status-${(caseItem.status || "fresh").toLowerCase()}`}>
+                        {caseItem.status || "Fresh"}
                       </span>
                     </td>
+
                     <td>
-                      <button 
+                      <button
                         className="view-case-btn"
-                        onClick={() => handleViewCase(caseItem.case_type, caseItem.id)}
+                        onClick={() => handleViewCase(caseItem.case_id)}
                       >
                         View Details
                       </button>
@@ -178,6 +207,7 @@ export default function ClientDetails() {
                   </tr>
                 ))}
               </tbody>
+
             </table>
           </div>
         )}

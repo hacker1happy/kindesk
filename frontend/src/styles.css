@@ -57,7 +57,7 @@ body {
   background: white;
   padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .card h3 {
@@ -85,7 +85,7 @@ body {
   background: white;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Table */
@@ -149,7 +149,7 @@ body {
   border-radius: 12px;
   max-width: 700px;
   margin: auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .form-grid {
@@ -207,7 +207,7 @@ body {
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .info-grid {
@@ -253,7 +253,7 @@ body {
   border-radius: 12px;
   max-width: 500px;
   margin: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 input {
@@ -345,27 +345,47 @@ input {
 }
 
 /* Status Badges */
-.status-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 500;
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.status-active {
-  background-color: #d1fae5;
+.status-dropdown {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #eee;
+}
+
+.status-fresh {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.status-doc_generated {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-sent_to_rta {
+  background: #d1fae5;
   color: #065f46;
 }
 
-.status-completed {
-  background-color: #e0e7ff;
-  color: #3730a3;
+.status-query {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
-.status-pending {
-  background-color: #fed7aa;
-  color: #92400e;
+.status-closed {
+  background: #e5e7eb;
+  color: #111827;
 }
 
 /* View Case Button */
@@ -400,4 +420,40 @@ input {
   text-align: center;
   padding: 40px;
   color: #6b7280;
+}
+
+
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stage-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0;
+}
+
+.active {
+  color: blue;
+  font-weight: bold;
+}
+
+.badge {
+  margin-right: 10px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #eee;
 }

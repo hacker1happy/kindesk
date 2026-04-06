@@ -1,53 +1,24 @@
 [
   {
-    "id": "2498830",
+    "id": "8503107",
     "name": "Priyanshu Gupta",
-    "phone": "+919832163019",
-    "assigned_to": "Hari",
+    "phone": "+919876543210",
+    "assigned_to": "Sachin",
     "assigned_from": "Pratha",
-    "created_at": "2026-03-30T04:22:32.617809",
+    "created_at": "2026-04-04T23:39:10.676590",
     "files": [
-      "data/uploads/2498830_priyanshu_gupta_aadhaar_3_11zon.pdf"
+      "data/uploads/8503107_aadhaar-back.jpg",
+      "data/uploads/8503107_aadhaar-front.jpg"
     ],
     "cases": [
       {
-        "case_id": "CASE_20260331014158_97AA77",
-        "folio_number": "Test123",
-        "company": "RIL",
-        "case_type": "Duplicate",
-        "status": "initiated",
-        "created_at": "2026-03-30T20:11:58.929251",
-        "form_link": "/cases/Duplicate/CASE_20260331014158_97AA77",
-        "files": []
-      },
-      {
-        "case_id": "CASE_20260331014224_0AA9ED",
-        "folio_number": "Tata123",
-        "company": "TATA",
-        "case_type": "Transmission",
-        "status": "initiated",
-        "created_at": "2026-03-30T20:12:24.511411",
-        "form_link": "/cases/Transmission/CASE_20260331014224_0AA9ED",
-        "files": []
-      },
-      {
-        "case_id": "CASE_20260331014240_ED3541",
-        "folio_number": "Volvo1234",
-        "company": "Volva",
-        "case_type": "Joint",
-        "status": "initiated",
-        "created_at": "2026-03-30T20:12:40.854186",
-        "form_link": "/cases/Joint/CASE_20260331014240_ED3541",
-        "files": []
-      },
-      {
-        "case_id": "CASE_20260331014304_FDE071",
+        "case_id": "CASE_20260404233952_B88AA9",
         "folio_number": "RIL1234",
-        "company": "RIL",
+        "company": "Reliance",
         "case_type": "Duplicate",
-        "status": "initiated",
-        "created_at": "2026-03-30T20:13:04.631019",
-        "form_link": "/cases/Duplicate/CASE_20260331014304_FDE071",
+        "status": "closed",
+        "created_at": "2026-04-04T18:09:52.670451",
+        "form_data": {},
         "files": []
       }
     ]

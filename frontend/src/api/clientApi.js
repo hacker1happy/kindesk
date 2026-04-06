@@ -20,3 +20,9 @@ export const createCase = (clientId, data) =>
 // 👉 Get Cases
 export const getCases = (clientId) =>
   API.get(`/clients/${clientId}/cases`);
+
+export const getCaseDetails = (clientId, caseId) =>
+  API.get(`/clients/${clientId}/cases/${caseId}`);
+
+export const updateCaseStatus = (clientId, caseId, status) =>
+  API.put(`/clients/${clientId}/cases/${caseId}/status`, { status });

@@ -7,3 +7,4 @@ Permission on login based
     - ops team can add, update, client details and add new cases with related features
     - admin to have all access to delete any client details as well
     - admin can also add-delete assigned to and assigned from person
+When caller is adding a client, there should be feature to add more docs after a client is succesfully added. For caller and for ops team as well

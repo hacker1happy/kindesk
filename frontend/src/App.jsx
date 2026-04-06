@@ -6,6 +6,7 @@ import AddCase from "./pages/AddCase";
 import DuplicateForm from "./pages/cases/DuplicateForm";
 import TransmissionForm from "./pages/cases/TransmissionForm";
 import JointForm from "./pages/cases/JointForm";
+import CaseDetails from "./pages/CaseDetails";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/cases/duplicate/:caseId" element={<DuplicateForm />} />
         <Route path="/cases/transmission/:caseId" element={<TransmissionForm />} />
         <Route path="/cases/joint/:caseId" element={<JointForm />} />
+        <Route path="/clients/:clientId/cases/:caseId" element={<CaseDetails />} />
       </Routes>
     </BrowserRouter>
   );

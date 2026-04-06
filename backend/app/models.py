@@ -18,10 +18,14 @@ class Case(BaseModel):
     case_type: str
     status: str
     created_at: datetime
-    form_link: str
-    files: List[str] = []
+    form_data: dict = {}
+    files: Optional[List[str]] = []
+
 
 class CaseCreateRequest(BaseModel):
     folio_number: str
     company: str
-    case_type: str  # duplicate | transmission | joint
+    case_type: str
+
+class StatusUpdateRequest(BaseModel):
+    status: str
