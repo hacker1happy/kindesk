@@ -3,8 +3,8 @@ from datetime import datetime
 from typing import List
 import os
 
-from app.storage import read_data, write_data
-from app.utils import generate_client_id
+from app.repository.storage import read_data, write_data
+from app.utils.utils import generate_client_id
 
 router = APIRouter()
 

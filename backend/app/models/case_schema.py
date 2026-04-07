@@ -2,14 +2,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 from datetime import datetime
 
-class Client(BaseModel):
-    id: str
-    name: str
-    phone: str
-    assigned_to: str
-    assigned_from: str
-    created_at: str
-    files: Optional[List[str]] = []
+from app.models.document_schema import DocumentRequest
 
 class Case(BaseModel):
     case_id: str
@@ -18,7 +11,7 @@ class Case(BaseModel):
     case_type: str
     status: str
     created_at: datetime
-    form_data: dict = {}
+    form_data: DocumentRequest = DocumentRequest(data={}, selected_files=[])
     files: Optional[List[str]] = []
 
 
