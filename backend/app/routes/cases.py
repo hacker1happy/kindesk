@@ -1,8 +1,9 @@
 from fastapi import APIRouter, HTTPException
 from datetime import datetime
-from app.models import CaseCreateRequest, StatusUpdateRequest
-from app.storage import read_data, write_data
-from app.utils import generate_case_id
+from app.models.case_schema import CaseCreateRequest, StatusUpdateRequest
+from app.repository.storage import read_data, write_data
+from app.utils.utils import generate_case_id
+from app.models.document_schema import DocumentRequest
 
 router = APIRouter()
 
@@ -24,7 +25,7 @@ def add_case(client_id: str, payload: CaseCreateRequest):
         "case_type": payload.case_type,
         "status": "fresh",
         "created_at": datetime.now().isoformat(),
-        "form_data": {},
+        "form_data": DocumentRequest(data={}, selected_files=[]),
         "files": []
     }
 

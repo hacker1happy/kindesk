@@ -1,0 +1,37 @@
+# Python compiled files
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Python virtual environment
+venv/
+env/
+ENV/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables
+.env
+*.local
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# OS files
+.DS_Store
+Thumbs.db
+*.pdf
+*.docx
+*.xlsx
+*.jpg
+*.jpeg
+*.png
+*.zip
