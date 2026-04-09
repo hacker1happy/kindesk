@@ -1,0 +1,95 @@
+.shareholder-section {
+  margin-bottom: var(--spacing-xl);
+  background: var(--white);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+}
+
+.shareholder-section h3 {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: var(--spacing-md) var(--spacing-lg);
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.shareholder-table {
+  border: 1px solid var(--border-color);
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.shareholder-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shareholder-row:last-child {
+  border-bottom: none;
+}
+
+.shareholder-row.header {
+  background-color: var(--bg-tertiary);
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.header-cell {
+  padding: var(--spacing-md);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  border-right: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.header-cell:last-child {
+  border-right: none;
+}
+
+.form-cell {
+  padding: var(--spacing-md);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-cell:last-child {
+  border-right: none;
+}
+
+.form-cell label {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.form-cell input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  transition: all var(--transition-fast);
+}
+
+.form-cell input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.form-cell input::placeholder {
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.error-text {
+  color: #d93025;
+  font-size: 11px;
+  font-weight: 400;
+  margin-top: 3px;
+  display: block;
+  line-height: 1.2;
+}

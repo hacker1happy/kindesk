@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getClients } from "../api/clientApi";
+import { getClients } from "../../api/clientApi";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {

@@ -1,24 +1,214 @@
 [
   {
-    "id": "8503107",
+    "id": "5036758",
     "name": "Priyanshu Gupta",
-    "phone": "+919876543210",
+    "phone": "+919832163019",
     "assigned_to": "Sachin",
     "assigned_from": "Pratha",
-    "created_at": "2026-04-04T23:39:10.676590",
+    "created_at": "2026-04-07T16:33:42.280523",
     "files": [
-      "data/uploads/8503107_aadhaar-back.jpg",
-      "data/uploads/8503107_aadhaar-front.jpg"
+      "data/uploads/5036758_aadhar-front.pdf"
     ],
     "cases": [
       {
-        "case_id": "CASE_20260404233952_B88AA9",
-        "folio_number": "RIL1234",
+        "case_id": "CASE_20260407163403_D5CEBD",
+        "folio_number": "RIL123",
         "company": "Reliance",
         "case_type": "Duplicate",
-        "status": "closed",
-        "created_at": "2026-04-04T18:09:52.670451",
-        "form_data": {},
+        "status": "fresh",
+        "created_at": "2026-04-07T16:34:03.372875",
+        "form_data": {
+          "shareholders": [
+            {
+              "personalDetails": {
+                "name": "Priyanshu Gupta"
+              },
+              "contactDetails": {
+                "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+                "pinCode": "713347"
+              },
+              "bankDetails": {}
+            }
+          ],
+          "securities": [
+            {
+              "certificateNumber": "",
+              "distinctiveFrom": "",
+              "distinctiveTo": "",
+              "shares": ""
+            }
+          ],
+          "companyInfo": {
+            "name": "",
+            "address": ""
+          },
+          "rtaInfo": {
+            "name": "",
+            "address": ""
+          },
+          "documents": [
+            {
+              "id": "auth-letter",
+              "name": "Authentication Letter",
+              "required": false,
+              "selected": false
+            },
+            {
+              "id": "request-letter",
+              "name": "Request Letter",
+              "required": false,
+              "selected": false
+            },
+            {
+              "id": "isr-1",
+              "name": "ISR 1",
+              "required": false,
+              "selected": false
+            },
+            {
+              "id": "sh-13",
+              "name": "SH - 13",
+              "required": false,
+              "selected": false
+            },
+            {
+              "id": "isr-4",
+              "name": "ISR 4",
+              "required": false,
+              "selected": false
+            },
+            {
+              "id": "form-a",
+              "name": "Form A",
+              "required": false,
+              "selected": false
+            },
+            {
+              "id": "form-b-indemnity",
+              "name": "Form B Indemnity",
+              "required": false,
+              "selected": false
+            }
+          ],
+          "otherInfo": {
+            "formDate": "",
+            "folioNumber": "",
+            "faceValue": ""
+          },
+          "totalShares": 0
+        },
+        "files": []
+      }
+    ]
+  },
+  {
+    "id": "4711264",
+    "name": "Himanshu Jain",
+    "phone": "+911234567890",
+    "assigned_to": "Sachin",
+    "assigned_from": "Pratha",
+    "created_at": "2026-04-08T10:22:05.795547",
+    "files": [
+      "data/uploads/4711264_Cover letter.pdf"
+    ],
+    "cases": [
+      {
+        "case_id": "CASE_20260408102325_3D23C5",
+        "folio_number": "123",
+        "company": "RIL",
+        "case_type": "Duplicate",
+        "status": "doc_generated",
+        "created_at": "2026-04-08T10:23:25.550711",
+        "form_data": {
+          "shareholders": [
+            {
+              "personalDetails": {
+                "name": "Priyanshu Gupta",
+                "fatherName": "Test",
+                "panNumber": "DETPG5534Q",
+                "dematAccount": "123456"
+              },
+              "contactDetails": {
+                "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+                "pinCode": "713347",
+                "mobile": "9123456789",
+                "email": "test@gmail.com"
+              },
+              "bankDetails": {
+                "accountNumber": "1234567890",
+                "bankName": "HDFC",
+                "branch": "Rnj",
+                "ifscCode": "HDFC0000509"
+              }
+            }
+          ],
+          "securities": [
+            {
+              "certificateNumber": "123",
+              "distinctiveFrom": "123",
+              "distinctiveTo": "123",
+              "shares": "34"
+            }
+          ],
+          "companyInfo": {
+            "name": "RIL",
+            "address": "Delhi"
+          },
+          "rtaInfo": {
+            "name": "Test RTA",
+            "address": "Noida"
+          },
+          "documents": [
+            {
+              "id": "auth-letter",
+              "name": "Authentication Letter",
+              "required": false,
+              "selected": true
+            },
+            {
+              "id": "request-letter",
+              "name": "Request Letter",
+              "required": false,
+              "selected": true
+            },
+            {
+              "id": "isr-1",
+              "name": "ISR 1",
+              "required": false,
+              "selected": true
+            },
+            {
+              "id": "sh-13",
+              "name": "SH - 13",
+              "required": false,
+              "selected": true
+            },
+            {
+              "id": "isr-4",
+              "name": "ISR 4",
+              "required": false,
+              "selected": true
+            },
+            {
+              "id": "form-a",
+              "name": "Form A",
+              "required": false,
+              "selected": true
+            },
+            {
+              "id": "form-b-indemnity",
+              "name": "Form B Indemnity",
+              "required": false,
+              "selected": true
+            }
+          ],
+          "otherInfo": {
+            "formDate": "08-04-2026",
+            "folioNumber": "1234",
+            "faceValue": "34"
+          },
+          "totalShares": 34
+        },
         "files": []
       }
     ]

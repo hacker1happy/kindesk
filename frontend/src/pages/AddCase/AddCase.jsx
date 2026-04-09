@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { createCase } from "../api/clientApi";
+import { createCase } from "../../api/caseApi";
 
 export default function AddCase() {
   const { clientId } = useParams();
@@ -28,7 +28,7 @@ export default function AddCase() {
 
       const caseId = res.data.case_id;
 
-      navigate(`/cases/${caseType.toLowerCase()}/${caseId}`);
+      navigate(`/clients/${clientId}/cases/${caseId}/${caseType.toLowerCase()}`);
     } catch (err) {
       console.error(err);
       alert("Error creating case");

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getClientById, getCases } from "../api/clientApi";
+import { getClientById } from "../../api/clientApi";
+import { getCases } from "../../api/caseApi";
 
 export default function ClientDetails() {
   const { id } = useParams(); // clientId

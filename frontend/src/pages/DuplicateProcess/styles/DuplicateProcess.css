@@ -1,0 +1,45 @@
+.valid-input {
+  border: 2px solid #22c55e;
+  background-color: #f0fdf4;
+}
+
+.invalid-input {
+  border: 2px solid #ef4444;
+  background-color: #fef2f2;
+}
+
+.duplicate-process {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+  padding: var(--spacing-xl) 0;
+}
+
+.shareholders-select {
+  max-width: 300px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.shareholders-select select {
+  width: 100%;
+  padding: var(--spacing-sm) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+}
+
+/* Section Headers */
+.form-section h2 {
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .duplicate-process {
+    padding: var(--spacing-md);
+  }
+  
+  .shareholders-select {
+    max-width: 100%;
+  }
+}

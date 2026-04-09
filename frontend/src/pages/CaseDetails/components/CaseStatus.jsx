@@ -1,4 +1,4 @@
-import { updateCaseStatus } from "../../api/clientApi";
+import { updateCaseStatus } from "../../../api/caseApi";
 
 const STATUS_OPTIONS = [
   "fresh",

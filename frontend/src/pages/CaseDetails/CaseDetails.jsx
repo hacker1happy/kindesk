@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { getCaseDetails } from "../api/clientApi";
+import { getCaseDetails } from "../../api/caseApi";
 
 import CaseHeader from "./components/CaseHeader";
 import ClientInfoCard from "./components/ClientInfoCard";
@@ -10,12 +10,7 @@ import Documents from "./components/Documents";
 
 export default function CaseDetails() {
   const { clientId, caseId } = useParams();
-  const { state } = useLocation();
   const navigate = useNavigate();
-
-  // ✅ Get clientId from navigation state
-  // const clientId = state?.clientId;
-
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

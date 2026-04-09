@@ -11,8 +11,9 @@ from app.utils import duplicate_form_data_transformer
 
 router = APIRouter()
 
-@router.post("/generate")
-def generate_documents_api(request: DocumentRequest):
+
+@router.post("/generate/{client_id}/{case_id}")
+def generate_documents_api(client_id: str, case_id: str, request: DocumentRequest):
     process = request.process
     data = duplicate_form_data_transformer.transform_input_data(request.data)
     selected_files = duplicate_form_data_transformer.transform_selected_files(request.selected_files)
@@ -29,11 +30,13 @@ def generate_documents_api(request: DocumentRequest):
 
     # Step 3: Generate docs
     output_dir = os.path.join(
-        "app",
-        "output",
-        process,
-        modified_data.get("FOLIONO", "default")
+        "data",
+        "uploads",
+        client_id,
+        case_id
     )
+
+    os.makedirs(output_dir, exist_ok=True)
 
     generate_documents(template_files, output_dir, modified_data)
 

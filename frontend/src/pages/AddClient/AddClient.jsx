@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { createClient } from "../api/clientApi";
+import { createClient } from "../../api/clientApi";
 import { useNavigate } from "react-router-dom";
 
 export default function AddClient() {

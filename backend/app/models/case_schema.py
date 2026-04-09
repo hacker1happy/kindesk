@@ -11,7 +11,7 @@ class Case(BaseModel):
     case_type: str
     status: str
     created_at: datetime
-    form_data: DocumentRequest = DocumentRequest(data={}, selected_files=[])
+    form_data: dict = {}
     files: Optional[List[str]] = []
 
 
