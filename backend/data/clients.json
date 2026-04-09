@@ -21,81 +21,91 @@
           "shareholders": [
             {
               "personalDetails": {
-                "name": "Priyanshu Gupta"
+                "name": "Priyanshu Gupta",
+                "fatherName": "test",
+                "panNumber": "DETPG4456W",
+                "dematAccount": "1234567"
               },
               "contactDetails": {
                 "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
-                "pinCode": "713347"
+                "pinCode": "713347",
+                "mobile": "9123456789",
+                "email": "test@test.com"
               },
-              "bankDetails": {}
+              "bankDetails": {
+                "accountNumber": "1234567890",
+                "bankName": "hdfc",
+                "branch": "werty",
+                "ifscCode": "SBIN0001067"
+              }
             }
           ],
           "securities": [
             {
-              "certificateNumber": "",
-              "distinctiveFrom": "",
-              "distinctiveTo": "",
-              "shares": ""
+              "certificateNumber": "1234",
+              "distinctiveFrom": "1234",
+              "distinctiveTo": "234",
+              "shares": "1234"
             }
           ],
           "companyInfo": {
-            "name": "",
-            "address": ""
+            "name": "Priyanshu Gupta",
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India"
           },
           "rtaInfo": {
-            "name": "",
-            "address": ""
+            "name": "Priyanshu",
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India"
           },
           "documents": [
             {
               "id": "auth-letter",
               "name": "Authentication Letter",
               "required": false,
-              "selected": false
+              "selected": true
             },
             {
               "id": "request-letter",
               "name": "Request Letter",
               "required": false,
-              "selected": false
+              "selected": true
             },
             {
               "id": "isr-1",
               "name": "ISR 1",
               "required": false,
-              "selected": false
+              "selected": true
             },
             {
               "id": "sh-13",
               "name": "SH - 13",
               "required": false,
-              "selected": false
+              "selected": true
             },
             {
               "id": "isr-4",
               "name": "ISR 4",
               "required": false,
-              "selected": false
+              "selected": true
             },
             {
               "id": "form-a",
               "name": "Form A",
               "required": false,
-              "selected": false
+              "selected": true
             },
             {
               "id": "form-b-indemnity",
               "name": "Form B Indemnity",
               "required": false,
-              "selected": false
+              "selected": true
             }
           ],
           "otherInfo": {
-            "formDate": "",
-            "folioNumber": "",
-            "faceValue": ""
+            "formDate": "10-04-2026",
+            "folioNumber": "1234",
+            "faceValue": "123"
           },
-          "totalShares": 0
+          "totalShares": 1234
         },
         "files": []
       }

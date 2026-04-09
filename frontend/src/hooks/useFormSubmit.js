@@ -10,7 +10,13 @@ export const useFormSubmit = (processName) => {
     setError(null);
 
     try {
-      const result = await generateDocuments(clientId, caseId, processName, formData, selectedFiles);
+      const result = await generateDocuments(
+        clientId,
+        caseId,
+        processName,
+        formData,
+        selectedFiles
+      );
       return result;
     } catch (err) {
       setError(err.message || 'An error occurred while generating documents');
@@ -20,14 +26,5 @@ export const useFormSubmit = (processName) => {
     }
   };
 
-  const resetForm = () => {
-    setError(null);
-  };
-
-  return {
-    submitForm,
-    resetForm,
-    loading,
-    error,
-  };
+  return { submitForm, loading, error };
 };

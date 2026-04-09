@@ -200,30 +200,6 @@ const DuplicateProcess = () => {
   };
 
   // Handle form submit
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const selectedDocuments = documents
-  //     .filter(doc => doc.selected)
-  //     .map(doc => doc.id);
-
-  //   const formData = {
-  //     shareholders: shareholders,
-  //     securities: securities,
-  //     companyInfo: companyInfo,
-  //     rtaInfo: rtaInfo,
-  //     documents: documents,
-  //     otherInfo: otherInfo,
-  //     totalShares: calculateTotalShares()
-  //   };
-
-  //   try {
-  //     await submitForm(formData, selectedDocuments);
-  //     alert('Documents generated successfully!');
-  //   } catch (err) {
-  //     alert('Failed to generate documents. Please try again.');
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -251,9 +227,7 @@ const DuplicateProcess = () => {
       alert('Documents generated successfully!');
 
       // ✅ Step 3: Redirect to Case Details
-      navigate(`/clients/${clientId}/cases/${caseId}`, {
-        state: { clientId }
-      });
+      navigate(`/clients/${clientId}/cases/${caseId}`);
 
     } catch (err) {
       alert('Failed to generate documents.');
