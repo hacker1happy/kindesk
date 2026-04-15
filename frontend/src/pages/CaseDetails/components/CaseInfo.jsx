@@ -13,12 +13,7 @@ export default function CaseInfo({ caseData }) {
 
 
   const handleEditForm = () => {
-    navigate(
-      `/clients/${clientId}/cases/${caseData.case_id}/${caseData.case_type.toLowerCase()}`,
-      {
-        state: { clientId, editMode: true }, // ✅ optional flag
-      }
-    );
+    navigate(`/clients/${clientId}/cases/${caseData.case_id}/${caseData.case_type.toLowerCase()}`);
   };
 
   return (
@@ -33,12 +28,7 @@ export default function CaseInfo({ caseData }) {
       ) : (
         <>
           <p>Form already filled for this case</p>
-
-          <div style={{ display: "flex", gap: "10px" }}>
-            <button onClick={handleFillForm}>
-              View / Refill Form
-            </button>
-
+          <div className="button-group">
             <button onClick={handleEditForm} className="btn btn-primary">
               Edit Form
             </button>

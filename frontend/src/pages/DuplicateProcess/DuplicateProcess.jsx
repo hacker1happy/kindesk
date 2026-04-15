@@ -16,7 +16,7 @@ import './styles/global.css';
 
 const DuplicateProcess = () => {
   const { clientId, caseId } = useParams();
-
+  const [isEditMode, setIsEditMode] = useState(false);
   const navigate = useNavigate();
   const { submitForm, loading, error } = useFormSubmit('duplicate');
 
@@ -48,14 +48,34 @@ const DuplicateProcess = () => {
     if (clientId && caseId) {
       getFormData(clientId, caseId)
         .then(res => {
-          const data = res.data.formData;
+          const data = res.data;
+          // check if data is not empty, if empty then it means no existing form data found, so we should not set edit mode to true and just return
+          if (Object.keys(data).length === 0) {
+            return;
+          }
 
-          setShareholders(data.shareholders || []);
-          setSecurities(data.securities || []);
-          setCompanyInfo(data.companyInfo || {});
-          setRtaInfo(data.rtaInfo || {});
-          setDocuments(data.documents || []);
-          setOtherInfo(data.otherInfo || {});
+          setIsEditMode(true);
+
+          setShareholders(data.shareholders?.length ? data.shareholders : [
+            { personalDetails: {}, contactDetails: {}, bankDetails: {} }
+          ]);
+
+          setNumShareholders(data.shareholders?.length || 1);
+
+          setSecurities(data.securities?.length ? data.securities : [
+            { certificateNumber: '', distinctiveFrom: '', distinctiveTo: '', shares: '' }
+          ]);
+
+          setCompanyInfo(data.companyInfo || { name: '', address: '' });
+          setRtaInfo(data.rtaInfo || { name: '', address: '' });
+
+          setDocuments(data.documents?.length ? data.documents : documents);
+
+          setOtherInfo(data.otherInfo || {
+            formDate: '',
+            folioNumber: '',
+            faceValue: ''
+          });
         })
         .catch(() => console.log("No existing form found"));
     }
@@ -253,7 +273,7 @@ const DuplicateProcess = () => {
     <div className="duplicate-process">
       <div className="container">
         <div className="form-container">
-          <h1>Duplicate Process</h1>
+          <h1>{isEditMode ? "Edit Duplicate Process" : "Duplicate Process"}</h1>
 
           {/* Number of Shareholders Selector */}
           <div className="form-section">
@@ -322,9 +342,11 @@ const DuplicateProcess = () => {
                 {loading ? (
                   <>
                     <span className="spinner"></span>
-                    Generating...
+                    {isEditMode ? "Updating & Generating..." : "Generating..."}
                   </>
-                ) : "Submit"}
+                ) : (
+                  isEditMode ? "Update & Generate" : "Generate Documents"
+                )}
               </button>
               <button
                 type="button"
