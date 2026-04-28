@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-from app.routes import clients, cases, case_status, fill_form, documents
+from app.routes import clients, cases, case_status, fill_form, doc_gen, case_docs, company
 
 
 app = FastAPI()
@@ -15,9 +15,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.mount("/backend/data/uploads", StaticFiles(directory="data/uploads"), name="uploads")
 app.include_router(clients.router, prefix="/clients", tags=["Clients"])
 app.include_router(cases.router)
 app.include_router(case_status.router)
 app.include_router(fill_form.router)
-app.include_router(documents.router)
-app.mount("/backend/data/uploads", StaticFiles(directory="data/uploads"), name="uploads")
+app.include_router(doc_gen.router)
+app.include_router(case_docs.router)
+app.include_router(company.router)

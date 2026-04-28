@@ -20,9 +20,14 @@ Permission on login based
     - admin to have all access to delete any client details as well
     - admin can also add-delete assigned to and assigned from person
 
+
+Feature to save the form draft & To edit the form later - Done
 Feature to duplicate a case for a particular client
-Feature to save the form draft & To edit the form later
 To upload particular case documents and show them in list with feature to download any particular file or all files in .zip 
+
+documents table
+docname | time | upload | delete
+
  
 
 stage | date | doc name | doc link

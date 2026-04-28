@@ -4,7 +4,7 @@ from typing import List
 import os
 
 from app.repository.storage import read_data, write_data
-from app.utils.utils import generate_client_id
+from app.utils.id_generator_utils import generate_client_id
 
 router = APIRouter()
 

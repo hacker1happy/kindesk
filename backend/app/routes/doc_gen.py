@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from fastapi.responses import FileResponse
 import os
 
 from app.models.document_schema import DocumentRequest
@@ -8,6 +7,7 @@ from app.services.template_selector import build_template_paths
 from app.services.file_generator import generate_documents
 from app.utils import duplicate_form_data_transformer
 from app.routes.fill_form import save_form_data
+from app.utils.document_utils import save_files_data
 
 router = APIRouter()
 
@@ -44,6 +44,10 @@ def generate_documents_api(client_id: str, case_id: str, request: DocumentReques
         # Step 4: Generate documents (ONLY this, no zip)
         generate_documents(template_files, output_dir, modified_data)
 
+        # Step 5: save the selected files into case.files
+        save_files_data(client_id, case_id, selected_files)
+
+
         # ✅ Return success instead of file
         return {
             "success": True,
@@ -55,3 +59,4 @@ def generate_documents_api(client_id: str, case_id: str, request: DocumentReques
             "success": False,
             "message": str(e)
         }
+

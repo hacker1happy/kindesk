@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getCaseDetails } from "../../api/caseApi";
-
 import CaseHeader from "./components/CaseHeader";
 import ClientInfoCard from "./components/ClientInfoCard";
 import CaseStatus from "./components/CaseStatus";
@@ -81,7 +80,8 @@ export default function CaseDetails() {
       <CaseInfo caseData={data.case} />
 
       {/* Documents */}
-      <Documents caseData={data.case} />
+      {/* <pre>{JSON.stringify(data?.case.files, null, 2)}</pre> */}
+      {data?.case.files && <Documents caseData={data.case.files} />}
     </div>
   );
 }

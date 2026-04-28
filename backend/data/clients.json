@@ -1,60 +1,49 @@
 [
   {
-    "id": "5036758",
+    "id": "1",
     "name": "Priyanshu Gupta",
     "phone": "+919832163019",
     "assigned_to": "Sachin",
     "assigned_from": "Pratha",
-    "created_at": "2026-04-07T16:33:42.280523",
-    "files": [
-      "data/uploads/5036758_aadhar-front.pdf"
-    ],
+    "created_at": "2026-04-29T01:11:58.014024",
+    "files": [],
     "cases": [
       {
-        "case_id": "CASE_20260407163403_D5CEBD",
-        "folio_number": "RIL123",
-        "company": "Reliance",
-        "case_type": "Duplicate",
-        "status": "doc_generated",
-        "created_at": "2026-04-07T16:34:03.372875",
+        "case_id": "CWX9K9Y",
+        "folio_number": "ril123",
+        "company_id": "COMP001",
+        "case_type": "duplicate",
+        "status": "fresh",
+        "created_at": "2026-04-29T01:36:29.705146",
         "form_data": {
           "shareholders": [
             {
               "personalDetails": {
-                "name": "Priyanshu Gupta",
-                "fatherName": "test",
-                "panNumber": "DETPG4456W",
-                "dematAccount": "1234567"
+                "name": "Priyanshu Gupta"
               },
               "contactDetails": {
                 "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
                 "pinCode": "713347",
-                "mobile": "9123456789",
-                "email": "test@test.com"
+                "email": "finassure.dataset@gmail.com"
               },
-              "bankDetails": {
-                "accountNumber": "1234567890",
-                "bankName": "hdfc",
-                "branch": "werty",
-                "ifscCode": "SBIN0001067"
-              }
+              "bankDetails": {}
             }
           ],
           "securities": [
             {
-              "certificateNumber": "1234",
-              "distinctiveFrom": "1234",
-              "distinctiveTo": "234",
-              "shares": "1234"
+              "certificateNumber": "",
+              "distinctiveFrom": "",
+              "distinctiveTo": "",
+              "shares": ""
             }
           ],
           "companyInfo": {
-            "name": "Priyanshu Gupta",
-            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India"
+            "name": "",
+            "address": ""
           },
           "rtaInfo": {
-            "name": "Priyanshu",
-            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India"
+            "name": "",
+            "address": ""
           },
           "documents": [
             {
@@ -101,196 +90,117 @@
             }
           ],
           "otherInfo": {
-            "formDate": "10-04-2026",
-            "folioNumber": "1234",
-            "faceValue": "123"
+            "formDate": "",
+            "folioNumber": "",
+            "faceValue": ""
           },
-          "totalShares": 1234
+          "totalShares": 0
         },
-        "files": []
-      },
-      {
-        "case_id": "CASE_20260415072559_A985AB",
-        "folio_number": "12345",
-        "company": "Tata",
-        "case_type": "Duplicate",
-        "status": "fresh",
-        "created_at": "2026-04-15T07:25:59.648140",
-        "form_data": {
-          "NumberOfShareHolders": "1",
-          "SIGNATUREA": "Priyanshu Gupta",
-          "SHAREHOLDERAFATHER": "test",
-          "SHAREHOLDERAPAN": "DETPG5589Q",
-          "SHAREHOLDERDEMATACCOUNT": "",
-          "SHAREHOLDERAADDRESS": "01 TDB College Road, Raniganj, West Bengal 713347, India",
-          "SHAREHOLDERAPINCODE": "713347",
-          "EmailA": "finassure.dataset@gmail.com",
-          "MobileA": "9123456789",
-          "AACCNO": "1234567890",
-          "ABNKNAME": "hdfc",
-          "ABRANCHNAME": "rnj",
-          "AIFSCODE": "HDFC0001015",
-          "SIGNATUREB": "",
-          "SHAREHOLDERBFATHER": "",
-          "SHAREHOLDERBPAN": "",
-          "SHAREHOLDERBADDRESS": "",
-          "SHAREHOLDERBPINCODE": "",
-          "EmailB": "",
-          "MobileB": "",
-          "BACCNO": "",
-          "BBNKNAME": "",
-          "BBRANCHNAME": "",
-          "BIFSCODE": "",
-          "SIGNATUREC": "",
-          "SHAREHOLDERCFATHER": "",
-          "SHAREHOLDERCPAN": "",
-          "SHAREHOLDERCADDRESS": "",
-          "SHAREHOLDERCPINCODE": "",
-          "EmailC": "",
-          "MobileC": "",
-          "CACCNO": "",
-          "CBNKNAME": "",
-          "CBRANCHNAME": "",
-          "CIFSCODE": "",
-          "FORMDATE": "10-04-2026",
-          "FACEVALUE": "123",
-          "FOLIONO": "12345",
-          "NOSA": "889",
-          "CERTNOA": "56",
-          "DISTNOFROMA": "767",
-          "DISTNOTOA": "78",
-          "NOSB": "",
-          "CERTNOB": "",
-          "DISTNOFROMB": "",
-          "DISTNOTOB": "",
-          "NOSC": "",
-          "CERTNOC": "",
-          "DISTNOFROMC": "",
-          "DISTNOTOC": "",
-          "NOSD": "",
-          "CERTNOD": "",
-          "DISTNOFROMD": "",
-          "DISTNOTOD": "",
-          "NUMBEROFSHARES": "889",
-          "NAMEOFTHECOMPANY": "Priyanshu Gupta",
-          "ADDRESSOFTHECOMPANY": "01 TDB College Road, Raniganj, West Bengal 713347, India",
-          "NAMEOFTHEREGISTRAR": "Priyanshu Gupta",
-          "ADDRESSOFTHEREGISTRAR": "01 TDB College Road, Raniganj, West Bengal 713347, India"
-        },
-        "files": []
+        "files": [],
+        "stages": [
+          {
+            "key": "mail_sent",
+            "label": "Mail Sent to Client",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "client_docs_received",
+            "label": "Client Docs Received",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "doc_generated",
+            "label": "Document Generated",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "doc_sent",
+            "label": "Document Sent to Client",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "doc_received",
+            "label": "Document Received from Client",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "ops_review",
+            "label": "Ops Review & Sign-off",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "sent_to_rta",
+            "label": "Sent to Company/RTA",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "loc_received",
+            "label": "LOC/LOE Received",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "iepf_generated",
+            "label": "IEPF Generated",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "iepf_submitted",
+            "label": "IEPF Submitted",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "everification",
+            "label": "E-Verification Approved",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "shares_credited",
+            "label": "Shares Credited",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          },
+          {
+            "key": "closed",
+            "label": "Case Closed",
+            "completed": false,
+            "updated_at": null,
+            "documents": []
+          }
+        ],
+        "queries": []
       }
     ]
   },
   {
-    "id": "4711264",
-    "name": "Himanshu Jain",
-    "phone": "+911234567890",
-    "assigned_to": "Sachin",
-    "assigned_from": "Pratha",
-    "created_at": "2026-04-08T10:22:05.795547",
-    "files": [
-      "data/uploads/4711264_Cover letter.pdf"
-    ],
-    "cases": [
-      {
-        "case_id": "CASE_20260408102325_3D23C5",
-        "folio_number": "123",
-        "company": "RIL",
-        "case_type": "Duplicate",
-        "status": "doc_generated",
-        "created_at": "2026-04-08T10:23:25.550711",
-        "form_data": {
-          "shareholders": [
-            {
-              "personalDetails": {
-                "name": "Priyanshu Gupta",
-                "fatherName": "Test",
-                "panNumber": "DETPG5534Q",
-                "dematAccount": "123456"
-              },
-              "contactDetails": {
-                "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
-                "pinCode": "713347",
-                "mobile": "9123456789",
-                "email": "test@gmail.com"
-              },
-              "bankDetails": {
-                "accountNumber": "1234567890",
-                "bankName": "HDFC",
-                "branch": "Rnj",
-                "ifscCode": "HDFC0000509"
-              }
-            }
-          ],
-          "securities": [
-            {
-              "certificateNumber": "123",
-              "distinctiveFrom": "123",
-              "distinctiveTo": "123",
-              "shares": "34"
-            }
-          ],
-          "companyInfo": {
-            "name": "RIL",
-            "address": "Delhi"
-          },
-          "rtaInfo": {
-            "name": "Test RTA",
-            "address": "Noida"
-          },
-          "documents": [
-            {
-              "id": "auth-letter",
-              "name": "Authentication Letter",
-              "required": false,
-              "selected": true
-            },
-            {
-              "id": "request-letter",
-              "name": "Request Letter",
-              "required": false,
-              "selected": true
-            },
-            {
-              "id": "isr-1",
-              "name": "ISR 1",
-              "required": false,
-              "selected": true
-            },
-            {
-              "id": "sh-13",
-              "name": "SH - 13",
-              "required": false,
-              "selected": true
-            },
-            {
-              "id": "isr-4",
-              "name": "ISR 4",
-              "required": false,
-              "selected": true
-            },
-            {
-              "id": "form-a",
-              "name": "Form A",
-              "required": false,
-              "selected": true
-            },
-            {
-              "id": "form-b-indemnity",
-              "name": "Form B Indemnity",
-              "required": false,
-              "selected": true
-            }
-          ],
-          "otherInfo": {
-            "formDate": "08-04-2026",
-            "folioNumber": "1234",
-            "faceValue": "34"
-          },
-          "totalShares": 34
-        },
-        "files": []
-      }
-    ]
+    "id": "2",
+    "name": "Dipesh Jain",
+    "phone": "+919876543210",
+    "assigned_to": "Hari",
+    "assigned_from": "Richa",
+    "created_at": "2026-04-29T01:16:13.437019",
+    "files": []
   }
 ]

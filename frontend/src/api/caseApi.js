@@ -15,5 +15,25 @@ export const getCases = (clientId) =>
 export const getCaseDetails = (clientId, caseId) =>
   API.get(`/clients/${clientId}/cases/${caseId}`);
 
-export const updateCaseStatus = (clientId, caseId, status) =>
-  API.put(`/clients/${clientId}/cases/${caseId}/status`, { status });
+
+// ✅ Stage update
+export const updateStage = (clientId, caseId, stageKey) =>
+  API.put(`/clients/${clientId}/cases/${caseId}/stages/${stageKey}`);
+
+// ✅ Upload stage doc
+export const uploadStageDocument = (clientId, caseId, stageKey, formData) =>
+  API.post(
+    `/clients/${clientId}/cases/${caseId}/stages/${stageKey}/upload`,
+    formData
+  );
+
+// ✅ Add query
+export const addQuery = (clientId, caseId) =>
+  API.post(`/clients/${clientId}/cases/${caseId}/queries`);
+
+// ✅ Upload query doc
+export const uploadQueryDocument = (clientId, caseId, queryNo, formData) =>
+  API.post(
+    `/clients/${clientId}/cases/${caseId}/queries/${queryNo}/upload`,
+    formData
+  );

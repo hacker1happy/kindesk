@@ -4,8 +4,7 @@ export default function CaseInfo({ caseData }) {
   const { clientId } = useParams();
   const navigate = useNavigate();
 
-  const hasFormData =
-    caseData.form_data && Object.keys(caseData.form_data).length > 0;
+  const hasFormData = caseData.form_data && Object.keys(caseData.form_data).length > 0;
 
   const handleFillForm = () => {
     navigate(`/clients/${clientId}/cases/${caseData.case_id}/${caseData.case_type.toLowerCase()}`);

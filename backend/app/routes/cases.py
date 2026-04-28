@@ -1,12 +1,25 @@
 from fastapi import APIRouter, HTTPException
 from datetime import datetime
-from app.models.case_schema import CaseCreateRequest, StatusUpdateRequest
+from app.models.case_schema import CaseCreateRequest
 from app.repository.storage import read_data, write_data
-from app.utils.utils import generate_case_id
-from app.models.document_schema import DocumentRequest
+from app.utils.id_generator_utils import generate_case_id
+from app.constants.helper_constants import DEFAULT_STAGES
 
 router = APIRouter()
 
+from datetime import datetime
+
+def init_stages():
+    return [
+        {
+            **stage,
+            "completed": False,
+            "updated_at": None,
+            "documents": []
+        }
+        for stage in DEFAULT_STAGES
+    ]
+    
 @router.post("/clients/{client_id}/cases")
 def add_case(client_id: str, payload: CaseCreateRequest):
     data = read_data()
@@ -21,12 +34,14 @@ def add_case(client_id: str, payload: CaseCreateRequest):
     new_case = {
         "case_id": case_id,
         "folio_number": payload.folio_number,
-        "company": payload.company,
+        "company_id": payload.company_id,
         "case_type": payload.case_type,
         "status": "fresh",
         "created_at": datetime.now().isoformat(),
         "form_data": {},
-        "files": []
+        "files": [],
+        "stages": init_stages(),
+        "queries": []
     }
 
     if "cases" not in client:
