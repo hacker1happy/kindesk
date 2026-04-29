@@ -12,3 +12,18 @@ export const createClient = (formData) =>
   });
 
 export const getClientById = (id) => API.get(`/clients/${id}`);
+
+export const uploadClientDocuments = (clientId, formData) =>
+  API.post(
+    `/clients/${clientId}/documents`,
+    formData
+  );
+
+export const removeClientDocument = (
+  clientId,
+  fileName
+) =>
+  API.delete(
+    `/clients/${clientId}/documents/${encodeURIComponent(fileName)}`
+  );
+

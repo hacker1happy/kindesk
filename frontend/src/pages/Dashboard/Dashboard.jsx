@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getClients } from "../../api/clientApi";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState({});
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,8 +13,35 @@ export default function Dashboard() {
 
   const loadClients = async () => {
     const res = await getClients();
-    setClients(res.data);
+    setClients(res.data || {});
   };
+
+  // Convert object -> array
+  const clientList = useMemo(() => {
+    return Object.entries(clients).map(([id, client]) => ({
+      id,
+      ...client,
+    }));
+  }, [clients]);
+
+  // Search filter
+  const filteredClients = clientList.filter((c) => {
+    const query = search.toLowerCase();
+
+    return (
+      c.id.toLowerCase().includes(query) ||
+      c.name.toLowerCase().includes(query) ||
+      c.phone.toLowerCase().includes(query)
+    );
+  });
+
+  // Stats
+  const totalClients = clientList.length;
+
+  const totalCases = clientList.reduce(
+    (sum, client) => sum + (client.case_ids?.length || 0),
+    0
+  );
 
   return (
     <div className="container">
@@ -21,7 +49,11 @@ export default function Dashboard() {
       {/* Header */}
       <div className="header">
         <h1>TrackSure System</h1>
-        <button className="btn" onClick={() => navigate("/clients/new")}>
+
+        <button
+          className="btn"
+          onClick={() => navigate("/clients/new")}
+        >
           + Add Client
         </button>
       </div>
@@ -30,15 +62,17 @@ export default function Dashboard() {
       <div className="stats">
         <div className="card">
           <h3>Total Clients</h3>
-          <p>{clients.length}</p>
+          <p>{totalClients}</p>
         </div>
+
         <div className="card">
           <h3>Total Cases</h3>
-          <p>0</p>
+          <p>{totalCases}</p>
         </div>
+
         <div className="card">
           <h3>Active Cases</h3>
-          <p>0</p>
+          <p>{totalCases}</p>
         </div>
       </div>
 
@@ -46,15 +80,17 @@ export default function Dashboard() {
       <input
         className="search-box"
         placeholder="Search clients by name, ID, or phone..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
 
       {/* Client List */}
       <div className="table-card">
         <h3 style={{ marginBottom: "10px" }}>Clients</h3>
 
-        {clients.length === 0 ? (
+        {filteredClients.length === 0 ? (
           <div className="client-box">
-            <p>No clients yet. Add your first client.</p>
+            <p>No clients found.</p>
           </div>
         ) : (
           <table className="table">
@@ -71,16 +107,24 @@ export default function Dashboard() {
             </thead>
 
             <tbody>
-              {clients.map((c) => (
+              {filteredClients.map((c) => (
                 <tr key={c.id}>
                   <td>{c.id}</td>
+
                   <td>{c.name}</td>
+
                   <td>{c.phone}</td>
+
                   <td>{c.assigned_to}</td>
+
                   <td>
-                    <span className="badge">0 cases</span>
+                    <span className="badge">
+                      {c.case_ids?.length || 0} cases
+                    </span>
                   </td>
+
                   <td>{formatDate(c.created_at)}</td>
+
                   <td>
                     <button
                       className="btn-outline"
@@ -101,6 +145,7 @@ export default function Dashboard() {
 
 const formatDate = (dateStr) => {
   const date = new Date(dateStr);
+
   return date.toLocaleDateString("en-IN", {
     day: "2-digit",
     month: "short",

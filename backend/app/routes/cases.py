@@ -1,13 +1,11 @@
 from fastapi import APIRouter, HTTPException
 from datetime import datetime
 from app.models.case_schema import CaseCreateRequest
-from app.repository.storage import read_data, write_data
+from app.repository.storage import read_cases, read_clients, write_cases, write_clients
 from app.utils.id_generator_utils import generate_case_id
 from app.constants.helper_constants import DEFAULT_STAGES
 
 router = APIRouter()
-
-from datetime import datetime
 
 def init_stages():
     return [
@@ -22,9 +20,10 @@ def init_stages():
     
 @router.post("/clients/{client_id}/cases")
 def add_case(client_id: str, payload: CaseCreateRequest):
-    data = read_data()
+    clients = read_clients()
+    cases = read_cases()
 
-    client = next((c for c in data if c["id"] == client_id), None)
+    client = clients.get(client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
@@ -44,44 +43,52 @@ def add_case(client_id: str, payload: CaseCreateRequest):
         "queries": []
     }
 
-    if "cases" not in client:
-        client["cases"] = []
+    case_ids = client.setdefault("case_ids", [])
+    case_ids.append(case_id)
+    cases[case_id] = new_case
 
-    client["cases"].append(new_case)
-
-    write_data(data)
+    write_cases(cases)
+    write_clients(clients)
 
     return new_case
 
 
 @router.get("/clients/{client_id}/cases")
 def get_cases(client_id: str):
-    data = read_data()
+    clients = read_clients()
+    cases = read_cases()
 
-    client = next((c for c in data if c["id"] == client_id), None)
+    client = clients.get(client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
-    return client.get("cases", [])
+    return [
+        cases[case_id]
+        for case_id in client.get("case_ids", [])
+        if case_id in cases
+    ]
 
 
 @router.get("/clients/{client_id}/cases/{case_id}")
 def get_case(client_id: str, case_id: str):
-    data = read_data()
+    clients = read_clients()
+    cases = read_cases()
 
-    client = next((c for c in data if c["id"] == client_id), None)
+    client = clients.get(client_id)
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
-    case = next(
-        (c for c in client.get("cases", []) if c["case_id"] == case_id),
-        None
-    )
+    if case_id not in client.get("case_ids", []):
+        raise HTTPException(status_code=404, detail="Case not found")
 
+    case = cases.get(case_id)
     if not case:
         raise HTTPException(status_code=404, detail="Case not found")
 
     return {
         "case": case,
-        "client": client
+        "client": {
+            "id": client_id,
+            **client
+        }
     }

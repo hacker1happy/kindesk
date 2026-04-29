@@ -1,17 +1,19 @@
-import secrets
 import string
+import random
 
-from app.repository.storage import read_data
+from app.repository.storage import read_clients, read_cases
 
-ALPHANUM = string.ascii_uppercase + string.digits
 
-## generate next sequential client ID
 def generate_client_id():
-    data = read_data()
-    if not data:
-        return "1"
-    existing_ids = [int(client["id"]) for client in data]
-    return str(max(existing_ids) + 1)
+    data = read_clients()
+    return f"CL{len(data) + 1:06d}"
+
 
 def generate_case_id():
-    return ''.join(secrets.choice(ALPHANUM) for _ in range(7))
+    chars = string.ascii_uppercase + string.digits
+    cases = read_cases()
+
+    while True:
+        case_id = "CS" + "".join(random.choices(chars, k=7))
+        if case_id not in cases:
+            return case_id
