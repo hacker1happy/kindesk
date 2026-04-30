@@ -13,6 +13,8 @@ export const createClient = (formData) =>
 
 export const getClientById = (id) => API.get(`/clients/${id}`);
 
+export const updateClient = (id, data) => API.put(`/clients/${id}`, data);
+
 export const uploadClientDocuments = (clientId, formData) =>
   API.post(
     `/clients/${clientId}/documents`,

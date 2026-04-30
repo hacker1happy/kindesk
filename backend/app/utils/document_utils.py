@@ -1,14 +1,13 @@
 from fastapi import HTTPException
-from pathlib import Path
 
-from app.repository.storage import read_cases, read_clients, write_cases
+from app.repository.storage import UPLOADS_DIR, read_cases, read_clients, write_cases
 
 
-BASE_UPLOAD_DIR = Path("data/uploads")
+BASE_UPLOAD_DIR = UPLOADS_DIR
 BASE_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def get_case_dir(client_id: str, case_id: str) -> Path:
+def get_case_dir(client_id: str, case_id: str):
     case_dir = BASE_UPLOAD_DIR / client_id / case_id
     case_dir.mkdir(parents=True, exist_ok=True)
     return case_dir

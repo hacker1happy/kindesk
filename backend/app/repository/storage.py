@@ -1,19 +1,27 @@
 import json
-import os
+from pathlib import Path
 
-CLIENTS_DB_PATH = "data/clients.json"
-CASES_DB_PATH = "data/cases.json"
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+DATA_DIR = PROJECT_ROOT / "data"
+UPLOADS_DIR = DATA_DIR / "uploads"
+
+CLIENTS_DB_PATH = DATA_DIR / "clients.json"
+CASES_DB_PATH = DATA_DIR / "cases.json"
+COMPANIES_DB_PATH = DATA_DIR / "companies_master.json"
+RTAS_DB_PATH = DATA_DIR / "rta_master.json"
 
 
 def read_json(path):
-    if not os.path.exists(path):
+    path = Path(path)
+    if not path.exists():
         return {}
     with open(path, "r") as f:
         return json.load(f)
 
 
 def write_json(path, data):
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
 
@@ -32,6 +40,14 @@ def read_cases():
 
 def write_cases(data):
     write_json(CASES_DB_PATH, data)
+
+
+def read_companies():
+    return read_json(COMPANIES_DB_PATH)
+
+
+def read_rtas():
+    return read_json(RTAS_DB_PATH)
 
 
 def read_data():

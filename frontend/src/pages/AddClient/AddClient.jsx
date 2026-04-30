@@ -10,6 +10,7 @@ export default function AddClient() {
     phone: "+91",
     assigned_to: "",
     assigned_from: "",
+    comment: "",
   });
 
   const [files, setFiles] = useState([]);
@@ -43,6 +44,9 @@ export default function AddClient() {
 
       case "assigned_from":
         if (!value) return "Select Assigned From";
+        return "";
+
+      case "comment":
         return "";
 
       default:
@@ -206,6 +210,17 @@ export default function AddClient() {
             )}
           </div>
 
+        </div>
+
+        <div style={{ marginTop: "15px" }}>
+          <textarea
+            name="comment"
+            className="input"
+            placeholder="Comment or client notes"
+            value={form.comment}
+            onChange={handleChange}
+            rows={3}
+          />
         </div>
 
         {/* Upload */}

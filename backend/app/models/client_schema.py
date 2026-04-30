@@ -7,6 +7,7 @@ class Client(BaseModel):
     phone: str
     assigned_to: str
     assigned_from: str
+    comment: str = ""
     created_at: str
     files_info: dict = {}
     case_ids: Optional[List[str]] = []

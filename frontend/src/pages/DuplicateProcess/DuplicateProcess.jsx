@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useFormSubmit } from '../../hooks/useFormSubmit';
 import { saveFormData, getFormData } from '../../api/formApi';
+import { getCaseDetails } from '../../api/caseApi';
+import { getCompanyById } from '../../api/companyApi';
 import ShareholderForm from './components/ShareholderForm';
 import SecuritiesTable from './components/SecuritiesTable';
 import CompanyInfo from './components/CompanyInfo';
@@ -51,6 +53,7 @@ const DuplicateProcess = () => {
           const data = res.data;
           // check if data is not empty, if empty then it means no existing form data found, so we should not set edit mode to true and just return
           if (Object.keys(data).length === 0) {
+            loadCaseCompanyDefaults();
             return;
           }
 
@@ -77,7 +80,10 @@ const DuplicateProcess = () => {
             faceValue: ''
           });
         })
-        .catch(() => console.log("No existing form found"));
+        .catch(() => {
+          console.log("No existing form found");
+          loadCaseCompanyDefaults();
+        });
     }
   }, [clientId, caseId]);
 
@@ -115,6 +121,32 @@ const DuplicateProcess = () => {
     folioNumber: '',
     faceValue: ''
   });
+
+  const loadCaseCompanyDefaults = async () => {
+    try {
+      const caseRes = await getCaseDetails(clientId, caseId);
+      const caseData = caseRes.data.case;
+      const companyRes = await getCompanyById(caseData.company_id);
+      const company = companyRes.data;
+
+      setCompanyInfo({
+        name: company.company_name || '',
+        address: company.company_address || ''
+      });
+
+      setRtaInfo({
+        name: company.rta_name || '',
+        address: company.rta_address || ''
+      });
+
+      setOtherInfo((prev) => ({
+        ...prev,
+        folioNumber: caseData.folio_number || prev.folioNumber
+      }));
+    } catch (err) {
+      console.error("Failed to load selected company details", err);
+    }
+  };
 
   // Handle number of shareholders change
   const handleNumShareholdersChange = (e) => {

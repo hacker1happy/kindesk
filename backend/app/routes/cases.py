@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from datetime import datetime
 from app.models.case_schema import CaseCreateRequest
-from app.repository.storage import read_cases, read_clients, write_cases, write_clients
+from app.repository.storage import read_cases, read_clients, read_companies, read_rtas, write_cases, write_clients
 from app.utils.id_generator_utils import generate_case_id
 from app.constants.helper_constants import DEFAULT_STAGES
 
@@ -17,6 +17,23 @@ def init_stages():
         }
         for stage in DEFAULT_STAGES
     ]
+
+
+def with_company_info(case):
+    companies = read_companies()
+    rtas = read_rtas()
+    company = companies.get(case.get("company_id"), {})
+    rta = rtas.get(company.get("rta_id"), {})
+
+    return {
+        **case,
+        "company": company.get("company_name", case.get("company_id", "")),
+        "company_name": company.get("company_name", ""),
+        "company_address": company.get("company_address", ""),
+        "rta_id": company.get("rta_id", ""),
+        "rta_name": rta.get("rta_name", ""),
+        "rta_address": rta.get("rta_address", "")
+    }
     
 @router.post("/clients/{client_id}/cases")
 def add_case(client_id: str, payload: CaseCreateRequest):
@@ -53,6 +70,12 @@ def add_case(client_id: str, payload: CaseCreateRequest):
     return new_case
 
 
+@router.get("/cases")
+def get_all_cases():
+    cases = read_cases()
+    return [with_company_info(case) for case in cases.values()]
+
+
 @router.get("/clients/{client_id}/cases")
 def get_cases(client_id: str):
     clients = read_clients()
@@ -63,7 +86,7 @@ def get_cases(client_id: str):
         raise HTTPException(status_code=404, detail="Client not found")
 
     return [
-        cases[case_id]
+        with_company_info(cases[case_id])
         for case_id in client.get("case_ids", [])
         if case_id in cases
     ]
@@ -86,7 +109,7 @@ def get_case(client_id: str, case_id: str):
         raise HTTPException(status_code=404, detail="Case not found")
 
     return {
-        "case": case,
+        "case": with_company_info(case),
         "client": {
             "id": client_id,
             **client

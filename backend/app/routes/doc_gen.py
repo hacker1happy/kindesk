@@ -7,6 +7,7 @@ from app.services.template_selector import build_template_paths
 from app.services.file_generator import generate_documents
 from app.utils import duplicate_form_data_transformer
 from app.routes.fill_form import save_form_data
+from app.repository.storage import UPLOADS_DIR
 from app.utils.document_utils import save_files_data
 
 router = APIRouter()
@@ -33,12 +34,7 @@ def generate_documents_api(client_id: str, case_id: str, request: DocumentReques
         )
 
         # Step 3: Output directory
-        output_dir = os.path.join(
-            "data",
-            "uploads",
-            client_id,
-            case_id
-        )
+        output_dir = os.path.join(UPLOADS_DIR, client_id, case_id)
         os.makedirs(output_dir, exist_ok=True)
 
         # Step 4: Generate documents (ONLY this, no zip)

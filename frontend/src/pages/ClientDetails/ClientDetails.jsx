@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getClientById, uploadClientDocuments, removeClientDocument } from "../../api/clientApi";
+import { getClientById, uploadClientDocuments, removeClientDocument, updateClient } from "../../api/clientApi";
 import { getCases } from "../../api/caseApi";
 
 import "./ClientDetails.css";
@@ -20,6 +20,18 @@ export default function ClientDetails() {
   const [loadingCases, setLoadingCases] = useState(false);
   const [loadingClient, setLoadingClient] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [editingClient, setEditingClient] = useState(false);
+  const [savingClient, setSavingClient] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    phone: "",
+    assigned_to: "",
+    assigned_from: "",
+    comment: "",
+  });
+
+  const assignedToOptions = ["Sachin", "Hari", "Deepak"];
+  const assignedFromOptions = ["Pratha", "Richa", "Archana", "Gurmeen", "Dipesh"];
 
   useEffect(() => {
     if (id) {
@@ -34,9 +46,18 @@ export default function ClientDetails() {
 
       const res = await getClientById(id);
 
-      setClient({
+      const nextClient = {
         id,
         ...res.data,
+      };
+
+      setClient(nextClient);
+      setEditForm({
+        name: nextClient.name || "",
+        phone: nextClient.phone || "",
+        assigned_to: nextClient.assigned_to || "",
+        assigned_from: nextClient.assigned_from || "",
+        comment: nextClient.comment || "",
       });
     } catch (err) {
       console.error("Error loading client:", err);
@@ -71,12 +92,7 @@ export default function ClientDetails() {
     });
   };
 
-  const getFileName = (path) => {
-    return path.split(/[\\/]/).pop();
-  };
-
   const getFileUrl = (path) => {
-    // Convert windows slashes to URL slashes
     const normalizedPath = path.replace(/\\/g, "/");
 
     return `${API_BASE}/${normalizedPath}`;
@@ -124,6 +140,29 @@ export default function ClientDetails() {
     }
   };
 
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+
+    setEditForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSaveClient = async () => {
+    try {
+      setSavingClient(true);
+      await updateClient(id, editForm);
+      await loadClient();
+      setEditingClient(false);
+    } catch (err) {
+      console.error("Error updating client:", err);
+      alert("Failed to update client");
+    } finally {
+      setSavingClient(false);
+    }
+  };
+
   if (loadingClient) return <p>Loading client...</p>;
 
   if (!client) return <p>Client not found</p>;
@@ -141,7 +180,45 @@ export default function ClientDetails() {
         <div>
           <h2>{client.name}</h2>
         </div>
+        <button className="btn-outline" onClick={() => setEditingClient((value) => !value)}>
+          {editingClient ? "Cancel Edit" : "Edit Client"}
+        </button>
       </div>
+
+      {editingClient && (
+        <div className="info-card client-edit-card">
+          <div className="client-edit-grid">
+            <input name="name" className="input" value={editForm.name} onChange={handleEditChange} />
+            <input name="phone" className="input" value={editForm.phone} onChange={handleEditChange} />
+            <select name="assigned_to" className="input" value={editForm.assigned_to} onChange={handleEditChange}>
+              <option value="">Select Assigned To</option>
+              {assignedToOptions.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+            <select name="assigned_from" className="input" value={editForm.assigned_from} onChange={handleEditChange}>
+              <option value="">Select Assigned From</option>
+              {assignedFromOptions.map((option) => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+          <textarea
+            name="comment"
+            className="input client-edit-comment"
+            rows={3}
+            value={editForm.comment}
+            onChange={handleEditChange}
+            placeholder="Comment"
+          />
+          <div className="form-actions">
+            <button className="btn-secondary" onClick={() => setEditingClient(false)}>Cancel</button>
+            <button className="btn" onClick={handleSaveClient} disabled={savingClient}>
+              {savingClient ? "Saving..." : "Save Changes"}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Client Info */}
       <div className="info-card">
@@ -168,6 +245,16 @@ export default function ClientDetails() {
           />
 
         </div>
+      </div>
+
+      <div className="info-card comment-card">
+        <details>
+          <summary>
+            <span>Client Comment</span>
+            <span className="comment-preview">{client.comment || "No comment added"}</span>
+          </summary>
+          <p>{client.comment || "No comment added for this client."}</p>
+        </details>
       </div>
 
       {/* Client Documents */}
@@ -225,7 +312,7 @@ export default function ClientDetails() {
                       href={getFileUrl(fileInfo.path)}
                       target="_blank"
                       rel="noreferrer"
-                      className="btn-outline file-btn"
+                      className="btn-outline file-btn open-file-btn"
                     >
                       Open
                     </a>
@@ -233,7 +320,7 @@ export default function ClientDetails() {
                     <a
                       href={getFileUrl(fileInfo.path)}
                       download
-                      className="btn-outline file-btn"
+                      className="btn-outline file-btn download-file-btn"
                     >
                       Download
                     </a>
@@ -260,11 +347,19 @@ export default function ClientDetails() {
       <div className="info-card">
 
         <div className="cases-header">
-          <h3>Cases</h3>
+          <div className="cases-title-row">
+            <h3>Cases</h3>
+            <span className="badge">
+              {cases.length} total
+            </span>
+          </div>
 
-          <span className="badge">
-            {cases.length} total
-          </span>
+          <button
+            className="btn"
+            onClick={() => navigate(`/clients/${client.id}/cases`)}
+          >
+            + Add Case
+          </button>
         </div>
 
         {loadingCases ? (
@@ -273,17 +368,6 @@ export default function ClientDetails() {
           <div className="case-empty">
 
             <p>No cases yet. Add a case to get started.</p>
-
-            <button
-              className="btn"
-              style={{ marginTop: "15px" }}
-              onClick={() =>
-                navigate(`/clients/${client.id}/cases`)
-              }
-            >
-              + Add First Case
-            </button>
-
           </div>
         ) : (
           <div className="cases-table-container">
@@ -319,7 +403,7 @@ export default function ClientDetails() {
 
                     <td>{caseItem.folio_number}</td>
 
-                    <td>{caseItem.company}</td>
+                    <td>{caseItem.company_name || caseItem.company || caseItem.company_id}</td>
 
                     <td>{formatDate(caseItem.created_at)}</td>
 

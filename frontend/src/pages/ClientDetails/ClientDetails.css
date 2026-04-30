@@ -3,6 +3,10 @@
 ========================= */
 
 .details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 5px;
 }
 
@@ -38,20 +42,73 @@
   color: #111827;
 }
 
+.client-edit-card {
+  display: grid;
+  gap: 12px;
+}
+
+.client-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.client-edit-comment {
+  resize: vertical;
+}
+
+.comment-card {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.comment-card summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.comment-card p {
+  margin-top: 10px;
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.comment-preview {
+  max-width: 520px;
+  overflow: hidden;
+  color: #6b7280;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* =========================
    Section Header
 ========================= */
 
-.section-header {
+.section-header,
+.cases-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
 .section-header h3 {
   font-size: 16px;
   font-weight: 600;
+}
+
+.cases-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* =========================
@@ -68,12 +125,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 10px 12px;
-
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-
   background: #fafafa;
 }
 
@@ -86,14 +140,6 @@
 .file-date {
   font-size: 12px;
   color: #6b7280;
-}
-
-.remove-btn {
-  color: #dc2626;
-}
-
-.remove-btn:hover {
-  background: #fef2f2;
 }
 
 .file-name {
@@ -112,6 +158,48 @@
   font-size: 13px;
 }
 
+.open-file-btn {
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.open-file-btn:hover {
+  background: #eff6ff;
+}
+
+.download-file-btn {
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+.download-file-btn:hover {
+  background: #f0fdf4;
+}
+
+.remove-btn {
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.remove-btn:hover {
+  background: #fef2f2;
+}
+
 .empty-text {
   color: #6b7280;
+}
+
+@media (max-width: 700px) {
+  .client-edit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .comment-card summary,
+  .details-header,
+  .compact-file-item,
+  .file-info-row,
+  .file-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }

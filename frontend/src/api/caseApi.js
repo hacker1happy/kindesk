@@ -12,6 +12,8 @@ export const createCase = (clientId, data) =>
 export const getCases = (clientId) =>
   API.get(`/clients/${clientId}/cases`);
 
+export const getAllCases = () => API.get("/cases");
+
 export const getCaseDetails = (clientId, caseId) =>
   API.get(`/clients/${clientId}/cases/${caseId}`);
 
@@ -37,3 +39,6 @@ export const uploadQueryDocument = (clientId, caseId, queryNo, formData) =>
     `/clients/${clientId}/cases/${caseId}/queries/${queryNo}/upload`,
     formData
   );
+
+export const closeQuery = (clientId, caseId, queryNo) =>
+  API.put(`/clients/${clientId}/cases/${caseId}/queries/${queryNo}/close`);

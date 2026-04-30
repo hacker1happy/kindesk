@@ -1,0 +1,55 @@
+{
+  "CL000001": {
+    "name": "Priyanshu Gupta",
+    "phone": "+911234567890",
+    "assigned_to": "Sachin",
+    "assigned_from": "Pratha",
+    "created_at": "2026-04-29T04:10:20.074306",
+    "files_info": {
+      "CG_Resume.doc": {
+        "path": "data/uploads\\CL000001\\Cover letter.pdf",
+        "uploaded_at": "2026-04-29T04:11:38.326883"
+      },
+      "cover letter.docx": {
+        "path": "data/uploads\\CL000001\\Cover letter.pdf",
+        "uploaded_at": "2026-04-29T04:11:38.326904"
+      }
+    },
+    "case_ids": [
+      "CS8AHFH0E",
+      "CSBDP4HHJ"
+    ],
+    "comment": "An IFSC (Indian Financial System Code) is an 11-digit alphanumeric code used for electronic funds transfers (NEFT, RTGS, IMPS) in India. It consists of the first four letters (bank name), a fifth character (0), and the last six characters (branch code).\nExample: SBIN0000123 (State Bank of India [SBIN], Branch 000123). \nDeskera\nDeskera\n +3\nCommon IFSC Examples:\nState Bank of India (SBI): SBIN0000123\nHDFC Bank: HDFC0000509\nAxis Bank: UTIB0000124\nKotak Mahindra Bank: KKBK0000172\nCitibank: CITI0000003 \nKotak Bank\nKotak Bank\n +3\nKey Components Breakdown:\nFirst 4 letters: Represent the bank (e.g., HDFC, SBIN, ICIC).\n5th character: Always zero (0), reserved for future use.\nLast 6 digits: Represent the specific branch code. \nKotak Bank\nKotak Bank\n +1\nNote: You can usually find the IFSC code at the top of your cheque",
+    "updated_at": "2026-04-30T08:38:51.660715"
+  },
+  "CL000002": {
+    "name": "Dipesh Jain",
+    "phone": "+919832163019",
+    "assigned_to": "Hari",
+    "assigned_from": "Pratha",
+    "created_at": "2026-04-30T02:33:53.027586",
+    "files_info": {},
+    "case_ids": [
+      "CS0VWMVVN"
+    ]
+  },
+  "CL000003": {
+    "name": "Himanshu Jain",
+    "phone": "+919876543213",
+    "assigned_to": "Deepak",
+    "assigned_from": "Archana",
+    "comment": "This is a direct client",
+    "created_at": "2026-04-30T09:05:18.781123",
+    "files_info": {
+      "aadhar-front.pdf": {
+        "path": "data/uploads/CL000003/aadhar-front.pdf",
+        "uploaded_at": "2026-04-30T09:05:18.780633"
+      },
+      "cover letter.docx": {
+        "path": "data/uploads/CL000003/cover letter.docx",
+        "uploaded_at": "2026-04-30T09:05:18.781113"
+      }
+    },
+    "case_ids": []
+  }
+}

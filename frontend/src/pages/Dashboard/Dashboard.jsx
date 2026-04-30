@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { getClients } from "../../api/clientApi";
+import { getAllCases } from "../../api/caseApi";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [clients, setClients] = useState({});
+  const [cases, setCases] = useState([]);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
@@ -12,8 +14,13 @@ export default function Dashboard() {
   }, []);
 
   const loadClients = async () => {
-    const res = await getClients();
-    setClients(res.data || {});
+    const [clientsRes, casesRes] = await Promise.all([
+      getClients(),
+      getAllCases(),
+    ]);
+
+    setClients(clientsRes.data || {});
+    setCases(casesRes.data || []);
   };
 
   // Convert object -> array
@@ -26,22 +33,24 @@ export default function Dashboard() {
 
   // Search filter
   const filteredClients = clientList.filter((c) => {
-    const query = search.toLowerCase();
+    const query = search.trim().toLowerCase();
+
+    if (!query) return true;
 
     return (
-      c.id.toLowerCase().includes(query) ||
-      c.name.toLowerCase().includes(query) ||
-      c.phone.toLowerCase().includes(query)
+      String(c.id || "").toLowerCase().includes(query) ||
+      String(c.name || "").toLowerCase().includes(query) ||
+      String(c.phone || "").toLowerCase().includes(query)
     );
   });
 
   // Stats
   const totalClients = clientList.length;
 
-  const totalCases = clientList.reduce(
-    (sum, client) => sum + (client.case_ids?.length || 0),
-    0
-  );
+  const totalCases = cases.length;
+  const activeCases = cases.filter(
+    (caseItem) => (caseItem.status || "").toLowerCase() !== "closed"
+  ).length;
 
   return (
     <div className="container">
@@ -72,7 +81,7 @@ export default function Dashboard() {
 
         <div className="card">
           <h3>Active Cases</h3>
-          <p>{totalCases}</p>
+          <p>{activeCases}</p>
         </div>
       </div>
 

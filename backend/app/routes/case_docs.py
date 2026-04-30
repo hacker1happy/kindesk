@@ -30,7 +30,7 @@ async def upload_documents(
 
         uploaded_files.append({
             "name": file.filename,
-            "url": f"/backend/data/uploads/{client_id}/{case_id}/{unique_name}"
+            "url": f"/data/uploads/{client_id}/{case_id}/{unique_name}"
         })
 
     save_files_data(client_id, case_id, [file.filename for file in files])
@@ -48,7 +48,7 @@ def list_documents(client_id: str, case_id: str):
     for file_name in os.listdir(case_dir):
         files.append({
             "name": file_name,
-            "url": f"/backend/data/uploads/{client_id}/{case_id}/{file_name}"
+            "url": f"/data/uploads/{client_id}/{case_id}/{file_name}"
         })
 
     return {"files": files}

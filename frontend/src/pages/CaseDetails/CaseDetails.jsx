@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getCaseDetails } from "../../api/caseApi";
-import CaseHeader from "./components/CaseHeader";
-import ClientInfoCard from "./components/ClientInfoCard";
 import CaseStatus from "./components/CaseStatus";
 import CaseInfo from "./components/CaseInfo";
 import Documents from "./components/Documents";
+import "./CaseDetails.css";
 
 export default function CaseDetails() {
   const { clientId, caseId } = useParams();
@@ -16,7 +15,6 @@ export default function CaseDetails() {
 
   useEffect(() => {
     if (!clientId) {
-      console.error("Missing clientId");
       setError("Client ID missing. Please navigate from client page.");
       return;
     }
@@ -27,6 +25,7 @@ export default function CaseDetails() {
   const fetchData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const res = await getCaseDetails(clientId, caseId);
       setData(res.data);
     } catch (err) {
@@ -37,10 +36,18 @@ export default function CaseDetails() {
     }
   };
 
-  // ✅ Loading state
-  if (loading) return <p>Loading case details...</p>;
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
 
-  // ✅ Error state
+    return new Date(dateStr).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  if (loading) return <p className="container">Loading case details...</p>;
+
   if (error) {
     return (
       <div className="container">
@@ -52,36 +59,68 @@ export default function CaseDetails() {
     );
   }
 
-  // ✅ No data fallback
-  if (!data) return <p>No data found</p>;
+  if (!data) return <p className="container">No data found</p>;
+
+  const caseData = data.case;
+  const client = data.client;
 
   return (
-    <div className="container">
-
-      {/* Back */}
-      <div className="back-link" onClick={() => navigate(-1)}>
-        ← Back
+    <div className="container case-details-page">
+      <div className="back-link" onClick={() => navigate(`/clients/${clientId}`)}>
+        ← Back to Client
       </div>
 
-      {/* Case Header */}
-      <CaseHeader caseData={data.case} />
+      <div className="details-header">
+        <div>
+          <h2>{client.name}</h2>
+        </div>
+      </div>
 
-      {/* Client Info */}
-      <ClientInfoCard client={data.client} />
+      <section className="info-card">
+        <div className="client-info-row">
+          <InfoItem label="Client ID" value={client.id} />
+          <InfoItem label="Phone" value={client.phone} />
+          <InfoItem label="Assigned To" value={client.assigned_to} />
+          <InfoItem label="Assigned From" value={client.assigned_from} />
+        </div>
+      </section>
 
-      {/* Case Status (with refresh) */}
+      <section className="info-card">
+        <div className="section-header">
+          <h3>Case Details</h3>
+          <span className={`status-badge status-${(caseData.status || "fresh").toLowerCase()}`}>
+            {caseData.status || "fresh"}
+          </span>
+        </div>
+
+        <div className="client-info-row">
+          <InfoItem label="Case ID" value={caseData.case_id} />
+          <InfoItem label="Folio Number" value={caseData.folio_number} />
+          <InfoItem label="Company" value={caseData.company_name || caseData.company || caseData.company_id} />
+          <InfoItem label="Case Type" value={caseData.case_type} />
+          <InfoItem label="Current Stage" value={caseData.status || "fresh"} />
+          <InfoItem label="Created" value={formatDate(caseData.created_at)} />
+        </div>
+      </section>
+
       <CaseStatus
-        caseData={data.case}
-        clientId={clientId}   // ✅ IMPORTANT for update API
+        caseData={caseData}
+        clientId={clientId}
         refresh={fetchData}
       />
 
-      {/* Case Info */}
-      <CaseInfo caseData={data.case} />
+      <CaseInfo caseData={caseData} />
 
-      {/* Documents */}
-      {/* <pre>{JSON.stringify(data?.case.files, null, 2)}</pre> */}
-      {data?.case.files && <Documents caseData={data.case.files} />}
+      {caseData?.files && <Documents caseData={caseData.files} />}
+    </div>
+  );
+}
+
+function InfoItem({ label, value }) {
+  return (
+    <div className="info-item">
+      <span className="info-label">{label}:</span>
+      <span className="info-value">{value || "-"}</span>
     </div>
   );
 }
