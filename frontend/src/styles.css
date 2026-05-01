@@ -391,14 +391,56 @@ textarea:focus {
   color: #92400e;
 }
 
+.status-mail_sent {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.status-client_docs_received {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.status-doc_sent,
+.status-doc_received {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-ops_review {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 .status-sent_to_rta {
   background: #d1fae5;
   color: #065f46;
 }
 
 .status-query {
-  background: #fee2e2;
-  color: #991b1b;
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.status-loc_received {
+  background: #ecfccb;
+  color: #4d7c0f;
+}
+
+.status-iepf_generated {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.status-iepf_submitted {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.status-everification,
+.status-shares_credited {
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .status-closed {

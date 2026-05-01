@@ -244,7 +244,6 @@ export default function Documents({ caseData, refresh }) {
               key={doc.url}
               doc={doc}
               formatDateTime={formatDateTime}
-              onOpen={handleOpenFile}
               onDownload={handleDownloadFile}
               onDelete={handleDeleteGenerated}
             />
@@ -316,6 +315,14 @@ function DocumentRow({
   onReplace,
   removeDisabledReason,
 }) {
+  const handleDelete = () => {
+    const shouldRemove = window.confirm(`Remove "${doc.name}" from documents?`);
+
+    if (!shouldRemove) return;
+
+    onDelete(doc);
+  };
+
   return (
     <div className="compact-file-item">
       <div className="file-info-row">
@@ -324,9 +331,11 @@ function DocumentRow({
       </div>
 
       <div className="file-actions">
-        <button className="btn-outline file-btn open-file-btn" onClick={() => onOpen(doc.url)}>
-          Open
-        </button>
+        {onOpen && (
+          <button className="btn-outline file-btn open-file-btn" onClick={() => onOpen(doc.url)}>
+            Open
+          </button>
+        )}
         <button className="btn-outline file-btn download-file-btn" onClick={() => onDownload(doc.name, doc.url)}>
           Download
         </button>
@@ -341,7 +350,7 @@ function DocumentRow({
           </label>
         )}
         {onDelete ? (
-          <button className="btn-outline remove-btn" onClick={() => onDelete(doc)}>
+          <button className="btn-outline remove-btn" onClick={handleDelete}>
             Remove
           </button>
         ) : removeDisabledReason ? (

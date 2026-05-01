@@ -625,8 +625,118 @@
     "folio_number": "TATA9090",
     "company_id": "COMP002",
     "case_type": "transmission",
-    "status": "fresh",
+    "status": "mail_sent",
     "created_at": "2026-05-01T10:16:29.252533",
+    "form_data": {},
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-01T12:37:44.095852",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSLA7UP1V/mail_sent/44815826-5b41-4057-aeb1-47f2ee0a9656_aadhar-front.pdf",
+            "uploaded_at": "2026-05-01T12:37:41.799238"
+          }
+        ]
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CSMNVAVZK": {
+    "case_id": "CSMNVAVZK",
+    "folio_number": "HDFC123",
+    "company_id": "COMP004",
+    "case_type": "joint",
+    "status": "fresh",
+    "created_at": "2026-05-01T12:41:17.454665",
     "form_data": {},
     "files": [],
     "stages": [

@@ -110,6 +110,14 @@ export default function ClientDetails() {
     });
   };
 
+  const getStatusClass = (status = "fresh") => {
+    const normalizedStatus = status.toLowerCase();
+
+    if (/^q\d+_/.test(normalizedStatus)) return "query";
+
+    return normalizedStatus;
+  };
+
   const openEditModal = () => {
     setEditForm({
       name: client.name || "",
@@ -181,6 +189,10 @@ export default function ClientDetails() {
   };
 
   const handleRemoveFile = async (fileName) => {
+    const shouldRemove = window.confirm(`Remove "${fileName}" from client documents?`);
+
+    if (!shouldRemove) return;
+
     try {
       await removeClientDocument(id, fileName);
 
@@ -502,9 +514,7 @@ export default function ClientDetails() {
 
                     <td>
                       <span
-                        className={`status-badge status-${(
-                          caseItem.status || "fresh"
-                        ).toLowerCase()}`}
+                        className={`status-badge status-${getStatusClass(caseItem.status)}`}
                       >
                         {caseItem.status || "Fresh"}
                       </span>
