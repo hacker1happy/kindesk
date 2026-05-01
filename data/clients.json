@@ -1,0 +1,20 @@
+{
+  "CL000001": {
+    "name": "Priyanshu Gupta",
+    "phone": "+919832163019",
+    "assigned_to": "Hari",
+    "assigned_from": "Richa",
+    "comment": "Test comment",
+    "created_at": "2026-05-01T18:52:40.015536",
+    "files_info": {
+      "aadhar-front.pdf": {
+        "path": "data/uploads/CL000001/aadhar-front.pdf",
+        "uploaded_at": "2026-05-01T18:52:57.519106"
+      }
+    },
+    "case_ids": [
+      "CSMS4MUFE",
+      "CS1SR2I02"
+    ]
+  }
+}

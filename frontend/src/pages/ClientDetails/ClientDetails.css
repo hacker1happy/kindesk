@@ -10,6 +10,12 @@
   margin-bottom: 5px;
 }
 
+.details-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .client-name {
   font-size: 28px;
   font-weight: 600;

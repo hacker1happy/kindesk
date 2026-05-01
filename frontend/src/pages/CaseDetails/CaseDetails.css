@@ -71,6 +71,11 @@
   color: #1d4ed8;
 }
 
+.case-tabs button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .case-form-panel {
   display: grid;
   gap: 14px;

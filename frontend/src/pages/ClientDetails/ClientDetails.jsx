@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getClientById, uploadClientDocuments, removeClientDocument, updateClient } from "../../api/clientApi";
+import { deleteClient, getClientById, uploadClientDocuments, removeClientDocument, updateClient } from "../../api/clientApi";
 import { getCases } from "../../api/caseApi";
+import ConfirmationModal from "../../components/ConfirmationModal";
 
 import "./ClientDetails.css";
 
@@ -23,6 +24,9 @@ export default function ClientDetails() {
   const [commentExpanded, setCommentExpanded] = useState(false);
   const [editingClient, setEditingClient] = useState(false);
   const [savingClient, setSavingClient] = useState(false);
+  const [pendingRemoveFile, setPendingRemoveFile] = useState(null);
+  const [showDeleteClient, setShowDeleteClient] = useState(false);
+  const [deleteClientInput, setDeleteClientInput] = useState("");
   const [editForm, setEditForm] = useState({
     name: "",
     phone: "",
@@ -188,18 +192,26 @@ export default function ClientDetails() {
     }
   };
 
-  const handleRemoveFile = async (fileName) => {
-    const shouldRemove = window.confirm(`Remove "${fileName}" from client documents?`);
-
-    if (!shouldRemove) return;
-
+  const handleRemoveFile = async () => {
+    if (!pendingRemoveFile) return;
     try {
-      await removeClientDocument(id, fileName);
+      await removeClientDocument(id, pendingRemoveFile);
 
       await loadClient();
+      setPendingRemoveFile(null);
     } catch (err) {
       console.error("Error removing file:", err);
       alert("Failed to remove file");
+    }
+  };
+
+  const handleDeleteClient = async () => {
+    try {
+      await deleteClient(id, deleteClientInput);
+      navigate("/");
+    } catch (err) {
+      console.error("Error deleting client:", err);
+      alert(err.response?.data?.detail || "Failed to delete client");
     }
   };
 
@@ -250,9 +262,14 @@ export default function ClientDetails() {
         <div>
           <h2>{client.name}</h2>
         </div>
-        <button className="btn-outline" onClick={openEditModal}>
-          Edit Client
-        </button>
+        <div className="details-header-actions">
+          <button className="btn-outline" onClick={openEditModal}>
+            Edit Client
+          </button>
+          <button className="btn-outline remove-btn" onClick={() => setShowDeleteClient(true)}>
+            Delete Client
+          </button>
+        </div>
       </div>
 
       {editingClient && (
@@ -433,7 +450,7 @@ export default function ClientDetails() {
                     <button
                       className="btn-outline remove-btn"
                       onClick={() =>
-                        handleRemoveFile(fileName)
+                        setPendingRemoveFile(fileName)
                       }
                     >
                       Remove
@@ -541,6 +558,46 @@ export default function ClientDetails() {
           </div>
         )}
       </div>
+
+      {pendingRemoveFile && (
+        <ConfirmationModal
+          title="Remove document?"
+          message={`You are removing "${pendingRemoveFile}".`}
+          detail="This action is irreversible and the file will be removed from this client."
+          confirmLabel="Confirm Remove"
+          danger
+          onCancel={() => setPendingRemoveFile(null)}
+          onConfirm={handleRemoveFile}
+        />
+      )}
+
+      {showDeleteClient && (
+        <ConfirmationModal
+          title="Delete client?"
+          message={`This will permanently delete client ${client.id}, its uploaded files, and all linked cases.`}
+          detail="Type the Client ID exactly to confirm this irreversible action."
+          confirmLabel="Delete Client"
+          danger
+          confirmDisabled={deleteClientInput !== client.id}
+          onCancel={() => {
+            setShowDeleteClient(false);
+            setDeleteClientInput("");
+          }}
+          onConfirm={handleDeleteClient}
+        >
+          <div className="confirm-id-input">
+            <label>
+              Client ID
+              <input
+                className="input"
+                value={deleteClientInput}
+                onChange={(event) => setDeleteClientInput(event.target.value)}
+                placeholder={client.id}
+              />
+            </label>
+          </div>
+        </ConfirmationModal>
+      )}
 
     </div>
   );

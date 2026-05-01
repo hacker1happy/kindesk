@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 
-export default function CaseInfo({ caseData }) {
+export default function CaseInfo({ caseData, canAccessForm = true }) {
   const { clientId } = useParams();
   const navigate = useNavigate();
 
@@ -9,7 +9,12 @@ export default function CaseInfo({ caseData }) {
 
   return (
     <section className="info-card case-form-panel">
-      {hasFormData ? (
+      {!canAccessForm ? (
+        <>
+          <h3>Complete initial stages first</h3>
+          <p>Finish Mail Sent to Client and Client Docs Received before filling this form.</p>
+        </>
+      ) : hasFormData ? (
         <>
           <h3>Form already filled for this case</h3>
           <p>You can review or update the saved process information.</p>

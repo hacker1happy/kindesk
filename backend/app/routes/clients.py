@@ -4,7 +4,7 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from typing import List
 
-from app.repository.storage import UPLOADS_DIR, read_clients, write_clients
+from app.repository.storage import UPLOADS_DIR, read_cases, read_clients, write_cases, write_clients
 from app.utils.id_generator_utils import generate_client_id
 
 router = APIRouter()
@@ -95,6 +95,34 @@ def update_client(client_id: str, payload: dict):
         "message": "Client updated",
         "client": client
     }
+
+
+@router.delete("/{client_id}")
+def delete_client(client_id: str, payload: dict):
+    confirmation = payload.get("confirmation_id")
+
+    if confirmation != client_id:
+        raise HTTPException(status_code=400, detail="Client ID confirmation does not match")
+
+    clients = read_clients()
+    cases = read_cases()
+    client = clients.get(client_id)
+
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+
+    for case_id in client.get("case_ids", []):
+        cases.pop(case_id, None)
+
+    client_dir = UPLOADS_DIR / client_id
+    if client_dir.exists():
+        shutil.rmtree(client_dir)
+
+    del clients[client_id]
+    write_cases(cases)
+    write_clients(clients)
+
+    return {"message": "Client deleted"}
 
 
 @router.post("/{client_id}/documents")
