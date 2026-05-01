@@ -17,11 +17,11 @@ router = APIRouter()
 def generate_documents_api(client_id: str, case_id: str, request: DocumentRequest):
     try:
         process = request.process
-        data = duplicate_form_data_transformer.transform_input_data(request.data)
+        form_data = request.data
+        data = duplicate_form_data_transformer.transform_input_data(form_data)
         selected_files = duplicate_form_data_transformer.transform_selected_files(request.selected_files)
 
-        # Step 0: Save the data to the case before processing
-        save_form_data(client_id, case_id, data)
+        save_form_data(client_id, case_id, form_data)
 
         # Step 1: Modify data
         modified_data = modify_data(data, process)

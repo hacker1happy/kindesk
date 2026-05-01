@@ -173,6 +173,21 @@ textarea {
   margin-bottom: 20px;
 }
 
+.dashboard-filters {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(160px, 220px) auto;
+  gap: 10px;
+  align-items: center;
+  margin: -8px 0 20px;
+}
+
+.search-highlight {
+  padding: 0 2px;
+  border-radius: 3px;
+  background: #fef08a;
+  color: #713f12;
+}
+
 input:focus,
 select:focus,
 textarea:focus {

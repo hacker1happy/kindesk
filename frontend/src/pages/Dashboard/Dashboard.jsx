@@ -7,6 +7,8 @@ export default function Dashboard() {
   const [clients, setClients] = useState({});
   const [cases, setCases] = useState([]);
   const [search, setSearch] = useState("");
+  const [assignedToFilter, setAssignedToFilter] = useState("");
+  const [assignedFromFilter, setAssignedFromFilter] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,18 +33,53 @@ export default function Dashboard() {
     }));
   }, [clients]);
 
-  // Search filter
-  const filteredClients = clientList.filter((c) => {
+  const assignedToOptions = useMemo(
+    () => [...new Set(clientList.map((client) => client.assigned_to).filter(Boolean))],
+    [clientList]
+  );
+
+  const assignedFromOptions = useMemo(
+    () => [...new Set(clientList.map((client) => client.assigned_from).filter(Boolean))],
+    [clientList]
+  );
+
+  const normalize = (value) => String(value || "").toLowerCase().replace(/\s+/g, "");
+
+  const getInitials = (value) =>
+    String(value || "")
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((part) => part[0])
+      .join("")
+      .toLowerCase();
+
+  const matchesSearch = (client) => {
     const query = search.trim().toLowerCase();
 
     if (!query) return true;
 
+    const compactQuery = normalize(query);
+
+    return [client.id, client.name, client.phone].some(
+      (value) =>
+        String(value || "").toLowerCase().includes(query) ||
+        normalize(value).includes(compactQuery)
+    ) || getInitials(client.name).includes(compactQuery);
+  };
+
+  const filteredClients = clientList.filter((client) => {
     return (
-      String(c.id || "").toLowerCase().includes(query) ||
-      String(c.name || "").toLowerCase().includes(query) ||
-      String(c.phone || "").toLowerCase().includes(query)
+      matchesSearch(client) &&
+      (!assignedToFilter || client.assigned_to === assignedToFilter) &&
+      (!assignedFromFilter || client.assigned_from === assignedFromFilter)
     );
   });
+
+  const clearFilters = () => {
+    setSearch("");
+    setAssignedToFilter("");
+    setAssignedFromFilter("");
+  };
 
   // Stats
   const totalClients = clientList.length;
@@ -93,6 +130,34 @@ export default function Dashboard() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
+      <div className="dashboard-filters">
+        <select
+          className="input"
+          value={assignedToFilter}
+          onChange={(e) => setAssignedToFilter(e.target.value)}
+        >
+          <option value="">Assigned To</option>
+          {assignedToOptions.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+
+        <select
+          className="input"
+          value={assignedFromFilter}
+          onChange={(e) => setAssignedFromFilter(e.target.value)}
+        >
+          <option value="">Assigned From</option>
+          {assignedFromOptions.map((option) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
+
+        <button className="btn-outline" onClick={clearFilters}>
+          Clear Filters
+        </button>
+      </div>
+
       {/* Client List */}
       <div className="table-card">
         <h3 style={{ marginBottom: "10px" }}>Clients</h3>
@@ -109,6 +174,7 @@ export default function Dashboard() {
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Assigned To</th>
+                <th>Assigned From</th>
                 <th>Cases</th>
                 <th>Added On</th>
                 <th>Actions</th>
@@ -118,13 +184,15 @@ export default function Dashboard() {
             <tbody>
               {filteredClients.map((c) => (
                 <tr key={c.id}>
-                  <td>{c.id}</td>
+                  <td><HighlightedText text={c.id} query={search} /></td>
 
-                  <td>{c.name}</td>
+                  <td><HighlightedText text={c.name} query={search} /></td>
 
-                  <td>{c.phone}</td>
+                  <td><HighlightedText text={c.phone} query={search} /></td>
 
                   <td>{c.assigned_to}</td>
+
+                  <td>{c.assigned_from}</td>
 
                   <td>
                     <span className="badge">
@@ -161,3 +229,54 @@ const formatDate = (dateStr) => {
     year: "numeric",
   });
 };
+
+function HighlightedText({ text, query }) {
+  const value = String(text || "");
+  const trimmedQuery = query.trim();
+
+  if (!trimmedQuery) return value;
+
+  const lowerValue = value.toLowerCase();
+  const lowerQuery = trimmedQuery.toLowerCase();
+  const compactQuery = trimmedQuery.toLowerCase().replace(/\s+/g, "");
+  const initials = value
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => part[0])
+    .join("")
+    .toLowerCase();
+
+  const index = lowerValue.indexOf(lowerQuery);
+
+  if (index >= 0) {
+    return (
+      <>
+        {value.slice(0, index)}
+        <mark className="search-highlight">{value.slice(index, index + trimmedQuery.length)}</mark>
+        {value.slice(index + trimmedQuery.length)}
+      </>
+    );
+  }
+
+  if (initials.includes(compactQuery)) {
+    const initialsToMark = new Set(compactQuery.split(""));
+
+    return value.split(/(\s+)/).map((part, index) => {
+      if (!part.trim()) return part;
+      const first = part[0];
+
+      return (
+        <span key={`${part}-${index}`}>
+          {initialsToMark.has(first.toLowerCase()) ? (
+            <mark className="search-highlight">{first}</mark>
+          ) : (
+            first
+          )}
+          {part.slice(1)}
+        </span>
+      );
+    });
+  }
+
+  return value;
+}

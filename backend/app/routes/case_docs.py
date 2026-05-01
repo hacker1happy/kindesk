@@ -1,10 +1,11 @@
 import os
 import uuid
+from datetime import datetime
 
 from typing import List
 from fastapi import APIRouter, File, HTTPException, HTTPException, Query, UploadFile
 
-from app.utils.document_utils import get_case_dir, save_files_data
+from app.utils.document_utils import get_case_dir, remove_file_data, save_files_data
 
 router = APIRouter()
 
@@ -30,7 +31,9 @@ async def upload_documents(
 
         uploaded_files.append({
             "name": file.filename,
-            "url": f"/data/uploads/{client_id}/{case_id}/{unique_name}"
+            "stored_name": unique_name,
+            "url": f"/data/uploads/{client_id}/{case_id}/{unique_name}",
+            "uploaded_at": datetime.now().isoformat()
         })
 
     save_files_data(client_id, case_id, [file.filename for file in files])
@@ -46,12 +49,18 @@ def list_documents(client_id: str, case_id: str):
     
     files = []
     for file_name in os.listdir(case_dir):
+        file_path = case_dir / file_name
+        if not file_path.is_file():
+            continue
+
         files.append({
             "name": file_name,
-            "url": f"/data/uploads/{client_id}/{case_id}/{file_name}"
+            "stored_name": file_name,
+            "url": f"/data/uploads/{client_id}/{case_id}/{file_name}",
+            "uploaded_at": datetime.fromtimestamp(file_path.stat().st_mtime).isoformat()
         })
 
-    return {"files": files}
+    return {"files": sorted(files, key=lambda item: item["uploaded_at"], reverse=True)}
 
 
 @router.delete("/clients/{client_id}/cases/{case_id}/file")
@@ -67,6 +76,6 @@ def delete_document(
         raise HTTPException(status_code=404, detail="File not found")
 
     os.remove(file_path)
-    save_files_data(client_id, case_id, [filename])  # remove from case data
+    remove_file_data(client_id, case_id, filename)
     return {"message": "File deleted successfully"}
 

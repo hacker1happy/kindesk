@@ -2,8 +2,73 @@
   margin-bottom: 20px;
 }
 
+.case-details-page .details-header,
+.case-details-page .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.case-details-page .client-info-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.case-details-page .info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.case-details-page .info-label {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.case-details-page .info-value {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .case-progress-card {
   padding-bottom: 12px;
+}
+
+.case-info-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.case-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.case-tabs button {
+  padding: 10px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.case-tabs button.active {
+  border-bottom-color: #2563eb;
+  color: #1d4ed8;
 }
 
 .stage-list {
@@ -100,11 +165,143 @@
   font-size: 13px;
 }
 
+.files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.compact-file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.file-info-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.file-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.file-date {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.file-btn {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.open-file-btn {
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.open-file-btn:hover,
+.open-file-btn:active,
+.open-file-btn:focus-visible {
+  border-color: #2563eb;
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.download-file-btn {
+  border-color: #bbf7d0;
+  color: #15803d;
+}
+
+.download-file-btn:hover,
+.download-file-btn:active,
+.download-file-btn:focus-visible {
+  border-color: #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.remove-btn {
+  border-color: #fecaca;
+  color: #dc2626;
+}
+
+.remove-btn:hover,
+.remove-btn:active,
+.remove-btn:focus-visible {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.document-subsection {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.document-subsection h4 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.stage-document-list {
+  display: grid;
+  gap: 8px;
+}
+
+.stage-document-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.stage-document-row strong {
+  font-size: 14px;
+}
+
+.stage-document-row p {
+  margin-top: 2px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.compact-query-upload {
+  display: inline-flex;
+  margin-top: 10px;
+  margin-right: 8px;
+}
+
 @media (max-width: 700px) {
   .stage-row,
-  .query-row {
+  .query-row,
+  .stage-document-row {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .case-info-row {
+    grid-template-columns: 1fr;
   }
 
   .stage-actions {

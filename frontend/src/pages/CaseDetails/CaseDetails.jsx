@@ -12,6 +12,7 @@ export default function CaseDetails() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState("form");
 
   useEffect(() => {
     if (!clientId) {
@@ -93,25 +94,49 @@ export default function CaseDetails() {
           </span>
         </div>
 
-        <div className="client-info-row">
+        <div className="case-info-row">
           <InfoItem label="Case ID" value={caseData.case_id} />
           <InfoItem label="Folio Number" value={caseData.folio_number} />
           <InfoItem label="Company" value={caseData.company_name || caseData.company || caseData.company_id} />
           <InfoItem label="Case Type" value={caseData.case_type} />
-          <InfoItem label="Current Stage" value={caseData.status || "fresh"} />
           <InfoItem label="Created" value={formatDate(caseData.created_at)} />
         </div>
       </section>
 
-      <CaseStatus
-        caseData={caseData}
-        clientId={clientId}
-        refresh={fetchData}
-      />
+      <div className="case-tabs">
+        <button
+          className={activeTab === "form" ? "active" : ""}
+          onClick={() => setActiveTab("form")}
+        >
+          Form
+        </button>
+        <button
+          className={activeTab === "stages" ? "active" : ""}
+          onClick={() => setActiveTab("stages")}
+        >
+          Case Stages
+        </button>
+        <button
+          className={activeTab === "documents" ? "active" : ""}
+          onClick={() => setActiveTab("documents")}
+        >
+          Documents
+        </button>
+      </div>
 
-      <CaseInfo caseData={caseData} />
+      {activeTab === "form" && <CaseInfo caseData={caseData} />}
 
-      {caseData?.files && <Documents caseData={caseData.files} />}
+      {activeTab === "stages" && (
+        <CaseStatus
+          caseData={caseData}
+          clientId={clientId}
+          refresh={fetchData}
+        />
+      )}
+
+      {activeTab === "documents" && (
+        <Documents caseData={caseData} refresh={fetchData} />
+      )}
     </div>
   );
 }

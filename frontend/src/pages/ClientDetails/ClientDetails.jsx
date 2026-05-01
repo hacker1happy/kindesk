@@ -20,6 +20,7 @@ export default function ClientDetails() {
   const [loadingCases, setLoadingCases] = useState(false);
   const [loadingClient, setLoadingClient] = useState(false);
   const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [commentExpanded, setCommentExpanded] = useState(false);
   const [editingClient, setEditingClient] = useState(false);
   const [savingClient, setSavingClient] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -98,6 +99,35 @@ export default function ClientDetails() {
     return `${API_BASE}/${normalizedPath}`;
   };
 
+  const getSortedFiles = () => {
+    return Object.entries(client.files_info || {}).sort(([, a], [, b]) => {
+      return new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0);
+    });
+  };
+
+  const handleOpenFile = (path) => {
+    window.open(getFileUrl(path), "_blank", "noopener,noreferrer");
+  };
+
+  const handleDownloadFile = async (fileName, path) => {
+    try {
+      const response = await fetch(getFileUrl(path));
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert("Failed to download file");
+    }
+  };
+
   const handleViewCase = (caseId) => {
     navigate(`/clients/${id}/cases/${caseId}`);
   };
@@ -166,6 +196,13 @@ export default function ClientDetails() {
   if (loadingClient) return <p>Loading client...</p>;
 
   if (!client) return <p>Client not found</p>;
+
+  const comment = client.comment || "";
+  const shouldCollapseComment = comment.length > 160 || comment.includes("\n");
+  const visibleComment =
+    shouldCollapseComment && !commentExpanded
+      ? `${comment.slice(0, 160)}${comment.length > 160 ? "..." : ""}`
+      : comment;
 
   return (
     <div className="container">
@@ -248,13 +285,17 @@ export default function ClientDetails() {
       </div>
 
       <div className="info-card comment-card">
-        <details>
-          <summary>
-            <span>Client Comment</span>
-            <span className="comment-preview">{client.comment || "No comment added"}</span>
-          </summary>
-          <p>{client.comment || "No comment added for this client."}</p>
-        </details>
+        <div className="comment-header">
+          <span>Client Comment</span>
+          {shouldCollapseComment && (
+            <button className="comment-toggle" onClick={() => setCommentExpanded((value) => !value)}>
+              {commentExpanded ? "View Less" : "View More"}
+            </button>
+          )}
+        </div>
+        <p className={commentExpanded ? "comment-text expanded" : "comment-text"}>
+          {visibleComment || "No comment added for this client."}
+        </p>
       </div>
 
       {/* Client Documents */}
@@ -287,7 +328,7 @@ export default function ClientDetails() {
         ) : (
           <div className="files-list">
 
-            {Object.entries(client.files_info || {}).map(
+            {getSortedFiles().map(
               ([fileName, fileInfo], idx) => (
                 <div key={idx} className="compact-file-item">
 
@@ -308,22 +349,21 @@ export default function ClientDetails() {
                   {/* Right */}
                   <div className="file-actions">
 
-                    <a
-                      href={getFileUrl(fileInfo.path)}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      type="button"
                       className="btn-outline file-btn open-file-btn"
+                      onClick={() => handleOpenFile(fileInfo.path)}
                     >
                       Open
-                    </a>
+                    </button>
 
-                    <a
-                      href={getFileUrl(fileInfo.path)}
-                      download
+                    <button
+                      type="button"
                       className="btn-outline file-btn download-file-btn"
+                      onClick={() => handleDownloadFile(fileName, fileInfo.path)}
                     >
                       Download
-                    </a>
+                    </button>
 
                     <button
                       className="btn-outline remove-btn"

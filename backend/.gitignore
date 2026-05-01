@@ -28,10 +28,3 @@ ENV/
 # OS files
 .DS_Store
 Thumbs.db
-*.pdf
-*.docx
-*.xlsx
-*.jpg
-*.jpeg
-*.png
-*.zip

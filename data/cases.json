@@ -7,93 +7,80 @@
     "status": "closed",
     "created_at": "2026-04-29T14:20:24.552627",
     "form_data": {
-      "shareholders": [
-        {
-          "personalDetails": {
-            "name": "Priyanshu Gupta"
-          },
-          "contactDetails": {
-            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
-            "pinCode": "713347",
-            "email": "finassure.dataset@gmail.com"
-          },
-          "bankDetails": {}
-        }
-      ],
-      "securities": [
-        {
-          "certificateNumber": "",
-          "distinctiveFrom": "",
-          "distinctiveTo": "",
-          "shares": ""
-        }
-      ],
-      "companyInfo": {
-        "name": "",
-        "address": ""
-      },
-      "rtaInfo": {
-        "name": "",
-        "address": ""
-      },
-      "documents": [
-        {
-          "id": "auth-letter",
-          "name": "Authentication Letter",
-          "required": false,
-          "selected": true
-        },
-        {
-          "id": "request-letter",
-          "name": "Request Letter",
-          "required": false,
-          "selected": true
-        },
-        {
-          "id": "isr-1",
-          "name": "ISR 1",
-          "required": false,
-          "selected": true
-        },
-        {
-          "id": "sh-13",
-          "name": "SH - 13",
-          "required": false,
-          "selected": true
-        },
-        {
-          "id": "isr-4",
-          "name": "ISR 4",
-          "required": false,
-          "selected": true
-        },
-        {
-          "id": "form-a",
-          "name": "Form A",
-          "required": false,
-          "selected": true
-        },
-        {
-          "id": "form-b-indemnity",
-          "name": "Form B Indemnity",
-          "required": false,
-          "selected": true
-        }
-      ],
-      "otherInfo": {
-        "formDate": "",
-        "folioNumber": "",
-        "faceValue": ""
-      },
-      "totalShares": 0
+      "NumberOfShareHolders": "1",
+      "SIGNATUREA": "Priyanshu Gupta",
+      "SHAREHOLDERAFATHER": "test",
+      "SHAREHOLDERAPAN": "DETPG5549O",
+      "SHAREHOLDERDEMATACCOUNT": "1234567890",
+      "SHAREHOLDERAADDRESS": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+      "SHAREHOLDERAPINCODE": "713347",
+      "EmailA": "finassure.dataset@gmail.com",
+      "MobileA": "9123456789",
+      "AACCNO": "1234567890",
+      "ABNKNAME": "hdfc",
+      "ABRANCHNAME": "Rnj",
+      "AIFSCODE": "HDFC0000509",
+      "SIGNATUREB": "",
+      "SHAREHOLDERBFATHER": "",
+      "SHAREHOLDERBPAN": "",
+      "SHAREHOLDERBADDRESS": "",
+      "SHAREHOLDERBPINCODE": "",
+      "EmailB": "",
+      "MobileB": "",
+      "BACCNO": "",
+      "BBNKNAME": "",
+      "BBRANCHNAME": "",
+      "BIFSCODE": "",
+      "SIGNATUREC": "",
+      "SHAREHOLDERCFATHER": "",
+      "SHAREHOLDERCPAN": "",
+      "SHAREHOLDERCADDRESS": "",
+      "SHAREHOLDERCPINCODE": "",
+      "EmailC": "",
+      "MobileC": "",
+      "CACCNO": "",
+      "CBNKNAME": "",
+      "CBRANCHNAME": "",
+      "CIFSCODE": "",
+      "FORMDATE": "30-04-2026",
+      "FACEVALUE": "123",
+      "FOLIONO": "ril1234",
+      "NOSA": "56",
+      "CERTNOA": "123",
+      "DISTNOFROMA": "12",
+      "DISTNOTOA": "124",
+      "NOSB": "",
+      "CERTNOB": "",
+      "DISTNOFROMB": "",
+      "DISTNOTOB": "",
+      "NOSC": "",
+      "CERTNOC": "",
+      "DISTNOFROMC": "",
+      "DISTNOTOC": "",
+      "NOSD": "",
+      "CERTNOD": "",
+      "DISTNOFROMD": "",
+      "DISTNOTOD": "",
+      "NUMBEROFSHARES": "56",
+      "NAMEOFTHECOMPANY": "ril",
+      "ADDRESSOFTHECOMPANY": "delhi",
+      "NAMEOFTHEREGISTRAR": "Priyanshu Gupta",
+      "ADDRESSOFTHEREGISTRAR": "01 TDB College Road, Raniganj, West Bengal 713347, India"
     },
-    "files": [],
+    "files": [
+      "4. SH-13.docx",
+      "3. ISR1.docx",
+      "7. FormB_Indemnity.docx",
+      "5. ISR4.docx",
+      "2. Request_Letter.docx",
+      "1. Authorization_Letter.docx"
+    ],
     "stages": [
       {
         "key": "mail_sent",
         "label": "Mail Sent to Client",
         "completed": true,
-        "updated_at": "2026-04-30T07:28:17.515775",
+        "updated_at": "2026-04-30T09:59:18.411101",
         "documents": [
           {
             "name": "epfo.pdf",
@@ -104,6 +91,11 @@
             "name": "forage_DELOITTE.pdf",
             "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/e514412f-fa3f-469e-8972-d1e5abdbc68f_forage_DELOITTE.pdf",
             "uploaded_at": "2026-04-30T07:28:17.515697"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/a1cd45fc-40d9-4530-b7ee-a41006d0c391_aadhar-front.pdf",
+            "uploaded_at": "2026-04-30T09:59:18.411082"
           }
         ]
       },
@@ -404,7 +396,7 @@
     "folio_number": "INFY1234",
     "company_id": "COMP003",
     "case_type": "duplicate",
-    "status": "fresh",
+    "status": "q1_closed",
     "created_at": "2026-04-30T08:39:42.471760",
     "form_data": {
       "shareholders": [
@@ -486,51 +478,93 @@
       {
         "key": "mail_sent",
         "label": "Mail Sent to Client",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:20:54.510823",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/mail_sent/95116915-b9fa-4fdd-8ce5-dc05f0501e04_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:14.047810"
+          }
+        ]
       },
       {
         "key": "client_docs_received",
         "label": "Client Docs Received",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:20:56.862188",
+        "documents": [
+          {
+            "name": "CG_Resume.doc",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/client_docs_received/53bc1cf2-8d54-4e3d-a9f4-03805df579e9_CG_Resume.doc",
+            "uploaded_at": "2026-04-30T10:20:19.704660"
+          }
+        ]
       },
       {
         "key": "doc_generated",
         "label": "Document Generated",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:00.513515",
+        "documents": [
+          {
+            "name": "CG_Resume.doc",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/doc_generated/8b06c553-e882-49ff-b942-c74987e3e525_CG_Resume.doc",
+            "uploaded_at": "2026-04-30T10:20:24.414562"
+          }
+        ]
       },
       {
         "key": "doc_sent",
         "label": "Document Sent to Client",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:02.921847",
+        "documents": [
+          {
+            "name": "aadhaar-front.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/doc_sent/9d4b8f9d-c241-4b0a-8d1f-271f4f3089b9_aadhaar-front.jpg",
+            "uploaded_at": "2026-04-30T10:20:30.857058"
+          }
+        ]
       },
       {
         "key": "doc_received",
         "label": "Document Received from Client",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:05.610240",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/doc_received/0f0392ba-afe0-4c26-be6d-23e929f47aac_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:36.393124"
+          }
+        ]
       },
       {
         "key": "ops_review",
         "label": "Ops Review & Sign-off",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:10.471817",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/ops_review/d21a62bb-5631-46ec-819d-d8decad12508_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:44.256946"
+          }
+        ]
       },
       {
         "key": "sent_to_rta",
         "label": "Sent to Company/RTA",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:14.710503",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/sent_to_rta/6844e1cc-c739-454e-80da-c74f48240df0_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:50.488547"
+          }
+        ]
       },
       {
         "key": "loc_received",
@@ -575,6 +609,21 @@
         "documents": []
       }
     ],
-    "queries": []
+    "queries": [
+      {
+        "query_no": 1,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "aadhaar-front.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/query_1/c1c2be79-9d4e-4a12-b740-72ab1f601c52_aadhaar-front.jpg",
+            "uploaded_at": "2026-04-30T13:23:49.166998"
+          }
+        ],
+        "opened_at": "2026-04-30T10:21:26.211648",
+        "closed_at": "2026-04-30T13:23:52.701056",
+        "updated_at": "2026-04-30T13:23:52.701056"
+      }
+    ]
   }
 }

@@ -58,23 +58,24 @@ const DuplicateProcess = () => {
           }
 
           setIsEditMode(true);
+          const normalizedData = normalizeLoadedFormData(data);
 
-          setShareholders(data.shareholders?.length ? data.shareholders : [
+          setShareholders(normalizedData.shareholders?.length ? normalizedData.shareholders : [
             { personalDetails: {}, contactDetails: {}, bankDetails: {} }
           ]);
 
-          setNumShareholders(data.shareholders?.length || 1);
+          setNumShareholders(normalizedData.shareholders?.length || 1);
 
-          setSecurities(data.securities?.length ? data.securities : [
+          setSecurities(normalizedData.securities?.length ? normalizedData.securities : [
             { certificateNumber: '', distinctiveFrom: '', distinctiveTo: '', shares: '' }
           ]);
 
-          setCompanyInfo(data.companyInfo || { name: '', address: '' });
-          setRtaInfo(data.rtaInfo || { name: '', address: '' });
+          setCompanyInfo(normalizedData.companyInfo || { name: '', address: '' });
+          setRtaInfo(normalizedData.rtaInfo || { name: '', address: '' });
 
-          setDocuments(data.documents?.length ? data.documents : documents);
+          setDocuments(normalizedData.documents?.length ? normalizedData.documents : documents);
 
-          setOtherInfo(data.otherInfo || {
+          setOtherInfo(normalizedData.otherInfo || {
             formDate: '',
             folioNumber: '',
             faceValue: ''
@@ -121,6 +122,63 @@ const DuplicateProcess = () => {
     folioNumber: '',
     faceValue: ''
   });
+
+  const normalizeLoadedFormData = (data) => {
+    if (data.shareholders || data.securities || data.companyInfo || data.rtaInfo || data.otherInfo) {
+      return data;
+    }
+
+    const shareholderCount = Number(data.NumberOfShareHolders || 1);
+    const shareholders = ["A", "B", "C"].slice(0, shareholderCount).map((suffix) => ({
+      personalDetails: {
+        name: data[`SIGNATURE${suffix}`] || "",
+        fatherName: data[`SHAREHOLDER${suffix}FATHER`] || "",
+        panNumber: data[`SHAREHOLDER${suffix}PAN`] || "",
+        dematAccount: suffix === "A" ? data.SHAREHOLDERDEMATACCOUNT || "" : "",
+      },
+      contactDetails: {
+        address: data[`SHAREHOLDER${suffix}ADDRESS`] || "",
+        pinCode: data[`SHAREHOLDER${suffix}PINCODE`] || "",
+        email: data[`Email${suffix}`] || "",
+        mobile: data[`Mobile${suffix}`] || "",
+      },
+      bankDetails: {
+        accountNumber: data[`${suffix}ACCNO`] || "",
+        bankName: data[`${suffix}BNKNAME`] || "",
+        branch: data[`${suffix}BRANCHNAME`] || "",
+        ifscCode: data[`${suffix}IFSCODE`] || "",
+      }
+    }));
+
+    const securities = ["A", "B", "C", "D"]
+      .map((suffix) => ({
+        certificateNumber: data[`CERTNO${suffix}`] || "",
+        distinctiveFrom: data[`DISTNOFROM${suffix}`] || "",
+        distinctiveTo: data[`DISTNOTO${suffix}`] || "",
+        shares: data[`NOS${suffix}`] || "",
+      }))
+      .filter((security, index) => index === 0 || Object.values(security).some(Boolean));
+
+    return {
+      shareholders,
+      securities,
+      companyInfo: {
+        name: data.NAMEOFTHECOMPANY || "",
+        address: data.ADDRESSOFTHECOMPANY || "",
+      },
+      rtaInfo: {
+        name: data.NAMEOFTHEREGISTRAR || "",
+        address: data.ADDRESSOFTHEREGISTRAR || "",
+      },
+      documents,
+      otherInfo: {
+        formDate: data.FORMDATE || "",
+        folioNumber: data.FOLIONO || "",
+        faceValue: data.FACEVALUE || "",
+      },
+      totalShares: data.NUMBEROFSHARES || "",
+    };
+  };
 
   const loadCaseCompanyDefaults = async () => {
     try {

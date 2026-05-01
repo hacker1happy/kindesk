@@ -14,6 +14,7 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
 
   const stages = caseData.stages || [];
   const queries = caseData.queries || [];
+  const sentToRtaStage = stages.find((stage) => stage.key === QUERY_AFTER_STAGE);
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";
@@ -106,13 +107,15 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
     <section className="info-card case-progress-card">
       <div className="section-header">
         <h3>Case Stages</h3>
-        <button
-          className="btn-outline"
-          onClick={handleAddQuery}
-          disabled={loadingKey === "add-query"}
-        >
-          + Add Query
-        </button>
+        {sentToRtaStage?.completed && (
+          <button
+            className="btn-outline"
+            onClick={handleAddQuery}
+            disabled={loadingKey === "add-query"}
+          >
+            + Add Query
+          </button>
+        )}
       </div>
 
       <div className="stage-list">
