@@ -1,11 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
+  deleteCaseDocument,
+  downloadAllCaseDocumentsUrl,
   getCaseDocuments,
   uploadCaseDocument,
-  deleteCaseDocument,
 } from "../../../api/caseDocuments";
-import { uploadQueryDocument, uploadStageDocument } from "../../../api/caseApi";
+import {
+  removeQueryDocument,
+  removeStageDocument,
+  replaceQueryDocument,
+  replaceStageDocument,
+  uploadQueryDocument,
+  uploadStageDocument,
+} from "../../../api/caseApi";
 
 const API_BASE = "http://127.0.0.1:8000";
 
@@ -15,7 +23,7 @@ export default function Documents({ caseData, refresh }) {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [uploadingKey, setUploadingKey] = useState(null);
+  const [workingKey, setWorkingKey] = useState(null);
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";
@@ -33,30 +41,32 @@ export default function Documents({ caseData, refresh }) {
     return [...items].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0));
   };
 
-  const stageDocuments = useMemo(() => {
-    return (caseData?.stages || []).map((stage) => ({
-      ...stage,
+  const managedDocumentGroups = useMemo(() => {
+    const stageGroups = (caseData?.stages || []).map((stage) => ({
+      id: `stage-${stage.key}`,
+      type: "stage",
+      key: stage.key,
+      label: stage.label,
       documents: sortByUploadTime(stage.documents || []),
     }));
-  }, [caseData]);
 
-  const queryDocuments = useMemo(() => {
-    return sortByUploadTime(
-      (caseData?.queries || []).flatMap((query) =>
-        (query.documents || []).map((document) => ({
-          ...document,
-          query_no: query.query_no,
-          status: query.status,
-        }))
-      )
-    );
+    const queryGroups = (caseData?.queries || []).map((query) => ({
+      id: `query-${query.query_no}`,
+      type: "query",
+      key: query.query_no,
+      label: `Query ${query.query_no}`,
+      details: query.details,
+      documents: sortByUploadTime(query.documents || []),
+    }));
+
+    return [...stageGroups, ...queryGroups];
   }, [caseData]);
 
   const fetchDocuments = async () => {
     try {
       setLoading(true);
       const res = await getCaseDocuments(clientId, caseId);
-      setFiles(sortByUploadTime(res.data.files || []));
+      setFiles(res.data.files || []);
     } catch (err) {
       console.error("Error fetching documents", err);
     } finally {
@@ -93,7 +103,7 @@ export default function Documents({ caseData, refresh }) {
     }
   };
 
-  const handleUpload = async (e) => {
+  const handleGeneratedUpload = async (e) => {
     const selectedFiles = e.target.files;
     if (!selectedFiles.length) return;
 
@@ -113,43 +123,75 @@ export default function Documents({ caseData, refresh }) {
     }
   };
 
-  const handleStageUpload = async (stageKey, selectedFiles) => {
+  const handleGroupUpload = async (group, selectedFiles) => {
     if (!selectedFiles?.length) return;
 
     try {
-      setUploadingKey(stageKey);
-      const formData = new FormData();
-      Array.from(selectedFiles).forEach((file) => formData.append("files", file));
+      setWorkingKey(`${group.id}-upload`);
 
-      await uploadStageDocument(clientId, caseId, stageKey, formData);
+      if (group.type === "stage") {
+        const formData = new FormData();
+        Array.from(selectedFiles).forEach((file) => formData.append("files", file));
+        await uploadStageDocument(clientId, caseId, group.key, formData);
+      } else {
+        const formData = new FormData();
+        formData.append("file", selectedFiles[0]);
+        await uploadQueryDocument(clientId, caseId, group.key, formData);
+      }
+
       await refresh?.();
     } catch (err) {
-      console.error("Stage upload failed", err);
-      alert(err.response?.data?.detail || "Stage upload failed");
+      console.error("Upload failed", err);
+      alert(err.response?.data?.detail || "Upload failed");
     } finally {
-      setUploadingKey(null);
+      setWorkingKey(null);
     }
   };
 
-  const handleQueryUpload = async (queryNo, selectedFile) => {
+  const handleReplaceManagedDocument = async (group, document, selectedFile) => {
     if (!selectedFile) return;
 
     try {
-      setUploadingKey(`query-${queryNo}`);
+      setWorkingKey(`${group.id}-${document.url}-replace`);
       const formData = new FormData();
+      formData.append("old_url", document.url);
       formData.append("file", selectedFile);
 
-      await uploadQueryDocument(clientId, caseId, queryNo, formData);
+      if (group.type === "stage") {
+        await replaceStageDocument(clientId, caseId, group.key, formData);
+      } else {
+        await replaceQueryDocument(clientId, caseId, group.key, formData);
+      }
+
       await refresh?.();
     } catch (err) {
-      console.error("Query upload failed", err);
-      alert(err.response?.data?.detail || "Query upload failed");
+      console.error("Replace failed", err);
+      alert(err.response?.data?.detail || "Replace failed");
     } finally {
-      setUploadingKey(null);
+      setWorkingKey(null);
     }
   };
 
-  const handleDelete = async (file) => {
+  const handleRemoveManagedDocument = async (group, document) => {
+    try {
+      setWorkingKey(`${group.id}-${document.url}-remove`);
+
+      if (group.type === "stage") {
+        await removeStageDocument(clientId, caseId, group.key, document.url);
+      } else {
+        await removeQueryDocument(clientId, caseId, group.key, document.url);
+      }
+
+      await refresh?.();
+    } catch (err) {
+      console.error("Remove failed", err);
+      alert(err.response?.data?.detail || "Remove failed");
+    } finally {
+      setWorkingKey(null);
+    }
+  };
+
+  const handleDeleteGenerated = async (file) => {
     try {
       const filename = file.stored_name || file.url.split("/").pop();
 
@@ -164,18 +206,23 @@ export default function Documents({ caseData, refresh }) {
   return (
     <section className="info-card">
       <div className="section-header">
-        <h3>Case Documents</h3>
+        <h3>Generated Case Documents</h3>
 
-        <label className="btn-outline">
-          {uploading ? "Uploading..." : "+ Upload"}
-          <input type="file" multiple hidden onChange={handleUpload} />
-        </label>
+        <div className="document-header-actions">
+          <a className="btn-outline download-file-btn" href={downloadAllCaseDocumentsUrl(clientId, caseId)}>
+            Download All
+          </a>
+          <label className="btn-outline">
+            {uploading ? "Uploading..." : "+ Upload"}
+            <input type="file" multiple hidden onChange={handleGeneratedUpload} />
+          </label>
+        </div>
       </div>
 
       {loading ? (
         <p>Loading documents...</p>
       ) : files.length === 0 ? (
-        <p className="empty-text">No case documents uploaded.</p>
+        <p className="empty-text">No generated documents found.</p>
       ) : (
         <div className="files-list">
           {files.map((doc) => (
@@ -185,7 +232,7 @@ export default function Documents({ caseData, refresh }) {
               formatDateTime={formatDateTime}
               onOpen={handleOpenFile}
               onDownload={handleDownloadFile}
-              onDelete={handleDelete}
+              onDelete={handleDeleteGenerated}
             />
           ))}
         </div>
@@ -194,63 +241,70 @@ export default function Documents({ caseData, refresh }) {
       <div className="document-subsection">
         <h4>Stage Documents</h4>
         <div className="stage-document-list">
-          {stageDocuments.map((stage) => (
-            <div key={stage.key} className="stage-document-row">
-              <div>
-                <strong>{stage.label}</strong>
-                <p>
-                  {stage.documents.length} doc{stage.documents.length === 1 ? "" : "s"}
-                  {stage.documents[0] ? `, latest ${formatDateTime(stage.documents[0].uploaded_at)}` : ""}
-                </p>
-              </div>
-              <label className="btn-outline compact-upload">
-                {uploadingKey === stage.key ? "Uploading..." : "Update"}
-                <input
-                  type="file"
-                  multiple
-                  hidden
-                  onChange={(e) => handleStageUpload(stage.key, e.target.files)}
-                />
-              </label>
-            </div>
+          {managedDocumentGroups.map((group) => (
+            <details key={group.id} className="stage-document-row">
+              <summary>
+                <div>
+                  <strong>{group.label}</strong>
+                  <p>
+                    {group.documents.length} doc{group.documents.length === 1 ? "" : "s"}
+                    {group.documents[0] ? `, latest ${formatDateTime(group.documents[0].uploaded_at)}` : ""}
+                  </p>
+                </div>
+                <label className="btn-outline compact-upload" onClick={(e) => e.stopPropagation()}>
+                  {workingKey === `${group.id}-upload` ? "Uploading..." : group.documents.length ? "Add" : "Upload"}
+                  <input
+                    type="file"
+                    multiple={group.type === "stage"}
+                    hidden
+                    onChange={(e) => handleGroupUpload(group, e.target.files)}
+                  />
+                </label>
+              </summary>
+
+              {group.details && <p className="managed-doc-note">{group.details}</p>}
+
+              {group.documents.length === 0 ? (
+                <p className="empty-text compact-empty">No documents uploaded.</p>
+              ) : (
+                <div className="managed-doc-list">
+                  {group.documents.map((doc) => (
+                    <DocumentRow
+                      key={doc.url}
+                      doc={doc}
+                      formatDateTime={formatDateTime}
+                      onOpen={handleOpenFile}
+                      onDownload={handleDownloadFile}
+                      onReplace={(document, file) => handleReplaceManagedDocument(group, document, file)}
+                      onDelete={
+                        group.documents.length > 1
+                          ? (document) => handleRemoveManagedDocument(group, document)
+                          : null
+                      }
+                      removeDisabledReason={
+                        group.documents.length <= 1 ? "Replace the only document instead of removing it." : ""
+                      }
+                    />
+                  ))}
+                </div>
+              )}
+            </details>
           ))}
         </div>
-      </div>
-
-      <div className="document-subsection">
-        <h4>Query Documents</h4>
-        {queryDocuments.length === 0 ? (
-          <p className="empty-text">No query documents uploaded.</p>
-        ) : (
-          <div className="files-list">
-            {queryDocuments.map((doc) => (
-              <DocumentRow
-                key={doc.url}
-                doc={{ ...doc, name: `Query ${doc.query_no} - ${doc.name}` }}
-                formatDateTime={formatDateTime}
-                onOpen={handleOpenFile}
-                onDownload={handleDownloadFile}
-              />
-            ))}
-          </div>
-        )}
-
-        {(caseData?.queries || []).map((query) => (
-          <label key={query.query_no} className="btn-outline compact-query-upload">
-            {uploadingKey === `query-${query.query_no}` ? "Uploading..." : `Update Query ${query.query_no}`}
-            <input
-              type="file"
-              hidden
-              onChange={(e) => handleQueryUpload(query.query_no, e.target.files?.[0])}
-            />
-          </label>
-        ))}
       </div>
     </section>
   );
 }
 
-function DocumentRow({ doc, formatDateTime, onOpen, onDownload, onDelete }) {
+function DocumentRow({
+  doc,
+  formatDateTime,
+  onOpen,
+  onDownload,
+  onDelete,
+  onReplace,
+  removeDisabledReason,
+}) {
   return (
     <div className="compact-file-item">
       <div className="file-info-row">
@@ -265,11 +319,25 @@ function DocumentRow({ doc, formatDateTime, onOpen, onDownload, onDelete }) {
         <button className="btn-outline file-btn download-file-btn" onClick={() => onDownload(doc.name, doc.url)}>
           Download
         </button>
-        {onDelete && (
+        {onReplace && (
+          <label className="btn-outline file-btn">
+            Replace
+            <input
+              type="file"
+              hidden
+              onChange={(e) => onReplace(doc, e.target.files?.[0])}
+            />
+          </label>
+        )}
+        {onDelete ? (
           <button className="btn-outline remove-btn" onClick={() => onDelete(doc)}>
             Remove
           </button>
-        )}
+        ) : removeDisabledReason ? (
+          <button className="btn-outline remove-btn" disabled title={removeDisabledReason}>
+            Remove
+          </button>
+        ) : null}
       </div>
     </div>
   );

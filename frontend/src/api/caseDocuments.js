@@ -21,3 +21,6 @@ export const deleteCaseDocument = (clientId, caseId, filename) =>
   API.delete(`/clients/${clientId}/cases/${caseId}/file`, {
     params: { filename },
   });
+
+export const downloadAllCaseDocumentsUrl = (clientId, caseId) =>
+  `http://127.0.0.1:8000/clients/${clientId}/cases/${caseId}/files/download-all`;

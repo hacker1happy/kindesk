@@ -93,10 +93,8 @@ export default function ClientDetails() {
     });
   };
 
-  const getFileUrl = (path) => {
-    const normalizedPath = path.replace(/\\/g, "/");
-
-    return `${API_BASE}/${normalizedPath}`;
+  const getClientDocumentUrl = (fileName) => {
+    return `${API_BASE}/data/uploads/${encodeURIComponent(id)}/${encodeURIComponent(fileName)}`;
   };
 
   const getSortedFiles = () => {
@@ -105,13 +103,13 @@ export default function ClientDetails() {
     });
   };
 
-  const handleOpenFile = (path) => {
-    window.open(getFileUrl(path), "_blank", "noopener,noreferrer");
+  const handleOpenFile = (fileName) => {
+    window.open(getClientDocumentUrl(fileName), "_blank", "noopener,noreferrer");
   };
 
-  const handleDownloadFile = async (fileName, path) => {
+  const handleDownloadFile = async (fileName) => {
     try {
-      const response = await fetch(getFileUrl(path));
+      const response = await fetch(getClientDocumentUrl(fileName));
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -352,7 +350,7 @@ export default function ClientDetails() {
                     <button
                       type="button"
                       className="btn-outline file-btn open-file-btn"
-                      onClick={() => handleOpenFile(fileInfo.path)}
+                      onClick={() => handleOpenFile(fileName)}
                     >
                       Open
                     </button>
@@ -360,7 +358,7 @@ export default function ClientDetails() {
                     <button
                       type="button"
                       className="btn-outline file-btn download-file-btn"
-                      onClick={() => handleDownloadFile(fileName, fileInfo.path)}
+                      onClick={() => handleDownloadFile(fileName)}
                     >
                       Download
                     </button>

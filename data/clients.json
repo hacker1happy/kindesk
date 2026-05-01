@@ -17,10 +17,11 @@
     },
     "case_ids": [
       "CS8AHFH0E",
-      "CSBDP4HHJ"
+      "CSBDP4HHJ",
+      "CSLA7UP1V"
     ],
-    "comment": "An IFSC (Indian Financial System Code) is an 11-digit alphanumeric code used for electronic funds transfers (NEFT, RTGS, IMPS) in India. It consists of the first four letters (bank name), a fifth character (0), and the last six characters (branch code).\n\nExample: SBIN0000123 (State Bank of India [SBIN], Branch 000123). \nDeskera\nDeskera\n +3\nCommon IFSC Examples:\nState Bank of India (SBI): SBIN0000123\nHDFC Bank: HDFC0000509\nAxis Bank: UTIB0000124\nKotak Mahindra Bank: KKBK0000172\nCitibank: CITI0000003 \nKotak Bank\nKotak Bank\n +3\nKey Components Breakdown:\nFirst 4 letters: Represent the bank (e.g., HDFC, SBIN, ICIC).\n5th character: Always zero (0), reserved for future use.\nLast 6 digits: Represent the specific branch code. \nKotak Bank\nKotak Bank\n +1\nNote: You can usually find the IFSC code at the top of your cheque",
-    "updated_at": "2026-04-30T10:18:51.573527"
+    "comment": "An IFSC (Indian Financial System Code) is an 11-digit alphanumeric code used for electronic funds transfers (NEFT, RTGS, IMPS) in India. It consists of the first four letters (bank name), a fifth character (0), and the last six characters (branch code)\n\nExample: SBIN0000123 (State Bank of India [SBIN], Branch 000123). \nDeskera\nDeskera\n +3\nCommon IFSC Examples:\nState Bank of India (SBI): SBIN0000123\nHDFC Bank: HDFC0000509\nAxis Bank: UTIB0000124\nKotak Mahindra Bank: KKBK0000172\nCitibank: CITI0000003 \nKotak Bank\nKotak Bank\n +3\nKey Components Breakdown:\nFirst 4 letters: Represent the bank (e.g., HDFC, SBIN, ICIC).\n5th character: Always zero (0), reserved for future use.\nLast 6 digits: Represent the specific branch code. \nKotak Bank\nKotak Bank\n +1\nNote: You can usually find the IFSC code at the top of your cheque",
+    "updated_at": "2026-05-01T10:04:46.349457"
   },
   "CL000002": {
     "name": "Dipesh Jain",

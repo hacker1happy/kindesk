@@ -11,6 +11,9 @@ const QUERY_AFTER_STAGE = "sent_to_rta";
 
 export default function CaseStatus({ caseData, clientId, refresh }) {
   const [loadingKey, setLoadingKey] = useState(null);
+  const [showQueryModal, setShowQueryModal] = useState(false);
+  const [queryDetails, setQueryDetails] = useState("");
+  const [viewingQuery, setViewingQuery] = useState(null);
 
   const stages = caseData.stages || [];
   const queries = caseData.queries || [];
@@ -62,7 +65,9 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
   const handleAddQuery = async () => {
     try {
       setLoadingKey("add-query");
-      await addQuery(clientId, caseData.case_id);
+      await addQuery(clientId, caseData.case_id, { details: queryDetails });
+      setQueryDetails("");
+      setShowQueryModal(false);
       await refresh();
     } catch (err) {
       console.error(err);
@@ -110,8 +115,8 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
         {sentToRtaStage?.completed && (
           <button
             className="btn-outline"
-            onClick={handleAddQuery}
-            disabled={loadingKey === "add-query"}
+          onClick={() => setShowQueryModal(true)}
+          disabled={loadingKey === "add-query"}
           >
             + Add Query
           </button>
@@ -142,6 +147,7 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                       formatDateTime={formatDateTime}
                       onUpload={handleQueryUpload}
                       onClose={handleCloseQuery}
+                      onViewDetails={setViewingQuery}
                     />
                   ))
                 )}
@@ -150,6 +156,42 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
           </div>
         ))}
       </div>
+
+      {showQueryModal && (
+        <div className="modal-backdrop">
+          <div className="query-modal">
+            <h3>Add Query</h3>
+            <textarea
+              value={queryDetails}
+              maxLength={1000}
+              rows={6}
+              placeholder="Enter query details or reason"
+              onChange={(e) => setQueryDetails(e.target.value)}
+            />
+            <div className="modal-meta">{queryDetails.length}/1000</div>
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setShowQueryModal(false)}>
+                Cancel
+              </button>
+              <button className="btn" disabled={!queryDetails.trim() || loadingKey === "add-query"} onClick={handleAddQuery}>
+                Add Query
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {viewingQuery && (
+        <div className="modal-backdrop">
+          <div className="query-modal">
+            <h3>Query {viewingQuery.query_no} Details</h3>
+            <p className="query-detail-text">{viewingQuery.details || "No details saved."}</p>
+            <div className="modal-actions">
+              <button className="btn" onClick={() => setViewingQuery(null)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -193,7 +235,7 @@ function StageRow({ stage, loadingKey, formatDateTime, onUpload, onComplete }) {
   );
 }
 
-function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose }) {
+function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose, onViewDetails }) {
   const documents = query.documents || [];
   const latestDocument = documents[documents.length - 1];
   const isClosed = query.status === "closed";
@@ -205,7 +247,7 @@ function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose }) {
         <div>
           <strong>Query {query.query_no}</strong>
           <p>
-            {isClosed ? "Closed" : "Open"} · {documents.length} doc{documents.length === 1 ? "" : "s"}
+            {isClosed ? "Closed" : "Open"} - {documents.length} doc{documents.length === 1 ? "" : "s"}
             {latestDocument ? `, latest ${formatDateTime(latestDocument.uploaded_at)}` : ""}
           </p>
         </div>
@@ -220,6 +262,9 @@ function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose }) {
             onChange={(e) => onUpload(query.query_no, e.target.files?.[0])}
           />
         </label>
+        <button className="btn-outline" onClick={() => onViewDetails(query)}>
+          View Details
+        </button>
         <button
           className="btn-outline"
           disabled={isClosed || loadingKey === `query-${query.query_no}-close`}

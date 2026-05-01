@@ -30,8 +30,8 @@ export const uploadStageDocument = (clientId, caseId, stageKey, formData) =>
   );
 
 // ✅ Add query
-export const addQuery = (clientId, caseId) =>
-  API.post(`/clients/${clientId}/cases/${caseId}/queries`);
+export const addQuery = (clientId, caseId, data) =>
+  API.post(`/clients/${clientId}/cases/${caseId}/queries`, data);
 
 // ✅ Upload query doc
 export const uploadQueryDocument = (clientId, caseId, queryNo, formData) =>
@@ -42,3 +42,19 @@ export const uploadQueryDocument = (clientId, caseId, queryNo, formData) =>
 
 export const closeQuery = (clientId, caseId, queryNo) =>
   API.put(`/clients/${clientId}/cases/${caseId}/queries/${queryNo}/close`);
+
+export const replaceStageDocument = (clientId, caseId, stageKey, formData) =>
+  API.post(`/clients/${clientId}/cases/${caseId}/stages/${stageKey}/documents/replace`, formData);
+
+export const removeStageDocument = (clientId, caseId, stageKey, url) =>
+  API.delete(`/clients/${clientId}/cases/${caseId}/stages/${stageKey}/documents`, {
+    params: { url },
+  });
+
+export const replaceQueryDocument = (clientId, caseId, queryNo, formData) =>
+  API.post(`/clients/${clientId}/cases/${caseId}/queries/${queryNo}/documents/replace`, formData);
+
+export const removeQueryDocument = (clientId, caseId, queryNo, url) =>
+  API.delete(`/clients/${clientId}/cases/${caseId}/queries/${queryNo}/documents`, {
+    params: { url },
+  });

@@ -71,6 +71,29 @@
   color: #1d4ed8;
 }
 
+.case-form-panel {
+  display: grid;
+  gap: 14px;
+  text-align: center;
+}
+
+.case-form-panel h3 {
+  margin: 0;
+  color: #111827;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.case-form-panel p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.case-form-panel .btn {
+  justify-self: center;
+}
+
 .stage-list {
   display: grid;
   gap: 8px;
@@ -163,6 +186,55 @@
 .compact-empty {
   padding: 6px 0;
   font-size: 13px;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.query-modal {
+  width: min(100%, 520px);
+  padding: 20px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.25);
+}
+
+.query-modal h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.query-modal textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+.modal-meta {
+  margin-top: 6px;
+  color: #6b7280;
+  font-size: 12px;
+  text-align: right;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.query-detail-text {
+  color: #374151;
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
 }
 
 .files-list {
@@ -266,14 +338,23 @@
 }
 
 .stage-document-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
   padding: 10px 12px;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fafafa;
+}
+
+.stage-document-row summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.stage-document-row summary::-webkit-details-marker {
+  display: none;
 }
 
 .stage-document-row strong {
@@ -290,6 +371,37 @@
   display: inline-flex;
   margin-top: 10px;
   margin-right: 8px;
+}
+
+.document-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.document-header-actions a {
+  text-decoration: none;
+}
+
+.managed-doc-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.managed-doc-note {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.file-actions .btn-outline:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 @media (max-width: 700px) {
