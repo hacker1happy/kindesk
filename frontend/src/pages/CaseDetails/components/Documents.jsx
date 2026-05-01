@@ -45,8 +45,17 @@ export default function Documents({ caseData, refresh }) {
     return [...items].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0));
   };
 
+  const sortByFilename = (items) => {
+    return [...items].sort((a, b) =>
+      (a.name || "").localeCompare(b.name || "", undefined, {
+        numeric: true,
+        sensitivity: "base",
+      })
+    );
+  };
+
   const getDocumentSummary = (documents) => {
-    const latestDocument = documents[0];
+    const latestDocument = sortByUploadTime(documents)[0];
 
     return `${documents.length} doc${documents.length === 1 ? "" : "s"}${
       latestDocument ? `, latest ${formatDateTime(latestDocument.uploaded_at)}` : ""
@@ -59,7 +68,10 @@ export default function Documents({ caseData, refresh }) {
       type: "stage",
       key: stage.key,
       label: stage.label,
-      documents: sortByUploadTime(stage.documents || []),
+      documents:
+        stage.key === "doc_generated"
+          ? sortByFilename(stage.documents || [])
+          : sortByUploadTime(stage.documents || []),
     }));
 
     const queryGroups = (caseData?.queries || []).map((query) => ({
@@ -245,18 +257,20 @@ export default function Documents({ caseData, refresh }) {
                     onChange={(e) => handleGroupUpload(group, e.target.files)}
                   />
                 </label>
-                {group.key === "doc_generated" && group.documents.length > 0 && (
-                  <a
-                    className="btn-outline download-file-btn"
-                    href={downloadStageDocumentsUrl(clientId, caseId, group.key)}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Download All
-                  </a>
-                )}
               </summary>
 
               {group.details && <p className="managed-doc-note">{group.details}</p>}
+
+              {group.key === "doc_generated" && group.documents.length > 0 && (
+                <div className="generated-doc-actions">
+                  <a
+                    className="btn-outline download-file-btn"
+                    href={downloadStageDocumentsUrl(clientId, caseId, group.key)}
+                  >
+                    Download All
+                  </a>
+                </div>
+              )}
 
               {group.documents.length === 0 ? (
                 <p className="empty-text compact-empty">No documents uploaded.</p>
@@ -267,10 +281,13 @@ export default function Documents({ caseData, refresh }) {
                       key={doc.url}
                       doc={doc}
                       formatDateTime={formatDateTime}
-                      onOpen={handleOpenFile}
+                      onOpen={group.key === "doc_generated" ? null : handleOpenFile}
                       onDownload={handleDownloadFile}
                       onReplace={(document, file) => handleReplaceManagedDocument(group, document, file)}
                       onDelete={
+                        group.key === "doc_generated"
+                          ? null
+                          :
                         group.type === "stage" && (OPTIONAL_DOCUMENT_STAGES.has(group.key) || group.documents.length > 1)
                           ? (document) => setPendingRemoval({ type: "managed", group, document })
                           : group.type === "query" && group.documents.length > 1
@@ -278,6 +295,9 @@ export default function Documents({ caseData, refresh }) {
                           : null
                       }
                       removeDisabledReason={
+                        group.key === "doc_generated"
+                          ? ""
+                          :
                         group.documents.length <= 1 && !OPTIONAL_DOCUMENT_STAGES.has(group.key)
                           ? "Replace the only document instead of removing it."
                           : ""

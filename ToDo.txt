@@ -1,8 +1,5 @@
-client mobile no and name should be consider as PK
-
-Client dlt & Case dlt - feature
-
-Add Pagination in home page (important later)
+- client mobile no and name should be consider as PK
+- Add Pagination in home page (important later)
 
 Permission on login based
     - caller can only add the clients and view them
@@ -10,28 +7,5 @@ Permission on login based
     - admin to have all access to delete any client details as well
     - admin can also add-delete assigned to and assigned from person
 
-Feature to duplicate a case for a particular client (duplicate case can copy duplicate but transmission and joint case can both copy each other)
+- Feature to duplicate a case for a particular client (duplicate case can copy duplicate but transmission and joint case can both copy each other)
 
-To upload particular case documents (miscellaneous files)
- 
-stage | date | doc name | doc link
-timeline to show when status is last updated for each status - tabular formmat
- - mail sent to client
- - client doc receievd
- - doc gen
- - doc sent to client 
- - doc receievd from client
- - doc review and sign-off by ops team
-    - to have a checklist for review docs sent to client
- - doc sent to Comp/RTA - {signed client pdf + POD receipt}
- - Query cycle
-  - Q1 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
-  - Q2 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
-  - Q3 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
-  - Q4 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
- - LOC/LOE receievd - {LOC copy + DRF receipt}
- - IEPF claim form generated
- - IEPF claim form submitted - {Signed client IEPF docs + POD receipt}
- - e-verification report approved
- - shares credited
- - case closed

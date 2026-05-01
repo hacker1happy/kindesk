@@ -16,6 +16,8 @@ const DuplicateProcess = () => {
   const { clientId, caseId } = useParams();
   const [isEditMode, setIsEditMode] = useState(false);
   const [caseContext, setCaseContext] = useState(null);
+  const [documentsReadyForGeneration, setDocumentsReadyForGeneration] = useState(false);
+  const [saveStatus, setSaveStatus] = useState("");
   const navigate = useNavigate();
   const { submitForm, loading, error } = useFormSubmit('duplicate');
 
@@ -183,6 +185,9 @@ const DuplicateProcess = () => {
     try {
       const caseRes = await getCaseDetails(clientId, caseId);
       const caseData = caseRes.data.case;
+      const requiredStagesCompleted = ["mail_sent", "client_docs_received"].every((stageKey) =>
+        caseData.stages?.some((stage) => stage.key === stageKey && stage.completed)
+      );
       const companyRes = await getCompanyById(caseData.company_id);
       const company = companyRes.data;
       const context = {
@@ -194,6 +199,7 @@ const DuplicateProcess = () => {
       };
 
       setCaseContext(context);
+      setDocumentsReadyForGeneration(requiredStagesCompleted);
 
       setCompanyInfo({
         name: context.companyName,
@@ -322,6 +328,13 @@ const DuplicateProcess = () => {
     const formData = buildFormData();
 
     try {
+      if (!documentsReadyForGeneration) {
+        await saveFormData(clientId, caseId, formData);
+        setSaveStatus("Form Saved");
+        alert("Form saved. Complete Mail Sent to Client and Client Docs Received before generating documents.");
+        return;
+      }
+
       // ✅ Step 1: Save Form
       await saveFormData(clientId, caseId, formData);
 
@@ -387,6 +400,24 @@ const DuplicateProcess = () => {
           </div>
         </div>
 
+        <div className={`generation-readiness ${documentsReadyForGeneration ? "ready" : "saved"}`}>
+          <div>
+            <span>
+              {saveStatus ||
+                (documentsReadyForGeneration
+                  ? "Documents Ready for Generation"
+                  : isEditMode
+                    ? "Form Saved"
+                    : "Form Can Be Saved")}
+            </span>
+            <strong>
+              {documentsReadyForGeneration
+                ? "Generate Documents is available."
+                : "Save Draft is available now. Generate Documents unlocks after the prerequisite stages are completed."}
+            </strong>
+          </div>
+        </div>
+
           {/* Number of Shareholders Selector */}
           <div className="form-section compact-section">
             <div className="form-group shareholders-select">
@@ -437,7 +468,12 @@ const DuplicateProcess = () => {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={loading || !isFormValid}
+                disabled={loading || !isFormValid || !documentsReadyForGeneration}
+                title={
+                  !documentsReadyForGeneration
+                    ? "Complete Mail Sent to Client and Client Docs Received before generating documents."
+                    : ""
+                }
               >
                 {loading ? (
                   <>
@@ -455,8 +491,9 @@ const DuplicateProcess = () => {
                   const formData = buildFormData();
 
                   await saveFormData(clientId, caseId, formData);
+                  setSaveStatus("Form Saved");
 
-                  alert("Saved successfully!");
+                  alert("Form saved successfully.");
                 }}
               >
                 Save Draft

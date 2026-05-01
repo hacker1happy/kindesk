@@ -12,12 +12,30 @@ from app.repository.storage import UPLOADS_DIR, write_cases
 
 router = APIRouter()
 
+GENERATION_REQUIRED_STAGES = {"mail_sent", "client_docs_received"}
+
+
+def documents_ready_for_generation(case: dict) -> bool:
+    completed_stage_keys = {
+        stage.get("key")
+        for stage in case.get("stages", [])
+        if stage.get("completed")
+    }
+
+    return GENERATION_REQUIRED_STAGES.issubset(completed_stage_keys)
+
 
 @router.post("/generate/{client_id}/{case_id}")
 def generate_documents_api(client_id: str, case_id: str, request: DocumentRequest):
     try:
         process = request.process
         cases, case = get_owned_case(client_id, case_id)
+        if not documents_ready_for_generation(case):
+            return {
+                "success": False,
+                "message": "Complete Mail Sent to Client and Client Docs Received before generating documents"
+            }
+
         form_data = enrich_form_data_for_case(case, request.data)
         data = duplicate_form_data_transformer.transform_input_data(form_data)
         selected_files = duplicate_form_data_transformer.transform_selected_files(request.selected_files)

@@ -99,6 +99,39 @@
   justify-self: center;
 }
 
+.form-readiness-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid #fed7aa;
+  border-left: 4px solid #f97316;
+  border-radius: 8px;
+  background: #fff7ed;
+  text-align: left;
+}
+
+.form-readiness-card.ready {
+  border-color: #bbf7d0;
+  border-left-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.form-readiness-card > span {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.form-readiness-card div {
+  display: grid;
+  gap: 4px;
+}
+
 .stage-list {
   display: grid;
   gap: 8px;
@@ -453,6 +486,12 @@
 .managed-doc-list {
   display: grid;
   gap: 8px;
+  margin-top: 10px;
+}
+
+.generated-doc-actions {
+  display: flex;
+  justify-content: flex-end;
   margin-top: 10px;
 }
 

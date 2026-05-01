@@ -144,12 +144,12 @@
   margin-top: 10px;
   color: #374151;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.0;
   white-space: pre-wrap;
 }
 
 .comment-text:not(.expanded) {
-  max-height: 48px;
+  max-height: 25px;
   overflow: hidden;
 }
 

@@ -89,7 +89,7 @@ export default function CaseDetails() {
 
   const caseData = data.case;
   const client = data.client;
-  const canAccessForm =
+  const documentsReadyForGeneration =
     isStageCompleted(caseData, "mail_sent") &&
     isStageCompleted(caseData, "client_docs_received");
 
@@ -149,15 +149,18 @@ export default function CaseDetails() {
         </button>
         <button
           className={activeTab === "form" ? "active" : ""}
-          disabled={!canAccessForm}
-          title={!canAccessForm ? "Complete Mail Sent to Client and Client Docs Received first." : ""}
           onClick={() => setActiveTab("form")}
         >
           Form
         </button>
       </div>
 
-      {activeTab === "form" && <CaseInfo caseData={caseData} canAccessForm={canAccessForm} />}
+      {activeTab === "form" && (
+        <CaseInfo
+          caseData={caseData}
+          documentsReadyForGeneration={documentsReadyForGeneration}
+        />
+      )}
 
       {activeTab === "stages" && (
         <CaseStatus
