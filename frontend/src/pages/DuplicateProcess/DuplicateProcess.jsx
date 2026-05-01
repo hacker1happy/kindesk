@@ -5,6 +5,7 @@ import { useFormSubmit } from '../../hooks/useFormSubmit';
 import { saveFormData, getFormData } from '../../api/formApi';
 import { getCaseDetails } from '../../api/caseApi';
 import { getCompanyById } from '../../api/companyApi';
+import FeedbackDialog from '../../components/FeedbackDialog';
 import ShareholderForm from './components/ShareholderForm';
 import SecuritiesTable from './components/SecuritiesTable';
 import DocumentList from './components/DocumentList';
@@ -18,6 +19,7 @@ const DuplicateProcess = () => {
   const [caseContext, setCaseContext] = useState(null);
   const [documentsReadyForGeneration, setDocumentsReadyForGeneration] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
+  const [feedback, setFeedback] = useState(null);
   const navigate = useNavigate();
   const { submitForm, loading, error } = useFormSubmit('duplicate');
 
@@ -331,7 +333,11 @@ const DuplicateProcess = () => {
       if (!documentsReadyForGeneration) {
         await saveFormData(clientId, caseId, formData);
         setSaveStatus("Form Saved");
-        alert("Form saved. Complete Mail Sent to Client and Client Docs Received before generating documents.");
+        setFeedback({
+          title: "Form Saved",
+          message: "Complete Mail Sent to Client and Client Docs Received before generating documents.",
+          tone: "warning",
+        });
         return;
       }
 
@@ -341,13 +347,20 @@ const DuplicateProcess = () => {
       // ✅ Step 2: Generate Documents
       await submitForm(clientId, caseId, formData, selectedDocuments);
 
-      alert('Documents generated successfully!');
+      setFeedback({
+        title: "Documents Generated",
+        message: "The selected duplicate process documents were generated successfully.",
+        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}`),
+      });
 
       // ✅ Step 3: Redirect to Case Details
-      navigate(`/clients/${clientId}/cases/${caseId}`);
 
     } catch (err) {
-      alert('Failed to generate documents.');
+      setFeedback({
+        title: "Generation Failed",
+        message: err.message || "Failed to generate documents.",
+        tone: "error",
+      });
     }
   };
 
@@ -493,7 +506,10 @@ const DuplicateProcess = () => {
                   await saveFormData(clientId, caseId, formData);
                   setSaveStatus("Form Saved");
 
-                  alert("Form saved successfully.");
+                  setFeedback({
+                    title: "Form Saved",
+                    message: "Your duplicate process draft has been saved.",
+                  });
                 }}
               >
                 Save Draft
@@ -507,6 +523,16 @@ const DuplicateProcess = () => {
             </div>
           </form>
       </section>
+      {feedback && (
+        <FeedbackDialog
+          {...feedback}
+          onClose={() => {
+            const next = feedback.onClose;
+            setFeedback(null);
+            next?.();
+          }}
+        />
+      )}
     </main>
   );
 };

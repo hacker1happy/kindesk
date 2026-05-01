@@ -114,7 +114,7 @@
     "folio_number": "TATA123",
     "company_id": "COMP002",
     "case_type": "duplicate",
-    "status": "closed",
+    "status": "doc_generated",
     "created_at": "2026-05-01T18:53:56.423073",
     "form_data": {
       "shareholders": [
@@ -213,13 +213,13 @@
       "totalShares": 1466
     },
     "files": [
-      "6. FormA.docx",
       "2. Request_Letter.docx",
+      "4. SH-13.docx",
       "3. ISR1.docx",
       "1. Authorization_Letter.docx",
-      "5. ISR4.docx",
       "7. FormB_Indemnity.docx",
-      "4. SH-13.docx"
+      "6. FormA.docx",
+      "5. ISR4.docx"
     ],
     "stages": [
       {
@@ -246,7 +246,7 @@
         "key": "doc_generated",
         "label": "Document Generated",
         "completed": true,
-        "updated_at": "2026-05-01T18:56:50.623174",
+        "updated_at": "2026-05-02T02:43:21.735559",
         "documents": [
           {
             "name": "1. Authorization_Letter.docx",
@@ -571,6 +571,268 @@
             "name": "Cover letter.pdf",
             "url": "/data/uploads/CL000001/CSMBDU8C7/doc_generated/ad596548-6638-4208-86c0-0a915feaccab_Cover letter.pdf",
             "uploaded_at": "2026-05-01T20:51:35.199404"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CS75021BJ": {
+    "case_id": "CS75021BJ",
+    "folio_number": "HDFC9090",
+    "company_id": "COMP004",
+    "case_type": "transmission",
+    "status": "doc_generated",
+    "created_at": "2026-05-02T02:19:33.451919",
+    "form_data": {
+      "legalHeirs": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "Test father name",
+            "age": "25",
+            "relation": "Son",
+            "panNumber": "DETPG6645R",
+            "dematAccount": "9876543212"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "city": "Raniganj",
+            "state": "West Bengal",
+            "pinCode": "713347",
+            "mobile": "9123456789",
+            "email": "finassure.dataset@gmail.com"
+          },
+          "deceasedShareholder": {
+            "name": "Simran Kaur",
+            "dateOfDemise": "05-02-2026"
+          },
+          "bankDetails": {
+            "accountNumber": "1234567890",
+            "bankName": "HDFC",
+            "branch": "Rnj",
+            "ifscCode": "HDFC0001015",
+            "bankCity": "Raniganj",
+            "bankPin": "713347",
+            "micrNumber": "32190"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "123",
+          "distinctiveFrom": "45",
+          "distinctiveTo": "78",
+          "shares": "900"
+        }
+      ],
+      "companyInfo": {
+        "name": "HDFC Bank Limited",
+        "address": "HDFC Bank House, Senapati Bapat Marg, Mumbai - 400013"
+      },
+      "rtaInfo": {
+        "name": "Link Intime India Private Limited",
+        "address": "C-101, 247 Park, LBS Marg, Vikhroli West, Mumbai, Maharashtra - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authorization Letter",
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "selected": true
+        },
+        {
+          "id": "isr5-annexure-c",
+          "name": "ISR5 - Annexure C",
+          "selected": true
+        },
+        {
+          "id": "annexure-d-heir-1",
+          "name": "Annexure D - Affidavit Legal Heir 1",
+          "heirIndex": 1,
+          "selected": true
+        },
+        {
+          "id": "annexure-d-heir-2",
+          "name": "Annexure D - Affidavit Legal Heir 2",
+          "heirIndex": 2,
+          "selected": false
+        },
+        {
+          "id": "annexure-d-heir-3",
+          "name": "Annexure D - Affidavit Legal Heir 3",
+          "heirIndex": 3,
+          "selected": false
+        },
+        {
+          "id": "annexure-e-indemnity",
+          "name": "Annexure E - Indemnity from Legal Heir",
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "02-05-2026",
+        "folioNumber": "HDFC9090",
+        "faceValue": "123",
+        "stateName": "West Bengal",
+        "cityName": "Raniganj"
+      },
+      "totalShares": 900
+    },
+    "files": [
+      "2. Request_Letter.docx",
+      "4. SH-13.docx",
+      "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+      "3. ISR1.docx",
+      "10. AnnexureE-Indemnity_from_LegalHeir.docx",
+      "8. ISR5-AnnexureC.docx",
+      "1. Authorization_Letter.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-02T02:23:25.960721",
+        "documents": []
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-02T02:23:32.191727",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/client_docs_received/0e40d866-ed0b-4731-98fe-ec3980d963c1_aadhar-front.pdf",
+            "uploaded_at": "2026-05-02T02:23:30.358781"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-05-02T02:44:49.743040",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/1. Authorization_Letter.docx",
+            "uploaded_at": "2026-05-02T02:23:51.163424"
+          },
+          {
+            "name": "2. Request_Letter.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/2. Request_Letter.docx",
+            "uploaded_at": "2026-05-02T02:23:51.481261"
+          },
+          {
+            "name": "3. ISR1.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/3. ISR1.docx",
+            "uploaded_at": "2026-05-02T02:24:00.375948"
+          },
+          {
+            "name": "4. SH-13.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/4. SH-13.docx",
+            "uploaded_at": "2026-05-02T02:24:00.910352"
+          },
+          {
+            "name": "8. ISR5-AnnexureC.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/8. ISR5-AnnexureC.docx",
+            "uploaded_at": "2026-05-02T02:24:02.732618"
+          },
+          {
+            "name": "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+            "uploaded_at": "2026-05-02T02:24:03.394869"
+          },
+          {
+            "name": "10. AnnexureE-Indemnity_from_LegalHeir.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/10. AnnexureE-Indemnity_from_LegalHeir.docx",
+            "uploaded_at": "2026-05-02T02:24:04.328886"
           }
         ]
       },

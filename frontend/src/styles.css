@@ -539,6 +539,40 @@ textarea:focus {
   color: #6b7280 !important;
 }
 
+.feedback-modal {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.feedback-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 12px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.feedback-warning .feedback-icon {
+  background: #ffedd5;
+  color: #c2410c;
+}
+
+.feedback-error .feedback-icon {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.feedback-modal .modal-actions {
+  width: 100%;
+  justify-content: center;
+}
+
 .confirm-id-input {
   margin-top: 14px;
 }
