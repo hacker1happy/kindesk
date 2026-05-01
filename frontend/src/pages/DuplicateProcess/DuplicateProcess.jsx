@@ -5,6 +5,7 @@ import { useFormSubmit } from '../../hooks/useFormSubmit';
 import { saveFormData, getFormData } from '../../api/formApi';
 import { getCaseDetails } from '../../api/caseApi';
 import { getCompanyById } from '../../api/companyApi';
+import ConfirmationModal from '../../components/ConfirmationModal';
 import FeedbackDialog from '../../components/FeedbackDialog';
 import ShareholderForm from './components/ShareholderForm';
 import SecuritiesTable from './components/SecuritiesTable';
@@ -20,6 +21,8 @@ const DuplicateProcess = () => {
   const [documentsReadyForGeneration, setDocumentsReadyForGeneration] = useState(false);
   const [saveStatus, setSaveStatus] = useState("");
   const [feedback, setFeedback] = useState(null);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const navigate = useNavigate();
   const { submitForm, loading, error } = useFormSubmit('duplicate');
 
@@ -341,6 +344,8 @@ const DuplicateProcess = () => {
         return;
       }
 
+      setIsGenerating(true);
+
       // ✅ Step 1: Save Form
       await saveFormData(clientId, caseId, formData);
 
@@ -361,6 +366,8 @@ const DuplicateProcess = () => {
         message: err.message || "Failed to generate documents.",
         tone: "error",
       });
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -383,7 +390,10 @@ const DuplicateProcess = () => {
     });
     setDocuments(documents.map(doc => ({ ...doc, selected: false, required: false })));
     setOtherInfo({ formDate: '', folioNumber: caseContext?.folioNumber || '', faceValue: '' });
+    setShowResetConfirm(false);
   };
+
+  const isGenerateInProgress = loading || isGenerating;
 
   return (
     <main className="duplicate-process container">
@@ -481,17 +491,17 @@ const DuplicateProcess = () => {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={loading || !isFormValid || !documentsReadyForGeneration}
+                disabled={isGenerateInProgress || !isFormValid || !documentsReadyForGeneration}
                 title={
                   !documentsReadyForGeneration
                     ? "Complete Mail Sent to Client and Client Docs Received before generating documents."
                     : ""
                 }
               >
-                {loading ? (
+                {isGenerateInProgress ? (
                   <>
-                    <span className="spinner"></span>
-                    {isEditMode ? "Updating & Generating..." : "Generating..."}
+                    <span className="spinner"></span>Generating...
+                    {/* {isEditMode ? "Updating & Generating..." : "Generating..."} */}
                   </>
                 ) : (
                   isEditMode ? "Update & Generate" : "Generate Documents"
@@ -514,7 +524,7 @@ const DuplicateProcess = () => {
               >
                 Save Draft
               </button>
-              <button type="button" className="btn btn-secondary" onClick={handleReset}>
+              <button type="button" className="btn btn-secondary" onClick={() => setShowResetConfirm(true)}>
                 Reset
               </button>
               <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
@@ -523,6 +533,17 @@ const DuplicateProcess = () => {
             </div>
           </form>
       </section>
+      {showResetConfirm && (
+        <ConfirmationModal
+          title="Reset form?"
+          message="This will clear the current form entries and restore case defaults."
+          detail="Saved draft data will remain unchanged until you save again."
+          confirmLabel="Reset"
+          danger
+          onCancel={() => setShowResetConfirm(false)}
+          onConfirm={handleReset}
+        />
+      )}
       {feedback && (
         <FeedbackDialog
           {...feedback}

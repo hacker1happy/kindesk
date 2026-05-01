@@ -1,8 +1,14 @@
+import TransmissionLikeProcess from "../TransmissionProcess/TransmissionLikeProcess";
+import { JOINT_DOCUMENTS } from "../TransmissionProcess/processConfig";
+
 export default function JointProcess() {
-    return (
-        <div>
-            <h1>Joint Process</h1>
-            <p>This is the Joint Process page.</p>
-        </div>
-    );
+  return (
+    <TransmissionLikeProcess
+      processName="joint"
+      title="Joint Process"
+      documents={JOINT_DOCUMENTS}
+      draftLabel="joint process"
+      successMessage="The selected joint process documents were generated successfully."
+    />
+  );
 }

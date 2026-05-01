@@ -45,11 +45,11 @@ def generate_documents_api(client_id: str, case_id: str, request: DocumentReques
         case["form_data"] = form_data
 
         # Step 1: Modify data
-        modified_data = modify_data(data, process)
+        modified_data = modify_data(data, process_config.modifier_process)
 
         # Step 2: Build template paths
         template_files = build_template_paths(
-            process,
+            process_config.template_process,
             modified_data,
             selected_files
         )

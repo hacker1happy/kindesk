@@ -65,6 +65,18 @@
   border-right: none;
 }
 
+.split-field-cell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.split-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
 .form-cell label {
   font-size: 13px;
   color: #374151;

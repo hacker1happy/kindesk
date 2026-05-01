@@ -9,13 +9,14 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
     data = OrderedDict()
 
     legal_heirs = payload.get("legalHeirs", [])
+    shareholders = payload.get("shareholders", [])
     securities = payload.get("securities", [])
     company_info = payload.get("companyInfo", {})
     rta_info = payload.get("rtaInfo", {})
     other_info = payload.get("otherInfo", {})
 
     data["NumberOfLegalHeirs"] = str(len(legal_heirs))
-    data["NumberOfShareHolders"] = str(len(legal_heirs))
+    data["NumberOfShareHolders"] = str(len(shareholders))
 
     for i in range(MAX_LEGAL_HEIRS):
         suffix = chr(ord("A") + i)
@@ -24,7 +25,6 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
             heir = legal_heirs[i]
             personal = heir.get("personalDetails", {})
             contact = heir.get("contactDetails", {})
-            deceased = heir.get("deceasedShareholder", {})
             bank = heir.get("bankDetails", {})
 
             data[f"LEGALHEIR{suffix}"] = personal.get("name", "")
@@ -37,8 +37,6 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
             data[f"LH{suffix}PIN"] = contact.get("pinCode", "")
             data[f"Email{suffix}"] = contact.get("email", "")
             data[f"Mobile{suffix}"] = contact.get("mobile", "")
-            data[f"SH{suffix}NAME"] = deceased.get("name", "")
-            data[f"SH{suffix}DOD"] = deceased.get("dateOfDemise", "")
             data[f"LH{suffix}ACCNO"] = bank.get("accountNumber", "")
             data[f"LH{suffix}BNKNAME"] = bank.get("bankName", "")
             data[f"LH{suffix}BNKBRANCH"] = bank.get("branch", "")
@@ -58,8 +56,6 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
                 "LH{suffix}PIN",
                 "Email",
                 "Mobile",
-                "SH{suffix}NAME",
-                "SH{suffix}DOD",
                 "LH{suffix}ACCNO",
                 "LH{suffix}BNKNAME",
                 "LH{suffix}BNKBRANCH",
@@ -72,6 +68,14 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
                     data[key.format(suffix=suffix)] = ""
                 else:
                     data[f"{key}{suffix}"] = ""
+
+        if i < len(shareholders):
+            shareholder = shareholders[i]
+            data[f"SH{suffix}NAME"] = shareholder.get("name", "")
+            data[f"SH{suffix}DOD"] = shareholder.get("dateOfDemise", "")
+        else:
+            data[f"SH{suffix}NAME"] = ""
+            data[f"SH{suffix}DOD"] = ""
 
     first_heir_contact = legal_heirs[0].get("contactDetails", {}) if legal_heirs else {}
     data["STATENAME"] = other_info.get("stateName", "") or first_heir_contact.get("state", "")
@@ -116,10 +120,25 @@ FILE_NAME_MAPPING = {
     "annexure-e-indemnity": "10. AnnexureE-Indemnity_from_LegalHeir.docx",
 }
 
+JOINT_FILE_NAME_MAPPING = {
+    **FILE_NAME_MAPPING,
+    "isr-4": "5. ISR4.docx",
+    "form-a": "6. FormA.docx",
+    "form-b-indemnity": "7. FormB_Indemnity.docx",
+}
+
 
 def transform_selected_files(selected_files: List[str]) -> List[str]:
     return [
         FILE_NAME_MAPPING[file_id]
         for file_id in selected_files
         if file_id in FILE_NAME_MAPPING
+    ]
+
+
+def transform_joint_selected_files(selected_files: List[str]) -> List[str]:
+    return [
+        JOINT_FILE_NAME_MAPPING[file_id]
+        for file_id in selected_files
+        if file_id in JOINT_FILE_NAME_MAPPING
     ]
