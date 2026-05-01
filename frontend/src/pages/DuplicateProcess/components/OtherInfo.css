@@ -9,6 +9,10 @@
   margin-bottom: var(--spacing-sm);
 }
 
+.other-info-grid.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .other-info-item {
   display: flex;
   flex-direction: column;

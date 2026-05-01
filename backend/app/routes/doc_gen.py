@@ -6,7 +6,7 @@ from app.services.data_modifier import modify_data
 from app.services.template_selector import build_template_paths
 from app.services.file_generator import generate_documents
 from app.utils import duplicate_form_data_transformer
-from app.routes.fill_form import save_form_data
+from app.routes.fill_form import enrich_form_data_for_case, get_owned_case, save_form_data
 from app.repository.storage import UPLOADS_DIR
 from app.utils.document_utils import save_files_data
 
@@ -17,7 +17,8 @@ router = APIRouter()
 def generate_documents_api(client_id: str, case_id: str, request: DocumentRequest):
     try:
         process = request.process
-        form_data = request.data
+        _, case = get_owned_case(client_id, case_id)
+        form_data = enrich_form_data_for_case(case, request.data)
         data = duplicate_form_data_transformer.transform_input_data(form_data)
         selected_files = duplicate_form_data_transformer.transform_selected_files(request.selected_files)
 

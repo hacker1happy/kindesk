@@ -26,7 +26,12 @@
     "assigned_to": "Hari",
     "assigned_from": "Pratha",
     "created_at": "2026-04-30T02:33:53.027586",
-    "files_info": {},
+    "files_info": {
+      "aadhar-front.pdf": {
+        "path": "data/uploads/CL000002/aadhar-front.pdf",
+        "uploaded_at": "2026-05-01T13:20:40.564163"
+      }
+    },
     "case_ids": [
       "CS0VWMVVN"
     ]

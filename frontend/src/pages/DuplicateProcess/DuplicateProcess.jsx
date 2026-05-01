@@ -7,18 +7,15 @@ import { getCaseDetails } from '../../api/caseApi';
 import { getCompanyById } from '../../api/companyApi';
 import ShareholderForm from './components/ShareholderForm';
 import SecuritiesTable from './components/SecuritiesTable';
-import CompanyInfo from './components/CompanyInfo';
-import RTAInfo from './components/RTAInfo';
 import DocumentList from './components/DocumentList';
 import OtherInfo from './components/OtherInfo';
 import './styles/DuplicateProcess.css';
-import './styles/components.css';
-import './styles/global.css';
 
 
 const DuplicateProcess = () => {
   const { clientId, caseId } = useParams();
   const [isEditMode, setIsEditMode] = useState(false);
+  const [caseContext, setCaseContext] = useState(null);
   const navigate = useNavigate();
   const { submitForm, loading, error } = useFormSubmit('duplicate');
 
@@ -80,6 +77,8 @@ const DuplicateProcess = () => {
             folioNumber: '',
             faceValue: ''
           });
+
+          loadCaseCompanyDefaults();
         })
         .catch(() => {
           console.log("No existing form found");
@@ -186,20 +185,29 @@ const DuplicateProcess = () => {
       const caseData = caseRes.data.case;
       const companyRes = await getCompanyById(caseData.company_id);
       const company = companyRes.data;
+      const context = {
+        folioNumber: caseData.folio_number || '',
+        companyName: company.company_name || '',
+        companyAddress: company.company_address || '',
+        rtaName: company.rta_name || '',
+        rtaAddress: company.rta_address || ''
+      };
+
+      setCaseContext(context);
 
       setCompanyInfo({
-        name: company.company_name || '',
-        address: company.company_address || ''
+        name: context.companyName,
+        address: context.companyAddress
       });
 
       setRtaInfo({
-        name: company.rta_name || '',
-        address: company.rta_address || ''
+        name: context.rtaName,
+        address: context.rtaAddress
       });
 
       setOtherInfo((prev) => ({
         ...prev,
-        folioNumber: caseData.folio_number || prev.folioNumber
+        folioNumber: context.folioNumber || prev.folioNumber
       }));
     } catch (err) {
       console.error("Failed to load selected company details", err);
@@ -261,22 +269,6 @@ const DuplicateProcess = () => {
     setSecurities(updatedSecurities);
   };
 
-  // Handle company info changes
-  const handleCompanyInfoChange = (field, value) => {
-    setCompanyInfo({
-      ...companyInfo,
-      [field]: value
-    });
-  };
-
-  // Handle RTA info changes
-  const handleRTAInfoChange = (field, value) => {
-    setRtaInfo({
-      ...rtaInfo,
-      [field]: value
-    });
-  };
-
   // Handle document toggles
   const handleDocumentToggle = (index, field, value) => {
     const updatedDocuments = [...documents];
@@ -309,6 +301,16 @@ const DuplicateProcess = () => {
     return securities.reduce((sum, security) => sum + (parseInt(security.shares) || 0), 0);
   };
 
+  const buildFormData = () => ({
+    shareholders,
+    securities,
+    companyInfo,
+    rtaInfo,
+    documents,
+    otherInfo,
+    totalShares: calculateTotalShares()
+  });
+
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -317,15 +319,7 @@ const DuplicateProcess = () => {
       .filter(doc => doc.selected)
       .map(doc => doc.id);
 
-    const formData = {
-      shareholders: shareholders,
-      securities: securities,
-      companyInfo: companyInfo,
-      rtaInfo: rtaInfo,
-      documents: documents,
-      otherInfo: otherInfo,
-      totalShares: calculateTotalShares()
-    };
+    const formData = buildFormData();
 
     try {
       // ✅ Step 1: Save Form
@@ -353,20 +347,49 @@ const DuplicateProcess = () => {
     setNumShareholders(1);
     setShareholders([{ personalDetails: {}, contactDetails: {}, bankDetails: {} }]);
     setSecurities([{ certificateNumber: '', distinctiveFrom: '', distinctiveTo: '', shares: '' }]);
-    setCompanyInfo({ name: '', address: '' });
-    setRtaInfo({ name: '', address: '' });
+    setCompanyInfo({
+      name: caseContext?.companyName || '',
+      address: caseContext?.companyAddress || ''
+    });
+    setRtaInfo({
+      name: caseContext?.rtaName || '',
+      address: caseContext?.rtaAddress || ''
+    });
     setDocuments(documents.map(doc => ({ ...doc, selected: false, required: false })));
-    setOtherInfo({ formDate: '', folioNumber: '', faceValue: '' });
+    setOtherInfo({ formDate: '', folioNumber: caseContext?.folioNumber || '', faceValue: '' });
   };
 
   return (
-    <div className="duplicate-process">
-      <div className="container">
-        <div className="form-container">
+    <main className="duplicate-process container">
+      <button className="back-link duplicate-process-back" onClick={() => navigate(`/clients/${clientId}/cases/${caseId}`)}>
+        ← Back to Case
+      </button>
+
+      <div className="duplicate-process-header">
+        <div>
+          <p className="duplicate-process-kicker">Case {caseId}</p>
           <h1>{isEditMode ? "Edit Duplicate Process" : "Duplicate Process"}</h1>
+        </div>
+      </div>
+
+      <section className="form-container">
+        <div className="case-context-strip">
+          <div>
+            <span>Folio</span>
+            <strong>{otherInfo.folioNumber || "-"}</strong>
+          </div>
+          <div>
+            <span>Company</span>
+            <strong>{companyInfo.name || "-"}</strong>
+          </div>
+          <div>
+            <span>RTA</span>
+            <strong>{rtaInfo.name || "-"}</strong>
+          </div>
+        </div>
 
           {/* Number of Shareholders Selector */}
-          <div className="form-section">
+          <div className="form-section compact-section">
             <div className="form-group shareholders-select">
               <label>Select the number of shareholders</label>
               <select value={numShareholders} onChange={handleNumShareholdersChange}>
@@ -390,7 +413,7 @@ const DuplicateProcess = () => {
             ))}
 
             {/* Other Important Information */}
-            <OtherInfo data={otherInfo} onChange={handleOtherInfoChange} />
+            <OtherInfo data={otherInfo} onChange={handleOtherInfoChange} hideFolioNumber />
 
             {/* Securities Information */}
             <SecuritiesTable
@@ -399,18 +422,6 @@ const DuplicateProcess = () => {
               onRemove={handleRemoveSecurity}
               onChange={handleSecurityChange}
               totalShares={calculateTotalShares()}
-            />
-
-            {/* Company Information */}
-            <CompanyInfo
-              data={companyInfo}
-              onChange={handleCompanyInfoChange}
-            />
-
-            {/* RTA Information */}
-            <RTAInfo
-              data={rtaInfo}
-              onChange={handleRTAInfoChange}
             />
 
             {/* Document List */}
@@ -442,15 +453,7 @@ const DuplicateProcess = () => {
                 type="button"
                 className="btn btn-secondary"
                 onClick={async () => {
-                  const formData = {
-                    shareholders,
-                    securities,
-                    companyInfo,
-                    rtaInfo,
-                    documents,
-                    otherInfo,
-                    totalShares: calculateTotalShares()
-                  };
+                  const formData = buildFormData();
 
                   await saveFormData(clientId, caseId, formData);
 
@@ -463,13 +466,12 @@ const DuplicateProcess = () => {
                 Reset
               </button>
               <button type="button" className="btn btn-secondary" onClick={() => navigate(-1)}>
-                Back to Home
+                Cancel
               </button>
             </div>
           </form>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

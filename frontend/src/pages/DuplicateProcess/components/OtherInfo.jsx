@@ -1,6 +1,6 @@
 import './OtherInfo.css';
 
-const OtherInfo = ({ data, onChange }) => {
+const OtherInfo = ({ data, onChange, hideFolioNumber = false }) => {
   const handleChange = (field, value) => {
     onChange(field, value);
   };
@@ -21,7 +21,7 @@ const OtherInfo = ({ data, onChange }) => {
   return (
     <div className="form-section">
       <h2>Other Important Information</h2>
-      <div className="other-info-grid">
+      <div className={hideFolioNumber ? "other-info-grid compact" : "other-info-grid"}>
         <div className="other-info-item">
           <label>Form Date (DD-MM-YYYY)</label>
           <input
@@ -33,15 +33,17 @@ const OtherInfo = ({ data, onChange }) => {
           />
         </div>
 
-        <div className="other-info-item">
-          <label>Folio Number</label>
-          <input
-            type="text"
-            placeholder="Enter folio number"
-            value={data.folioNumber || ''}
-            onChange={(e) => handleChange('folioNumber', e.target.value)}
-          />
-        </div>
+        {!hideFolioNumber && (
+          <div className="other-info-item">
+            <label>Folio Number</label>
+            <input
+              type="text"
+              placeholder="Enter folio number"
+              value={data.folioNumber || ''}
+              onChange={(e) => handleChange('folioNumber', e.target.value)}
+            />
+          </div>
+        )}
         <div className="other-info-item">
           <label>Face Value</label>
           <input

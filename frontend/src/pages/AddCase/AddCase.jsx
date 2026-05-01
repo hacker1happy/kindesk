@@ -59,7 +59,7 @@ export default function AddCase() {
   return (
     <main className="container add-case-page">
       <button className="back-link add-case-back" onClick={() => navigate(-1)}>
-        ← Back to client 
+        ← Back to Client 
       </button>
 
       <div className="add-case-header">

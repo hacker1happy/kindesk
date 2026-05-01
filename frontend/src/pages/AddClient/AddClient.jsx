@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "../../api/clientApi";
 import { useNavigate } from "react-router-dom";
+import "./AddClient.css";
 
 export default function AddClient() {
   const navigate = useNavigate();
@@ -132,8 +133,16 @@ export default function AddClient() {
   };
 
   return (
-    <div className="container">
-      <h2 style={{ marginBottom: "20px" }}>Add New Client</h2>
+    <main className="container add-client-page">
+      <button className="back-link add-client-back" onClick={() => navigate("/")}>
+        ← Back to Dashboard
+      </button>
+
+      <div className="add-client-header">
+        <div>
+          <h2>Add New Client</h2>
+        </div>
+      </div>
 
       {/* Toast */}
       {showToast && (
@@ -141,6 +150,11 @@ export default function AddClient() {
       )}
 
       <div className="form-card">
+        <div className="add-client-section-title">
+          <h3>Client Information</h3>
+          <span className="badge">New client</span>
+        </div>
+
         <div className="form-grid">
 
           {/* Name */}
@@ -212,7 +226,7 @@ export default function AddClient() {
 
         </div>
 
-        <div style={{ marginTop: "15px" }}>
+        <div className="add-client-comment">
           <textarea
             name="comment"
             className="input"
@@ -248,6 +262,6 @@ export default function AddClient() {
           </button>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

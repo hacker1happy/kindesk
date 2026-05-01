@@ -286,17 +286,120 @@
     "folio_number": "TATA1234",
     "company_id": "COMP002",
     "case_type": "duplicate",
-    "status": "doc_generated",
+    "status": "mail_sent",
     "created_at": "2026-04-30T02:34:19.413018",
-    "form_data": {},
-    "files": [],
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "Test Father name",
+            "panNumber": "DETPG6655E",
+            "dematAccount": "123456789"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "pinCode": "713347",
+            "email": "finassure.dataset@gmail.com",
+            "mobile": "7123456789"
+          },
+          "bankDetails": {
+            "accountNumber": "6123456789",
+            "bankName": "HDFC",
+            "branch": "Rnj",
+            "ifscCode": "HDFC0000509"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "123",
+          "distinctiveFrom": "34",
+          "distinctiveTo": "56",
+          "shares": "189"
+        }
+      ],
+      "companyInfo": {
+        "name": "Tata Consultancy Services Limited",
+        "address": "TCS House, Raveline Street, Fort, Mumbai, Maharashtra - 400001"
+      },
+      "rtaInfo": {
+        "name": "Link Intime India Private Limited",
+        "address": "C-101, 247 Park, LBS Marg, Vikhroli West, Mumbai, Maharashtra - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "01-05-2026",
+        "folioNumber": "TATA1234",
+        "faceValue": "123"
+      },
+      "totalShares": 189
+    },
+    "files": [
+      "1. Authorization_Letter.docx",
+      "3. ISR1.docx",
+      "6. FormA.docx",
+      "2. Request_Letter.docx",
+      "4. SH-13.docx",
+      "7. FormB_Indemnity.docx",
+      "5. ISR4.docx"
+    ],
     "stages": [
       {
         "key": "mail_sent",
         "label": "Mail Sent to Client",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-01T13:17:39.463982",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000002/CS0VWMVVN/mail_sent/86f21606-5557-4fa6-b8ca-d704b2daf246_epfo.pdf",
+            "uploaded_at": "2026-05-01T13:17:39.463964"
+          }
+        ]
       },
       {
         "key": "client_docs_received",
