@@ -165,7 +165,19 @@
 }
 
 .shareholders-select {
-  max-width: 260px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: fit-content;
+}
+
+.shareholders-select label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.shareholders-select select {
+  min-width: 80px;
 }
 
 .valid-input {
