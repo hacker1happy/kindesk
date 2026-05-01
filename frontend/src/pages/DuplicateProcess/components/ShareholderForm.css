@@ -65,6 +65,18 @@
   border-right: none;
 }
 
+.split-field-cell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.split-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
 .form-cell label {
   font-size: 13px;
   color: #374151;
@@ -86,6 +98,12 @@
   box-shadow: none;
 }
 
+.form-cell input:disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
 .form-cell input::placeholder {
   color: #9ca3af;
   font-size: 12px;
@@ -98,4 +116,9 @@
   margin-top: 3px;
   display: block;
   line-height: 1.2;
+}
+
+.required-marker {
+  color: #dc2626;
+  font-weight: 700;
 }

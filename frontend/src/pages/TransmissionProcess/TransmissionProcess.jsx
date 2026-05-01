@@ -1,8 +1,14 @@
+import TransmissionLikeProcess from "./TransmissionLikeProcess";
+import { TRANSMISSION_DOCUMENTS } from "./processConfig";
+
 export default function TransmissionProcess() {
-    return (
-        <div>
-            <h1>Transmission Process</h1>
-            <p>This is the Transmission Process page.</p>
-        </div>
-    );
+  return (
+    <TransmissionLikeProcess
+      processName="transmission"
+      title="Transmission Process"
+      documents={TRANSMISSION_DOCUMENTS}
+      draftLabel="transmission process"
+      successMessage="The selected transmission process documents were generated successfully."
+    />
+  );
 }

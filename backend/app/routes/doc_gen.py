@@ -6,7 +6,7 @@ from app.models.document_schema import DocumentRequest
 from app.services.data_modifier import modify_data
 from app.services.template_selector import build_template_paths
 from app.services.file_generator import generate_documents
-from app.utils import duplicate_form_data_transformer
+from app.utils.process_registry import get_process_config
 from app.routes.fill_form import enrich_form_data_for_case, get_owned_case, save_form_data
 from app.repository.storage import UPLOADS_DIR, write_cases
 
@@ -36,19 +36,20 @@ def generate_documents_api(client_id: str, case_id: str, request: DocumentReques
                 "message": "Complete Mail Sent to Client and Client Docs Received before generating documents"
             }
 
+        process_config = get_process_config(process)
         form_data = enrich_form_data_for_case(case, request.data)
-        data = duplicate_form_data_transformer.transform_input_data(form_data)
-        selected_files = duplicate_form_data_transformer.transform_selected_files(request.selected_files)
+        data = process_config.transformer(form_data)
+        selected_files = process_config.selected_files_transformer(request.selected_files)
 
         save_form_data(client_id, case_id, form_data)
         case["form_data"] = form_data
 
         # Step 1: Modify data
-        modified_data = modify_data(data, process)
+        modified_data = modify_data(data, process_config.modifier_process)
 
         # Step 2: Build template paths
         template_files = build_template_paths(
-            process,
+            process_config.template_process,
             modified_data,
             selected_files
         )

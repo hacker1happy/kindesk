@@ -5,14 +5,26 @@ concat_keywords = {
     "Email": "Email address(s)",
     "Mobile": "Mobile number(s)",
     "LEGALHEIR": "Legal heir names(s)",
-    "FATHER": "Legal heir father-names(s)",
     "LH_ADDRESS": "Legal heir address(s)",
-    "SH_NAME": "Shareholder name(s)",
+    "SHNAME": "Shareholder name(s)",
     "DOD": "Shareholder date of demise(s)",
 }
 
 def concat_helper(keyword, data):
     data_value = [data[key] for key in data if keyword in key and len(data[key]) > 0]
+
+    values = len(data_value)
+    if values == 1:
+        return data_value[0]
+    elif values == 2:
+        return " & ".join(data_value)
+    elif values >= 3:
+        return ", ".join(data_value[:-1]) + " & " + data_value[-1]
+    else:
+        return ""
+
+def concat_keys(keys, data):
+    data_value = [data.get(key, "") for key in keys if data.get(key, "")]
 
     values = len(data_value)
     if values == 1:
@@ -44,13 +56,13 @@ def duplicate(data):
     return add_static_value(data)
 
 def transmission(data):
-    data["LHNAMES"] = concat_helper("LEGALHEIR", data)
-    data["LHFATHERNAMES"] = concat_helper("FATHER", data)
-    data["LHADDRESSES"] = concat_helper("LH_ADDRESS", data)
+    data["LHNAMES"] = concat_keys(["LEGALHEIRA", "LEGALHEIRB", "LEGALHEIRC"], data)
+    data["LHFATHERNAMES"] = concat_keys(["LHAFATHER", "LHBFATHER", "LHCFATHER"], data)
+    data["LHADDRESSES"] = concat_keys(["LHAADDRESS", "LHBADDRESS", "LHCADDRESS"], data)
     data["EMAILADDRESSES"] = concat_helper("Email", data)
     data["MOBILENUMBERS"] = concat_helper("Mobile", data)
-    data["SHNAMES"] = concat_helper("SH_NAME", data)
-    data["SHAREHOLDERDOD"] = concat_helper("DOD", data)
+    data["SHNAMES"] = concat_keys(["SHANAME", "SHBNAME", "SHCNAME"], data)
+    data["SHAREHOLDERDOD"] = concat_keys(["SHADOD", "SHBDOD", "SHCDOD"], data)
     return data
 
 def both_process(data):
