@@ -204,7 +204,7 @@ export default function Dashboard() {
 
                   <td>
                     <button
-                      className="btn-outline"
+                      className="view-case-btn"
                       onClick={() => navigate(`/clients/${c.id}`)}
                     >
                       View Details

@@ -367,8 +367,7 @@ const DuplicateProcess = () => {
 
       <div className="duplicate-process-header">
         <div>
-          <p className="duplicate-process-kicker">Case {caseId}</p>
-          <h1>{isEditMode ? "Edit Duplicate Process" : "Duplicate Process"}</h1>
+          <h1>Duplicate Process</h1>
         </div>
       </div>
 
