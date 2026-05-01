@@ -71,6 +71,48 @@
   color: #1d4ed8;
 }
 
+.case-details-page .status-mail_sent {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.case-details-page .status-client_docs_received {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.case-details-page .status-doc_sent,
+.case-details-page .status-doc_received {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.case-details-page .status-ops_review {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.case-details-page .status-loc_received {
+  background: #ecfccb;
+  color: #4d7c0f;
+}
+
+.case-details-page .status-iepf_generated {
+  background: #f3e8ff;
+  color: #7e22ce;
+}
+
+.case-details-page .status-iepf_submitted {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.case-details-page .status-everification,
+.case-details-page .status-shares_credited {
+  background: #dcfce7;
+  color: #15803d;
+}
+
 .case-form-panel {
   display: grid;
   gap: 14px;
@@ -111,9 +153,66 @@
   background: #ffffff;
 }
 
+.stage-mail_sent {
+  border-left: 4px solid #0ea5e9;
+}
+
+.stage-client_docs_received {
+  border-left: 4px solid #14b8a6;
+}
+
+.stage-doc_generated {
+  border-left: 4px solid #8b5cf6;
+}
+
+.stage-doc_sent {
+  border-left: 4px solid #3b82f6;
+}
+
+.stage-doc_received {
+  border-left: 4px solid #06b6d4;
+}
+
+.stage-ops_review {
+  border-left: 4px solid #f59e0b;
+}
+
+.stage-sent_to_rta {
+  border-left: 4px solid #2563eb;
+}
+
+.stage-query {
+  border-left: 4px solid #f97316;
+}
+
+.stage-loc_received {
+  border-left: 4px solid #84cc16;
+}
+
+.stage-iepf_generated {
+  border-left: 4px solid #a855f7;
+}
+
+.stage-iepf_submitted {
+  border-left: 4px solid #6366f1;
+}
+
+.stage-everification {
+  border-left: 4px solid #10b981;
+}
+
+.stage-shares_credited {
+  border-left: 4px solid #22c55e;
+}
+
+.stage-closed {
+  border-left: 4px solid #64748b;
+}
+
 .stage-row.completed,
 .query-row.completed {
   border-color: #bbf7d0;
+  border-left-color: #16a34a;
   background: #f0fdf4;
 }
 
@@ -361,8 +460,14 @@
   font-size: 14px;
 }
 
-.stage-document-row p {
-  margin-top: 2px;
+.stage-document-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.stage-document-summary span {
   color: #6b7280;
   font-size: 12px;
 }

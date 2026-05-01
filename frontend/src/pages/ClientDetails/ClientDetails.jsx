@@ -93,8 +93,15 @@ export default function ClientDetails() {
     });
   };
 
-  const getClientDocumentUrl = (fileName) => {
-    return `${API_BASE}/data/uploads/${encodeURIComponent(id)}/${encodeURIComponent(fileName)}`;
+  const getClientDocumentUrl = (fileName, fileInfo = {}) => {
+    const storedPath = fileInfo.path || `data/uploads/${id}/${fileName}`;
+    const normalizedPath = String(storedPath).replace(/\\/g, "/").replace(/^\/+/, "");
+    const encodedPath = normalizedPath
+      .split("/")
+      .map((segment) => encodeURIComponent(segment))
+      .join("/");
+
+    return `${API_BASE}/${encodedPath}`;
   };
 
   const getSortedFiles = () => {
@@ -103,13 +110,29 @@ export default function ClientDetails() {
     });
   };
 
-  const handleOpenFile = (fileName) => {
-    window.open(getClientDocumentUrl(fileName), "_blank", "noopener,noreferrer");
+  const openEditModal = () => {
+    setEditForm({
+      name: client.name || "",
+      phone: client.phone || "",
+      assigned_to: client.assigned_to || "",
+      assigned_from: client.assigned_from || "",
+      comment: client.comment || "",
+    });
+    setEditingClient(true);
   };
 
-  const handleDownloadFile = async (fileName) => {
+  const closeEditModal = () => {
+    if (savingClient) return;
+    setEditingClient(false);
+  };
+
+  const handleOpenFile = (fileName, fileInfo) => {
+    window.open(getClientDocumentUrl(fileName, fileInfo), "_blank", "noopener,noreferrer");
+  };
+
+  const handleDownloadFile = async (fileName, fileInfo) => {
     try {
-      const response = await fetch(getClientDocumentUrl(fileName));
+      const response = await fetch(getClientDocumentUrl(fileName, fileInfo));
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -215,42 +238,74 @@ export default function ClientDetails() {
         <div>
           <h2>{client.name}</h2>
         </div>
-        <button className="btn-outline" onClick={() => setEditingClient((value) => !value)}>
-          {editingClient ? "Cancel Edit" : "Edit Client"}
+        <button className="btn-outline" onClick={openEditModal}>
+          Edit Client
         </button>
       </div>
 
       {editingClient && (
-        <div className="info-card client-edit-card">
-          <div className="client-edit-grid">
-            <input name="name" className="input" value={editForm.name} onChange={handleEditChange} />
-            <input name="phone" className="input" value={editForm.phone} onChange={handleEditChange} />
-            <select name="assigned_to" className="input" value={editForm.assigned_to} onChange={handleEditChange}>
-              <option value="">Select Assigned To</option>
-              {assignedToOptions.map((option) => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-            <select name="assigned_from" className="input" value={editForm.assigned_from} onChange={handleEditChange}>
-              <option value="">Select Assigned From</option>
-              {assignedFromOptions.map((option) => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </div>
-          <textarea
-            name="comment"
-            className="input client-edit-comment"
-            rows={3}
-            value={editForm.comment}
-            onChange={handleEditChange}
-            placeholder="Comment"
-          />
-          <div className="form-actions">
-            <button className="btn-secondary" onClick={() => setEditingClient(false)}>Cancel</button>
-            <button className="btn" onClick={handleSaveClient} disabled={savingClient}>
-              {savingClient ? "Saving..." : "Save Changes"}
-            </button>
+        <div className="modal-backdrop" role="presentation" onMouseDown={closeEditModal}>
+          <div
+            className="client-edit-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="client-edit-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <div className="client-edit-modal-header">
+              <div>
+                <h3 id="client-edit-title">Edit Client Details</h3>
+                <p>Update contact, assignment, and notes for this client.</p>
+              </div>
+            </div>
+
+            <div className="client-edit-grid">
+              <label>
+                <span>Client Name</span>
+                <input name="name" className="input" value={editForm.name} onChange={handleEditChange} />
+              </label>
+              <label>
+                <span>Phone</span>
+                <input name="phone" className="input" value={editForm.phone} onChange={handleEditChange} />
+              </label>
+              <label>
+                <span>Assigned To</span>
+                <select name="assigned_to" className="input" value={editForm.assigned_to} onChange={handleEditChange}>
+                  <option value="">Select Assigned To</option>
+                  {assignedToOptions.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>Assigned From</span>
+                <select name="assigned_from" className="input" value={editForm.assigned_from} onChange={handleEditChange}>
+                  <option value="">Select Assigned From</option>
+                  {assignedFromOptions.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
+            <label className="client-edit-comment-field">
+              <span>Comment</span>
+              <textarea
+                name="comment"
+                className="input client-edit-comment"
+                rows={8}
+                value={editForm.comment}
+                onChange={handleEditChange}
+                placeholder="Comment"
+              />
+            </label>
+
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={closeEditModal} disabled={savingClient}>Cancel</button>
+              <button className="btn" onClick={handleSaveClient} disabled={savingClient}>
+                {savingClient ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -350,7 +405,7 @@ export default function ClientDetails() {
                     <button
                       type="button"
                       className="btn-outline file-btn open-file-btn"
-                      onClick={() => handleOpenFile(fileName)}
+                      onClick={() => handleOpenFile(fileName, fileInfo)}
                     >
                       Open
                     </button>
@@ -358,7 +413,7 @@ export default function ClientDetails() {
                     <button
                       type="button"
                       className="btn-outline file-btn download-file-btn"
-                      onClick={() => handleDownloadFile(fileName)}
+                      onClick={() => handleDownloadFile(fileName, fileInfo)}
                     >
                       Download
                     </button>

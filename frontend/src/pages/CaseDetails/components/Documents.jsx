@@ -41,6 +41,14 @@ export default function Documents({ caseData, refresh }) {
     return [...items].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0));
   };
 
+  const getDocumentSummary = (documents) => {
+    const latestDocument = documents[0];
+
+    return `${documents.length} doc${documents.length === 1 ? "" : "s"}${
+      latestDocument ? `, latest ${formatDateTime(latestDocument.uploaded_at)}` : ""
+    }`;
+  };
+
   const managedDocumentGroups = useMemo(() => {
     const stageGroups = (caseData?.stages || []).map((stage) => ({
       id: `stage-${stage.key}`,
@@ -59,7 +67,13 @@ export default function Documents({ caseData, refresh }) {
       documents: sortByUploadTime(query.documents || []),
     }));
 
-    return [...stageGroups, ...queryGroups];
+    return stageGroups.flatMap((stageGroup) => {
+      if (stageGroup.key === "sent_to_rta") {
+        return [stageGroup, ...queryGroups];
+      }
+
+      return [stageGroup];
+    });
   }, [caseData]);
 
   const fetchDocuments = async () => {
@@ -242,14 +256,11 @@ export default function Documents({ caseData, refresh }) {
         <h4>Stage Documents</h4>
         <div className="stage-document-list">
           {managedDocumentGroups.map((group) => (
-            <details key={group.id} className="stage-document-row">
+            <details key={group.id} className={`stage-document-row stage-${group.type === "query" ? "query" : group.key}`}>
               <summary>
-                <div>
+                <div className="stage-document-summary">
                   <strong>{group.label}</strong>
-                  <p>
-                    {group.documents.length} doc{group.documents.length === 1 ? "" : "s"}
-                    {group.documents[0] ? `, latest ${formatDateTime(group.documents[0].uploaded_at)}` : ""}
-                  </p>
+                  <span>{getDocumentSummary(group.documents)}</span>
                 </div>
                 <label className="btn-outline compact-upload" onClick={(e) => e.stopPropagation()}>
                   {workingKey === `${group.id}-upload` ? "Uploading..." : group.documents.length ? "Add" : "Upload"}

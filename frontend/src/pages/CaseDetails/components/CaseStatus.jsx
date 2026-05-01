@@ -198,10 +198,10 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
 
 function StageRow({ stage, loadingKey, formatDateTime, onUpload, onComplete }) {
   const documents = stage.documents || [];
-  const latestDocument = documents[documents.length - 1];
+  const latestDocument = [...documents].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0))[0];
 
   return (
-    <div className={`stage-row ${stage.completed ? "completed" : ""}`}>
+    <div className={`stage-row stage-${stage.key} ${stage.completed ? "completed" : ""}`}>
       <div className="stage-main">
         <span className="stage-status-dot" />
         <div>
@@ -228,7 +228,7 @@ function StageRow({ stage, loadingKey, formatDateTime, onUpload, onComplete }) {
           disabled={loadingKey === stage.key || stage.completed}
           onClick={() => onComplete(stage.key)}
         >
-          {stage.completed ? "Done" : "Mark Done"}
+          {stage.completed ? "Done" : "Mark as done"}
         </button>
       </div>
     </div>
@@ -237,11 +237,11 @@ function StageRow({ stage, loadingKey, formatDateTime, onUpload, onComplete }) {
 
 function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose, onViewDetails }) {
   const documents = query.documents || [];
-  const latestDocument = documents[documents.length - 1];
+  const latestDocument = [...documents].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0))[0];
   const isClosed = query.status === "closed";
 
   return (
-    <div className={`query-row ${isClosed ? "completed" : ""}`}>
+    <div className={`query-row stage-query ${isClosed ? "completed" : ""}`}>
       <div className="stage-main">
         <span className="query-status-dot" />
         <div>

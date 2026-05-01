@@ -47,6 +47,14 @@ export default function CaseDetails() {
     });
   };
 
+  const getStatusClass = (status = "fresh") => {
+    const normalizedStatus = status.toLowerCase();
+
+    if (/^q\d+_/.test(normalizedStatus)) return "query";
+
+    return normalizedStatus;
+  };
+
   if (loading) return <p className="container">Loading case details...</p>;
 
   if (error) {
@@ -89,7 +97,7 @@ export default function CaseDetails() {
       <section className="info-card">
         <div className="section-header">
           <h3>Case Details</h3>
-          <span className={`status-badge status-${(caseData.status || "fresh").toLowerCase()}`}>
+          <span className={`status-badge status-${getStatusClass(caseData.status)}`}>
             {caseData.status || "fresh"}
           </span>
         </div>

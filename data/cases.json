@@ -71,7 +71,6 @@
       "4. SH-13.docx",
       "3. ISR1.docx",
       "7. FormB_Indemnity.docx",
-      "5. ISR4.docx",
       "2. Request_Letter.docx",
       "1. Authorization_Letter.docx"
     ],
@@ -80,22 +79,17 @@
         "key": "mail_sent",
         "label": "Mail Sent to Client",
         "completed": true,
-        "updated_at": "2026-04-30T09:59:18.411101",
+        "updated_at": "2026-05-01T12:27:14.302612",
         "documents": [
-          {
-            "name": "epfo.pdf",
-            "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/e6ea7910-546c-4617-bdb1-8b27302f9446_epfo.pdf",
-            "uploaded_at": "2026-04-30T07:27:35.190756"
-          },
-          {
-            "name": "forage_DELOITTE.pdf",
-            "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/e514412f-fa3f-469e-8972-d1e5abdbc68f_forage_DELOITTE.pdf",
-            "uploaded_at": "2026-04-30T07:28:17.515697"
-          },
           {
             "name": "aadhar-front.pdf",
             "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/a1cd45fc-40d9-4530-b7ee-a41006d0c391_aadhar-front.pdf",
             "uploaded_at": "2026-04-30T09:59:18.411082"
+          },
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/a2cc45f8-827b-43f9-bef2-4791db854abc_epfo.pdf",
+            "uploaded_at": "2026-05-01T12:27:14.302588"
           }
         ]
       },
