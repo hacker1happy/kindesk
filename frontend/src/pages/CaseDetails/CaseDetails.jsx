@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCaseDetails } from "../../api/caseApi";
+import { deleteCase, getCaseDetails } from "../../api/caseApi";
+import ConfirmationModal from "../../components/ConfirmationModal";
 import CaseStatus from "./components/CaseStatus";
 import CaseInfo from "./components/CaseInfo";
 import Documents from "./components/Documents";
@@ -12,7 +13,9 @@ export default function CaseDetails() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("form");
+  const [activeTab, setActiveTab] = useState("stages");
+  const [showDeleteCase, setShowDeleteCase] = useState(false);
+  const [deleteCaseInput, setDeleteCaseInput] = useState("");
 
   useEffect(() => {
     if (!clientId) {
@@ -55,6 +58,20 @@ export default function CaseDetails() {
     return normalizedStatus;
   };
 
+  const isStageCompleted = (caseData, stageKey) => {
+    return Boolean(caseData?.stages?.find((stage) => stage.key === stageKey)?.completed);
+  };
+
+  const handleDeleteCase = async () => {
+    try {
+      await deleteCase(clientId, caseId, deleteCaseInput);
+      navigate(`/clients/${clientId}`);
+    } catch (err) {
+      console.error("Error deleting case:", err);
+      alert(err.response?.data?.detail || "Failed to delete case");
+    }
+  };
+
   if (loading) return <p className="container">Loading case details...</p>;
 
   if (error) {
@@ -72,6 +89,9 @@ export default function CaseDetails() {
 
   const caseData = data.case;
   const client = data.client;
+  const documentsReadyForGeneration =
+    isStageCompleted(caseData, "mail_sent") &&
+    isStageCompleted(caseData, "client_docs_received");
 
   return (
     <div className="container case-details-page">
@@ -83,6 +103,9 @@ export default function CaseDetails() {
         <div>
           <h2>{client.name}</h2>
         </div>
+        <button className="btn-outline remove-btn" onClick={() => setShowDeleteCase(true)}>
+          Delete Case
+        </button>
       </div>
 
       <section className="info-card">
@@ -113,12 +136,6 @@ export default function CaseDetails() {
 
       <div className="case-tabs">
         <button
-          className={activeTab === "form" ? "active" : ""}
-          onClick={() => setActiveTab("form")}
-        >
-          Form
-        </button>
-        <button
           className={activeTab === "stages" ? "active" : ""}
           onClick={() => setActiveTab("stages")}
         >
@@ -130,9 +147,20 @@ export default function CaseDetails() {
         >
           Documents
         </button>
+        <button
+          className={activeTab === "form" ? "active" : ""}
+          onClick={() => setActiveTab("form")}
+        >
+          Form
+        </button>
       </div>
 
-      {activeTab === "form" && <CaseInfo caseData={caseData} />}
+      {activeTab === "form" && (
+        <CaseInfo
+          caseData={caseData}
+          documentsReadyForGeneration={documentsReadyForGeneration}
+        />
+      )}
 
       {activeTab === "stages" && (
         <CaseStatus
@@ -144,6 +172,34 @@ export default function CaseDetails() {
 
       {activeTab === "documents" && (
         <Documents caseData={caseData} refresh={fetchData} />
+      )}
+
+      {showDeleteCase && (
+        <ConfirmationModal
+          title="Delete case?"
+          message={`This will permanently delete case ${caseData.case_id}, and all files uploaded for this case.`}
+          detail="Type the Case ID exactly to confirm this irreversible action."
+          confirmLabel="Delete Case"
+          danger
+          confirmDisabled={deleteCaseInput !== caseData.case_id}
+          onCancel={() => {
+            setShowDeleteCase(false);
+            setDeleteCaseInput("");
+          }}
+          onConfirm={handleDeleteCase}
+        >
+          <div className="confirm-id-input">
+            <label>
+              Case ID
+              <input
+                className="input"
+                value={deleteCaseInput}
+                onChange={(event) => setDeleteCaseInput(event.target.value)}
+                placeholder={caseData.case_id}
+              />
+            </label>
+          </div>
+        </ConfirmationModal>
       )}
     </div>
   );

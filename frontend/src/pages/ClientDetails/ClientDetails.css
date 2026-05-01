@@ -10,6 +10,12 @@
   margin-bottom: 5px;
 }
 
+.details-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
 .client-name {
   font-size: 28px;
   font-weight: 600;
@@ -138,12 +144,12 @@
   margin-top: 10px;
   color: #374151;
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.0;
   white-space: pre-wrap;
 }
 
 .comment-text:not(.expanded) {
-  max-height: 48px;
+  max-height: 25px;
   overflow: hidden;
 }
 

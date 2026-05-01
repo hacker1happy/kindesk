@@ -1,29 +1,33 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
-  deleteCaseDocument,
-  downloadAllCaseDocumentsUrl,
-  getCaseDocuments,
-  uploadCaseDocument,
-} from "../../../api/caseDocuments";
-import {
+  downloadAllStageDocumentsUrl,
+  downloadStageDocumentsUrl,
+  removeMiscDocument,
   removeQueryDocument,
   removeStageDocument,
   replaceQueryDocument,
   replaceStageDocument,
+  uploadMiscDocument,
   uploadQueryDocument,
   uploadStageDocument,
 } from "../../../api/caseApi";
+import ConfirmationModal from "../../../components/ConfirmationModal";
 
 const API_BASE = "http://127.0.0.1:8000";
+const OPTIONAL_DOCUMENT_STAGES = new Set([
+  "mail_sent",
+  "iepf_generated",
+  "everification",
+  "shares_credited",
+  "closed",
+]);
 
 export default function Documents({ caseData, refresh }) {
   const { clientId, caseId } = useParams();
 
-  const [files, setFiles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
   const [workingKey, setWorkingKey] = useState(null);
+  const [pendingRemoval, setPendingRemoval] = useState(null);
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";
@@ -41,8 +45,17 @@ export default function Documents({ caseData, refresh }) {
     return [...items].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0));
   };
 
+  const sortByFilename = (items) => {
+    return [...items].sort((a, b) =>
+      (a.name || "").localeCompare(b.name || "", undefined, {
+        numeric: true,
+        sensitivity: "base",
+      })
+    );
+  };
+
   const getDocumentSummary = (documents) => {
-    const latestDocument = documents[0];
+    const latestDocument = sortByUploadTime(documents)[0];
 
     return `${documents.length} doc${documents.length === 1 ? "" : "s"}${
       latestDocument ? `, latest ${formatDateTime(latestDocument.uploaded_at)}` : ""
@@ -55,7 +68,10 @@ export default function Documents({ caseData, refresh }) {
       type: "stage",
       key: stage.key,
       label: stage.label,
-      documents: sortByUploadTime(stage.documents || []),
+      documents:
+        stage.key === "doc_generated"
+          ? sortByFilename(stage.documents || [])
+          : sortByUploadTime(stage.documents || []),
     }));
 
     const queryGroups = (caseData?.queries || []).map((query) => ({
@@ -76,21 +92,7 @@ export default function Documents({ caseData, refresh }) {
     });
   }, [caseData]);
 
-  const fetchDocuments = async () => {
-    try {
-      setLoading(true);
-      const res = await getCaseDocuments(clientId, caseId);
-      setFiles(res.data.files || []);
-    } catch (err) {
-      console.error("Error fetching documents", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchDocuments();
-  }, [clientId, caseId]);
+  const miscDocuments = sortByUploadTime(caseData?.misc_documents || []);
 
   const getFileUrl = (url) => `${API_BASE}${url}`;
 
@@ -117,26 +119,6 @@ export default function Documents({ caseData, refresh }) {
     }
   };
 
-  const handleGeneratedUpload = async (e) => {
-    const selectedFiles = e.target.files;
-    if (!selectedFiles.length) return;
-
-    const formData = new FormData();
-    Array.from(selectedFiles).forEach((file) => formData.append("files", file));
-
-    try {
-      setUploading(true);
-      await uploadCaseDocument(clientId, caseId, formData);
-      await fetchDocuments();
-      e.target.value = "";
-    } catch (err) {
-      console.error("Upload failed", err);
-      alert("Upload failed");
-    } finally {
-      setUploading(false);
-    }
-  };
-
   const handleGroupUpload = async (group, selectedFiles) => {
     if (!selectedFiles?.length) return;
 
@@ -156,6 +138,24 @@ export default function Documents({ caseData, refresh }) {
       await refresh?.();
     } catch (err) {
       console.error("Upload failed", err);
+      alert(err.response?.data?.detail || "Upload failed");
+    } finally {
+      setWorkingKey(null);
+    }
+  };
+
+  const handleMiscUpload = async (selectedFiles) => {
+    if (!selectedFiles?.length) return;
+
+    try {
+      setWorkingKey("misc-upload");
+      const formData = new FormData();
+      Array.from(selectedFiles).forEach((file) => formData.append("files", file));
+
+      await uploadMiscDocument(clientId, caseId, formData);
+      await refresh?.();
+    } catch (err) {
+      console.error("Misc upload failed", err);
       alert(err.response?.data?.detail || "Upload failed");
     } finally {
       setWorkingKey(null);
@@ -205,54 +205,41 @@ export default function Documents({ caseData, refresh }) {
     }
   };
 
-  const handleDeleteGenerated = async (file) => {
+  const handleRemoveMiscDocument = async (document) => {
     try {
-      const filename = file.stored_name || file.url.split("/").pop();
+      setWorkingKey(`misc-${document.url}-remove`);
 
-      await deleteCaseDocument(clientId, caseId, filename);
-      await fetchDocuments();
+      await removeMiscDocument(clientId, caseId, document.url);
+      await refresh?.();
     } catch (err) {
-      console.error("Delete failed", err);
-      alert("Delete failed");
+      console.error("Remove failed", err);
+      alert(err.response?.data?.detail || "Remove failed");
+    } finally {
+      setWorkingKey(null);
     }
+  };
+
+  const handleConfirmRemoval = async () => {
+    if (!pendingRemoval) return;
+
+    if (pendingRemoval.type === "misc") {
+      await handleRemoveMiscDocument(pendingRemoval.document);
+    } else {
+      await handleRemoveManagedDocument(pendingRemoval.group, pendingRemoval.document);
+    }
+
+    setPendingRemoval(null);
   };
 
   return (
     <section className="info-card">
       <div className="section-header">
-        <h3>Generated Case Documents</h3>
-
-        <div className="document-header-actions">
-          <a className="btn-outline download-file-btn" href={downloadAllCaseDocumentsUrl(clientId, caseId)}>
-            Download All
-          </a>
-          <label className="btn-outline">
-            {uploading ? "Uploading..." : "+ Upload"}
-            <input type="file" multiple hidden onChange={handleGeneratedUpload} />
-          </label>
-        </div>
+        <h3>Stage Files</h3>
+        <a className="btn-outline download-file-btn" href={downloadAllStageDocumentsUrl(clientId, caseId)}>
+          Download All
+        </a>
       </div>
 
-      {loading ? (
-        <p>Loading documents...</p>
-      ) : files.length === 0 ? (
-        <p className="empty-text">No generated documents found.</p>
-      ) : (
-        <div className="files-list">
-          {files.map((doc) => (
-            <DocumentRow
-              key={doc.url}
-              doc={doc}
-              formatDateTime={formatDateTime}
-              onDownload={handleDownloadFile}
-              onDelete={handleDeleteGenerated}
-            />
-          ))}
-        </div>
-      )}
-
-      <div className="document-subsection">
-        <h4>Stage Documents</h4>
         <div className="stage-document-list">
           {managedDocumentGroups.map((group) => (
             <details key={group.id} className={`stage-document-row stage-${group.type === "query" ? "query" : group.key}`}>
@@ -274,6 +261,17 @@ export default function Documents({ caseData, refresh }) {
 
               {group.details && <p className="managed-doc-note">{group.details}</p>}
 
+              {group.key === "doc_generated" && group.documents.length > 0 && (
+                <div className="generated-doc-actions">
+                  <a
+                    className="btn-outline download-file-btn"
+                    href={downloadStageDocumentsUrl(clientId, caseId, group.key)}
+                  >
+                    Download All
+                  </a>
+                </div>
+              )}
+
               {group.documents.length === 0 ? (
                 <p className="empty-text compact-empty">No documents uploaded.</p>
               ) : (
@@ -283,16 +281,26 @@ export default function Documents({ caseData, refresh }) {
                       key={doc.url}
                       doc={doc}
                       formatDateTime={formatDateTime}
-                      onOpen={handleOpenFile}
+                      onOpen={group.key === "doc_generated" ? null : handleOpenFile}
                       onDownload={handleDownloadFile}
                       onReplace={(document, file) => handleReplaceManagedDocument(group, document, file)}
                       onDelete={
-                        group.documents.length > 1
-                          ? (document) => handleRemoveManagedDocument(group, document)
+                        group.key === "doc_generated"
+                          ? null
+                          :
+                        group.type === "stage" && (OPTIONAL_DOCUMENT_STAGES.has(group.key) || group.documents.length > 1)
+                          ? (document) => setPendingRemoval({ type: "managed", group, document })
+                          : group.type === "query" && group.documents.length > 1
+                            ? (document) => setPendingRemoval({ type: "managed", group, document })
                           : null
                       }
                       removeDisabledReason={
-                        group.documents.length <= 1 ? "Replace the only document instead of removing it." : ""
+                        group.key === "doc_generated"
+                          ? ""
+                          :
+                        group.documents.length <= 1 && !OPTIONAL_DOCUMENT_STAGES.has(group.key)
+                          ? "Replace the only document instead of removing it."
+                          : ""
                       }
                     />
                   ))}
@@ -301,7 +309,45 @@ export default function Documents({ caseData, refresh }) {
             </details>
           ))}
         </div>
+
+      <div className="document-subsection">
+        <div className="section-header">
+          <h4>Miscellaneous Files</h4>
+          <label className="btn-outline compact-upload">
+            {workingKey === "misc-upload" ? "Uploading..." : "+ Upload"}
+            <input type="file" multiple hidden onChange={(e) => handleMiscUpload(e.target.files)} />
+          </label>
+        </div>
+
+        {miscDocuments.length === 0 ? (
+          <p className="empty-text compact-empty">No miscellaneous files uploaded.</p>
+        ) : (
+          <div className="managed-doc-list">
+            {miscDocuments.map((doc) => (
+              <DocumentRow
+                key={doc.url}
+                doc={doc}
+                formatDateTime={formatDateTime}
+                onOpen={handleOpenFile}
+                onDownload={handleDownloadFile}
+                onDelete={(document) => setPendingRemoval({ type: "misc", document })}
+              />
+            ))}
+          </div>
+        )}
       </div>
+
+      {pendingRemoval && (
+        <ConfirmationModal
+          title="Remove document?"
+          message={`You are removing "${pendingRemoval.document.name}".`}
+          detail="This action is irreversible and the file will be removed from this case."
+          confirmLabel="Confirm Remove"
+          danger
+          onCancel={() => setPendingRemoval(null)}
+          onConfirm={handleConfirmRemoval}
+        />
+      )}
     </section>
   );
 }
@@ -315,14 +361,6 @@ function DocumentRow({
   onReplace,
   removeDisabledReason,
 }) {
-  const handleDelete = () => {
-    const shouldRemove = window.confirm(`Remove "${doc.name}" from documents?`);
-
-    if (!shouldRemove) return;
-
-    onDelete(doc);
-  };
-
   return (
     <div className="compact-file-item">
       <div className="file-info-row">
@@ -350,7 +388,7 @@ function DocumentRow({
           </label>
         )}
         {onDelete ? (
-          <button className="btn-outline remove-btn" onClick={handleDelete}>
+          <button className="btn-outline remove-btn" onClick={() => onDelete(doc)}>
             Remove
           </button>
         ) : removeDisabledReason ? (

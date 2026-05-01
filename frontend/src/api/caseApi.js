@@ -17,6 +17,11 @@ export const getAllCases = () => API.get("/cases");
 export const getCaseDetails = (clientId, caseId) =>
   API.get(`/clients/${clientId}/cases/${caseId}`);
 
+export const deleteCase = (clientId, caseId, confirmationId) =>
+  API.delete(`/clients/${clientId}/cases/${caseId}`, {
+    data: { confirmation_id: confirmationId },
+  });
+
 
 // ✅ Stage update
 export const updateStage = (clientId, caseId, stageKey) =>
@@ -58,3 +63,17 @@ export const removeQueryDocument = (clientId, caseId, queryNo, url) =>
   API.delete(`/clients/${clientId}/cases/${caseId}/queries/${queryNo}/documents`, {
     params: { url },
   });
+
+export const uploadMiscDocument = (clientId, caseId, formData) =>
+  API.post(`/clients/${clientId}/cases/${caseId}/misc/upload`, formData);
+
+export const removeMiscDocument = (clientId, caseId, url) =>
+  API.delete(`/clients/${clientId}/cases/${caseId}/misc/documents`, {
+    params: { url },
+  });
+
+export const downloadAllStageDocumentsUrl = (clientId, caseId) =>
+  `http://127.0.0.1:8000/clients/${clientId}/cases/${caseId}/stages/documents/download-all`;
+
+export const downloadStageDocumentsUrl = (clientId, caseId, stageKey) =>
+  `http://127.0.0.1:8000/clients/${clientId}/cases/${caseId}/stages/${stageKey}/documents/download-all`;

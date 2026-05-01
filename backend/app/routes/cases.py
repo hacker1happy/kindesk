@@ -1,7 +1,9 @@
+import shutil
+
 from fastapi import APIRouter, HTTPException
 from datetime import datetime
 from app.models.case_schema import CaseCreateRequest
-from app.repository.storage import read_cases, read_clients, read_companies, read_rtas, write_cases, write_clients
+from app.repository.storage import UPLOADS_DIR, read_cases, read_clients, read_companies, read_rtas, write_cases, write_clients
 from app.utils.id_generator_utils import generate_case_id
 from app.constants.helper_constants import DEFAULT_STAGES
 
@@ -115,3 +117,33 @@ def get_case(client_id: str, case_id: str):
             **client
         }
     }
+
+
+@router.delete("/clients/{client_id}/cases/{case_id}")
+def delete_case(client_id: str, case_id: str, payload: dict):
+    confirmation = payload.get("confirmation_id")
+
+    if confirmation != case_id:
+        raise HTTPException(status_code=400, detail="Case ID confirmation does not match")
+
+    clients = read_clients()
+    cases = read_cases()
+    client = clients.get(client_id)
+
+    if not client:
+        raise HTTPException(status_code=404, detail="Client not found")
+
+    if case_id not in client.get("case_ids", []):
+        raise HTTPException(status_code=404, detail="Case not found")
+
+    cases.pop(case_id, None)
+    client["case_ids"] = [item for item in client.get("case_ids", []) if item != case_id]
+
+    case_dir = UPLOADS_DIR / client_id / case_id
+    if case_dir.exists():
+        shutil.rmtree(case_dir)
+
+    write_cases(cases)
+    write_clients(clients)
+
+    return {"message": "Case deleted"}

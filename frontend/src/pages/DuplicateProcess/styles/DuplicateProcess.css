@@ -15,10 +15,11 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
+  padding: 10px;
 }
 
-.duplicate-process-header h1 {
+.duplicate-process-header h2 {
   margin-top: 4px;
   color: #111827;
   font-size: 26px;
@@ -70,6 +71,45 @@
   font-weight: 650;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.generation-readiness {
+  display: flex;
+  padding: 12px 14px;
+  border: 1px solid #bfdbfe;
+  border-left: 4px solid #2563eb;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+
+.generation-readiness.saved {
+  border-color: #fed7aa;
+  border-left-color: #f97316;
+  background: #fff7ed;
+}
+
+.generation-readiness.ready {
+  border-color: #bbf7d0;
+  border-left-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.generation-readiness div {
+  display: grid;
+  gap: 3px;
+}
+
+.generation-readiness span {
+  color: #374151;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.generation-readiness strong {
+  color: #111827;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .form-section {
@@ -126,7 +166,19 @@
 }
 
 .shareholders-select {
-  max-width: 260px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: fit-content;
+}
+
+.shareholders-select label {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.shareholders-select select {
+  min-width: 80px;
 }
 
 .valid-input {

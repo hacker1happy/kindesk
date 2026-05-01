@@ -15,6 +15,11 @@ export const getClientById = (id) => API.get(`/clients/${id}`);
 
 export const updateClient = (id, data) => API.put(`/clients/${id}`, data);
 
+export const deleteClient = (id, confirmationId) =>
+  API.delete(`/clients/${id}`, {
+    data: { confirmation_id: confirmationId },
+  });
+
 export const uploadClientDocuments = (clientId, formData) =>
   API.post(
     `/clients/${clientId}/documents`,

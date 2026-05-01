@@ -8,6 +8,13 @@ import {
 } from "../../../api/caseApi";
 
 const QUERY_AFTER_STAGE = "sent_to_rta";
+const OPTIONAL_DOCUMENT_STAGES = new Set([
+  "mail_sent",
+  "iepf_generated",
+  "everification",
+  "shares_credited",
+  "closed",
+]);
 
 export default function CaseStatus({ caseData, clientId, refresh }) {
   const [loadingKey, setLoadingKey] = useState(null);
@@ -124,11 +131,17 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
       </div>
 
       <div className="stage-list">
-        {stages.map((stage) => (
+        {stages.map((stage, index) => {
+          const previousStagesComplete = stages
+            .slice(0, index)
+            .every((previousStage) => previousStage.completed);
+
+          return (
           <div key={stage.key}>
             <StageRow
               stage={stage}
               loadingKey={loadingKey}
+              canComplete={previousStagesComplete}
               formatDateTime={formatDateTime}
               onUpload={handleStageUpload}
               onComplete={handleStageComplete}
@@ -154,7 +167,8 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
               </div>
             )}
           </div>
-        ))}
+        );
+        })}
       </div>
 
       {showQueryModal && (
@@ -196,9 +210,11 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
   );
 }
 
-function StageRow({ stage, loadingKey, formatDateTime, onUpload, onComplete }) {
+function StageRow({ stage, loadingKey, canComplete, formatDateTime, onUpload, onComplete }) {
   const documents = stage.documents || [];
   const latestDocument = [...documents].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0))[0];
+  const requiresDocument = !OPTIONAL_DOCUMENT_STAGES.has(stage.key);
+  const missingRequiredDocument = requiresDocument && documents.length === 0;
 
   return (
     <div className={`stage-row stage-${stage.key} ${stage.completed ? "completed" : ""}`}>
@@ -225,7 +241,14 @@ function StageRow({ stage, loadingKey, formatDateTime, onUpload, onComplete }) {
         </label>
         <button
           className="btn-outline"
-          disabled={loadingKey === stage.key || stage.completed}
+          disabled={loadingKey === stage.key || stage.completed || !canComplete || missingRequiredDocument}
+          title={
+            !canComplete
+              ? "Complete previous stage first."
+              : missingRequiredDocument
+                ? "Upload at least one document before marking this stage done."
+                : ""
+          }
           onClick={() => onComplete(stage.key)}
         >
           {stage.completed ? "Done" : "Mark as done"}

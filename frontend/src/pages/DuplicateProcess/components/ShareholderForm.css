@@ -34,8 +34,10 @@
 }
 
 .shareholder-row.header {
+  display: grid;
   background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 5px;
 }
 
 .header-cell {
