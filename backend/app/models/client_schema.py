@@ -3,10 +3,11 @@ from typing import List, Optional
 
 
 class Client(BaseModel):
-    id: str
     name: str
     phone: str
     assigned_to: str
     assigned_from: str
+    comment: str = ""
     created_at: str
-    files: Optional[List[str]] = []
+    files_info: dict = {}
+    case_ids: Optional[List[str]] = []

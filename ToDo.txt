@@ -1,3 +1,15 @@
+client id to be sequential
+client mobile no and name should be consider as PK
+
+to add comment section while adding a client 
+When caller is adding a client, there should be feature to add more docs after a client is succesfully added. For caller and for ops team as well
+
+in case form folio number/company name should be pre-filled
+can make company + address static - dropdown option
+RTA can be dropdown option - Sangeeta
+
+Case dlt - feature
+
 Add Search (real filtering), filter based on name, number, date, assigned to and from
 Add Cases column dynamic (optional)
     → instead of 0
@@ -7,4 +19,35 @@ Permission on login based
     - ops team can add, update, client details and add new cases with related features
     - admin to have all access to delete any client details as well
     - admin can also add-delete assigned to and assigned from person
-When caller is adding a client, there should be feature to add more docs after a client is succesfully added. For caller and for ops team as well
+
+
+Feature to save the form draft & To edit the form later - Done
+Feature to duplicate a case for a particular client
+To upload particular case documents and show them in list with feature to download any particular file or all files in .zip 
+
+documents table
+docname | time | upload | delete
+
+ 
+
+stage | date | doc name | doc link
+timeline to show when status is last updated for each status - tabular formmat
+ - mail sent to client
+ - client doc receievd
+ - doc gen
+ - doc sent to client
+ - doc receievd from client
+ - doc review and sign-off by ops team
+    - to have a checklist for review docs sent to client
+ - doc sent to Comp/RTA - {signed client pdf + POD receipt}
+ - Query cycle
+  - Q1 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
+  - Q2 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
+  - Q3 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
+  - Q4 receievd/resolved - {Query letter pdf + updated client doc + POD receipt}
+ - LOC/LOE receievd - {LOC copy + DRF receipt}
+ - IEPF claim form generated
+ - IEPF claim form submitted - {Signed client IEPF docs + POD receipt}
+ - e-verification report approved
+ - shares credited
+ - case closed

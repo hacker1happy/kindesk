@@ -1,0 +1,15 @@
+DEFAULT_STAGES = [
+    {"key": "mail_sent", "label": "Mail Sent to Client"},
+    {"key": "client_docs_received", "label": "Client Docs Received"},
+    {"key": "doc_generated", "label": "Document Generated"},
+    {"key": "doc_sent", "label": "Document Sent to Client"},
+    {"key": "doc_received", "label": "Document Received from Client"},
+    {"key": "ops_review", "label": "Ops Review & Sign-off"},
+    {"key": "sent_to_rta", "label": "Sent to Company/RTA"},
+    {"key": "loc_received", "label": "LOC/LOE Received"},
+    {"key": "iepf_generated", "label": "IEPF Generated"},
+    {"key": "iepf_submitted", "label": "IEPF Submitted"},
+    {"key": "everification", "label": "E-Verification Approved"},
+    {"key": "shares_credited", "label": "Shares Credited"},
+    {"key": "closed", "label": "Case Closed"},
+]

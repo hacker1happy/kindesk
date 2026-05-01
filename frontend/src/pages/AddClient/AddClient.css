@@ -1,0 +1,42 @@
+.add-client-page {
+  padding-top: 24px;
+}
+
+.add-client-back {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.add-client-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: min(100%, 700px);
+  margin: 0 auto 18px;
+}
+
+.add-client-header h2 {
+  margin-top: 4px;
+  color: #111827;
+  font-size: 26px;
+  font-weight: 650;
+}
+
+.add-client-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.add-client-section-title h3 {
+  color: #111827;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.add-client-comment {
+  margin-top: 15px;
+}

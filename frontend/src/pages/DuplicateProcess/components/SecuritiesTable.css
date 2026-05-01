@@ -1,0 +1,114 @@
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.section-header h2 {
+  margin-bottom: 0;
+}
+
+.btn-add-security {
+  padding: 7px 12px;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #15803d;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: all var(--transition-fast);
+  box-shadow: none;
+}
+
+.btn-add-security:hover {
+  border-color: #16a34a;
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.securities-container {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.securities-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.securities-table th {
+  background-color: #f9fafb;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 650;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.securities-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.securities-table tr:last-child td {
+  border-bottom: none;
+}
+
+.securities-table input {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.securities-table input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: none;
+}
+
+.securities-table input::placeholder {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.btn-remove {
+  padding: 6px 10px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-remove:hover {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.total-shares {
+  padding: 10px 12px;
+  background-color: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  text-align: right;
+}
+
+.total-shares strong {
+  color: #111827;
+  margin-right: 8px;
+  font-weight: 650;
+}

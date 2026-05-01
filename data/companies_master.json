@@ -1,0 +1,22 @@
+{
+  "COMP001": {
+    "company_name": "Reliance Industries Limited",
+    "company_address": "Maker Chambers IV, Nariman Point, Mumbai, Maharashtra - 400021",
+    "rta_id": "RTA001"
+  },
+  "COMP002": {
+    "company_name": "Tata Consultancy Services Limited",
+    "company_address": "TCS House, Raveline Street, Fort, Mumbai, Maharashtra - 400001",
+    "rta_id": "RTA002"
+  },
+  "COMP003": {
+    "company_name": "Infosys Limited",
+    "company_address": "Electronics City, Hosur Road, Bengaluru, Karnataka - 560100",
+    "rta_id": "RTA001"
+  },
+  "COMP004": {
+    "company_name": "HDFC Bank Limited",
+    "company_address": "HDFC Bank House, Senapati Bapat Marg, Mumbai - 400013",
+    "rta_id": "RTA002"
+  }
+}

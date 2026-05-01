@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import AddClient from "./pages/AddClient";
-import ClientDetails from "./pages/ClientDetails";
-import AddCase from "./pages/AddCase";
-import DuplicateForm from "./pages/cases/DuplicateForm";
-import TransmissionForm from "./pages/cases/TransmissionForm";
-import JointForm from "./pages/cases/JointForm";
-import CaseDetails from "./pages/CaseDetails";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import AddClient from "./pages/AddClient/AddClient";
+import ClientDetails from "./pages/ClientDetails/ClientDetails";
+import AddCase from "./pages/AddCase/AddCase";
+import CaseDetails from "./pages/CaseDetails/CaseDetails";
+import Documents from "./pages/CaseDetails/components/Documents";
+import DuplicateProcess from "./pages/DuplicateProcess/DuplicateProcess";
+import TransmissionProcess from "./pages/TransmissionProcess/TransmissionProcess";
+import JointProcess from "./pages/JointProcess/JointProcess";
 
 
 function App() {
@@ -17,10 +18,11 @@ function App() {
         <Route path="/clients/new" element={<AddClient />} />
         <Route path="/clients/:id" element={<ClientDetails />} />
         <Route path="/clients/:clientId/cases" element={<AddCase />} />
-        <Route path="/cases/duplicate/:caseId" element={<DuplicateForm />} />
-        <Route path="/cases/transmission/:caseId" element={<TransmissionForm />} />
-        <Route path="/cases/joint/:caseId" element={<JointForm />} />
         <Route path="/clients/:clientId/cases/:caseId" element={<CaseDetails />} />
+        <Route path="/clients/:clientId/cases/:caseId/documents" element={<Documents />} />
+        <Route path="/clients/:clientId/cases/:caseId/duplicate" element={<DuplicateProcess />} />
+        <Route path="/clients/:clientId/cases/:caseId/transmission" element={<TransmissionProcess />} />
+        <Route path="/clients/:clientId/cases/:caseId/joint" element={<JointProcess />} />
       </Routes>
     </BrowserRouter>
   );

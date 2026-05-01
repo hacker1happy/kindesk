@@ -1,0 +1,940 @@
+{
+  "CS8AHFH0E": {
+    "case_id": "CS8AHFH0E",
+    "folio_number": "RIL1234",
+    "company_id": "COMP001",
+    "case_type": "duplicate",
+    "status": "closed",
+    "created_at": "2026-04-29T14:20:24.552627",
+    "form_data": {
+      "NumberOfShareHolders": "1",
+      "SIGNATUREA": "Priyanshu Gupta",
+      "SHAREHOLDERAFATHER": "test",
+      "SHAREHOLDERAPAN": "DETPG5549O",
+      "SHAREHOLDERDEMATACCOUNT": "1234567890",
+      "SHAREHOLDERAADDRESS": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+      "SHAREHOLDERAPINCODE": "713347",
+      "EmailA": "finassure.dataset@gmail.com",
+      "MobileA": "9123456789",
+      "AACCNO": "1234567890",
+      "ABNKNAME": "hdfc",
+      "ABRANCHNAME": "Rnj",
+      "AIFSCODE": "HDFC0000509",
+      "SIGNATUREB": "",
+      "SHAREHOLDERBFATHER": "",
+      "SHAREHOLDERBPAN": "",
+      "SHAREHOLDERBADDRESS": "",
+      "SHAREHOLDERBPINCODE": "",
+      "EmailB": "",
+      "MobileB": "",
+      "BACCNO": "",
+      "BBNKNAME": "",
+      "BBRANCHNAME": "",
+      "BIFSCODE": "",
+      "SIGNATUREC": "",
+      "SHAREHOLDERCFATHER": "",
+      "SHAREHOLDERCPAN": "",
+      "SHAREHOLDERCADDRESS": "",
+      "SHAREHOLDERCPINCODE": "",
+      "EmailC": "",
+      "MobileC": "",
+      "CACCNO": "",
+      "CBNKNAME": "",
+      "CBRANCHNAME": "",
+      "CIFSCODE": "",
+      "FORMDATE": "30-04-2026",
+      "FACEVALUE": "123",
+      "FOLIONO": "ril1234",
+      "NOSA": "56",
+      "CERTNOA": "123",
+      "DISTNOFROMA": "12",
+      "DISTNOTOA": "124",
+      "NOSB": "",
+      "CERTNOB": "",
+      "DISTNOFROMB": "",
+      "DISTNOTOB": "",
+      "NOSC": "",
+      "CERTNOC": "",
+      "DISTNOFROMC": "",
+      "DISTNOTOC": "",
+      "NOSD": "",
+      "CERTNOD": "",
+      "DISTNOFROMD": "",
+      "DISTNOTOD": "",
+      "NUMBEROFSHARES": "56",
+      "NAMEOFTHECOMPANY": "ril",
+      "ADDRESSOFTHECOMPANY": "delhi",
+      "NAMEOFTHEREGISTRAR": "Priyanshu Gupta",
+      "ADDRESSOFTHEREGISTRAR": "01 TDB College Road, Raniganj, West Bengal 713347, India"
+    },
+    "files": [
+      "4. SH-13.docx",
+      "3. ISR1.docx",
+      "7. FormB_Indemnity.docx",
+      "2. Request_Letter.docx",
+      "1. Authorization_Letter.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-01T12:27:14.302612",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/a1cd45fc-40d9-4530-b7ee-a41006d0c391_aadhar-front.pdf",
+            "uploaded_at": "2026-04-30T09:59:18.411082"
+          },
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/mail_sent/a2cc45f8-827b-43f9-bef2-4791db854abc_epfo.pdf",
+            "uploaded_at": "2026-05-01T12:27:14.302588"
+          }
+        ]
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-04-30T08:32:19.149323",
+        "documents": [
+          {
+            "name": "CG_Resume.doc",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/client_docs_received/1e5ad138-b8f2-4880-8d80-227ae95626ae_CG_Resume.doc",
+            "uploaded_at": "2026-04-30T08:31:58.817352"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-04-30T08:32:21.354194",
+        "documents": [
+          {
+            "name": "Cover letter.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/doc_generated/f5958d24-0353-4ff5-86d6-5de5cc0ea5f8_Cover letter.pdf",
+            "uploaded_at": "2026-04-30T08:32:05.718268"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": true,
+        "updated_at": "2026-04-30T08:32:24.690171",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/doc_sent/a1d61518-2680-45f0-bd1f-426526ec7725_epfo.pdf",
+            "uploaded_at": "2026-04-30T08:32:11.022484"
+          }
+        ]
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": true,
+        "updated_at": "2026-04-30T08:32:31.562664",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/doc_received/68aaa0ef-8218-4157-baa4-bb483ce590d5_aadhar-front.pdf",
+            "uploaded_at": "2026-04-30T08:32:16.726710"
+          }
+        ]
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": true,
+        "updated_at": "2026-04-30T08:32:49.527437",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/ops_review/757b5d5d-19e4-4766-833b-8eeee9279cdb_epfo.pdf",
+            "uploaded_at": "2026-04-30T08:32:41.122898"
+          }
+        ]
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-04-30T08:32:53.023341",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/sent_to_rta/eb53bf74-92ef-46c4-b6e1-3ba4b4608b57_epfo.pdf",
+            "uploaded_at": "2026-04-30T08:32:46.307511"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": true,
+        "updated_at": "2026-04-30T08:34:14.039523",
+        "documents": [
+          {
+            "name": "panCard.jpeg",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/loc_received/4afe5796-869d-47a7-badd-71abd78741bf_panCard.jpeg",
+            "uploaded_at": "2026-04-30T08:33:02.534765"
+          }
+        ]
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": true,
+        "updated_at": "2026-04-30T08:34:40.246774",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/iepf_generated/5c792752-6ce1-46c7-90e4-cb4151abdf53_epfo.pdf",
+            "uploaded_at": "2026-04-30T08:34:22.942903"
+          }
+        ]
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": true,
+        "updated_at": "2026-04-30T08:34:45.446574",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/iepf_submitted/e074704a-7292-45cf-911c-b392419bfcdc_aadhar-front.pdf",
+            "uploaded_at": "2026-04-30T08:34:34.998493"
+          }
+        ]
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": true,
+        "updated_at": "2026-04-30T08:35:16.348041",
+        "documents": [
+          {
+            "name": "Cover letter.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/everification/9a1765ec-8ede-4447-a7e5-df0a76a7780b_Cover letter.pdf",
+            "uploaded_at": "2026-04-30T08:35:05.324273"
+          }
+        ]
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": true,
+        "updated_at": "2026-04-30T08:35:20.290030",
+        "documents": [
+          {
+            "name": "panCard.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/shares_credited/28156182-d8a9-4c58-8e27-202d531adbf9_panCard.pdf",
+            "uploaded_at": "2026-04-30T08:35:12.154446"
+          }
+        ]
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": true,
+        "updated_at": "2026-04-30T08:35:54.219693",
+        "documents": [
+          {
+            "name": "cover letter.docx",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/closed/d6181473-6984-424c-a109-fd31628cf7ec_cover letter.docx",
+            "uploaded_at": "2026-04-30T08:35:26.972530"
+          }
+        ]
+      }
+    ],
+    "queries": [
+      {
+        "query_no": 1,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "forage_DELOITTE.pdf",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/query_1/dd99739d-1308-487b-b467-f8bfc906d53b_forage_DELOITTE.pdf",
+            "uploaded_at": "2026-04-30T08:33:15.511781"
+          }
+        ],
+        "opened_at": "2026-04-30T08:33:08.760486",
+        "closed_at": "2026-04-30T08:33:19.077758",
+        "updated_at": "2026-04-30T08:33:19.077758"
+      },
+      {
+        "query_no": 2,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "Cover_letter.docx",
+            "url": "/data/uploads/CL000001/CS8AHFH0E/query_2/982eb623-8a71-4239-b99c-915894bdc368_Cover_letter.docx",
+            "uploaded_at": "2026-04-30T08:33:49.266085"
+          }
+        ],
+        "opened_at": "2026-04-30T08:33:35.083928",
+        "closed_at": "2026-04-30T08:34:10.408676",
+        "updated_at": "2026-04-30T08:34:10.408676"
+      }
+    ]
+  },
+  "CS0VWMVVN": {
+    "case_id": "CS0VWMVVN",
+    "folio_number": "TATA1234",
+    "company_id": "COMP002",
+    "case_type": "duplicate",
+    "status": "mail_sent",
+    "created_at": "2026-04-30T02:34:19.413018",
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "Test Father name",
+            "panNumber": "DETPG6655E",
+            "dematAccount": "123456789"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "pinCode": "713347",
+            "email": "finassure.dataset@gmail.com",
+            "mobile": "7123456789"
+          },
+          "bankDetails": {
+            "accountNumber": "6123456789",
+            "bankName": "HDFC",
+            "branch": "Rnj",
+            "ifscCode": "HDFC0000509"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "123",
+          "distinctiveFrom": "34",
+          "distinctiveTo": "56",
+          "shares": "189"
+        }
+      ],
+      "companyInfo": {
+        "name": "Tata Consultancy Services Limited",
+        "address": "TCS House, Raveline Street, Fort, Mumbai, Maharashtra - 400001"
+      },
+      "rtaInfo": {
+        "name": "Link Intime India Private Limited",
+        "address": "C-101, 247 Park, LBS Marg, Vikhroli West, Mumbai, Maharashtra - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "01-05-2026",
+        "folioNumber": "TATA1234",
+        "faceValue": "123"
+      },
+      "totalShares": 189
+    },
+    "files": [
+      "1. Authorization_Letter.docx",
+      "3. ISR1.docx",
+      "6. FormA.docx",
+      "2. Request_Letter.docx",
+      "4. SH-13.docx",
+      "7. FormB_Indemnity.docx",
+      "5. ISR4.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-01T13:17:39.463982",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000002/CS0VWMVVN/mail_sent/86f21606-5557-4fa6-b8ca-d704b2daf246_epfo.pdf",
+            "uploaded_at": "2026-05-01T13:17:39.463964"
+          }
+        ]
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-04-30T02:42:05.071256",
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CSBDP4HHJ": {
+    "case_id": "CSBDP4HHJ",
+    "folio_number": "INFY1234",
+    "company_id": "COMP003",
+    "case_type": "duplicate",
+    "status": "q1_closed",
+    "created_at": "2026-04-30T08:39:42.471760",
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {},
+          "contactDetails": {},
+          "bankDetails": {}
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "",
+          "distinctiveFrom": "",
+          "distinctiveTo": "",
+          "shares": ""
+        }
+      ],
+      "companyInfo": {
+        "name": "Infosys Limited",
+        "address": "Electronics City, Hosur Road, Bengaluru, Karnataka - 560100"
+      },
+      "rtaInfo": {
+        "name": "KFin Technologies Limited",
+        "address": "Selenium Tower B, Plot 31 & 32, Financial District, Nanakramguda, Hyderabad, Telangana - 500032"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": false
+        }
+      ],
+      "otherInfo": {
+        "formDate": "",
+        "folioNumber": "INFY1234",
+        "faceValue": ""
+      },
+      "totalShares": 0
+    },
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-04-30T10:20:54.510823",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/mail_sent/95116915-b9fa-4fdd-8ce5-dc05f0501e04_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:14.047810"
+          }
+        ]
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-04-30T10:20:56.862188",
+        "documents": [
+          {
+            "name": "CG_Resume.doc",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/client_docs_received/53bc1cf2-8d54-4e3d-a9f4-03805df579e9_CG_Resume.doc",
+            "uploaded_at": "2026-04-30T10:20:19.704660"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:00.513515",
+        "documents": [
+          {
+            "name": "CG_Resume.doc",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/doc_generated/8b06c553-e882-49ff-b942-c74987e3e525_CG_Resume.doc",
+            "uploaded_at": "2026-04-30T10:20:24.414562"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:02.921847",
+        "documents": [
+          {
+            "name": "aadhaar-front.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/doc_sent/9d4b8f9d-c241-4b0a-8d1f-271f4f3089b9_aadhaar-front.jpg",
+            "uploaded_at": "2026-04-30T10:20:30.857058"
+          }
+        ]
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:05.610240",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/doc_received/0f0392ba-afe0-4c26-be6d-23e929f47aac_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:36.393124"
+          }
+        ]
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:10.471817",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/ops_review/d21a62bb-5631-46ec-819d-d8decad12508_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:44.256946"
+          }
+        ]
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-04-30T10:21:14.710503",
+        "documents": [
+          {
+            "name": "aadhaar-back.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/sent_to_rta/6844e1cc-c739-454e-80da-c74f48240df0_aadhaar-back.jpg",
+            "uploaded_at": "2026-04-30T10:20:50.488547"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": [
+      {
+        "query_no": 1,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "aadhaar-front.jpg",
+            "url": "/data/uploads/CL000001/CSBDP4HHJ/query_1/c1c2be79-9d4e-4a12-b740-72ab1f601c52_aadhaar-front.jpg",
+            "uploaded_at": "2026-04-30T13:23:49.166998"
+          }
+        ],
+        "opened_at": "2026-04-30T10:21:26.211648",
+        "closed_at": "2026-04-30T13:23:52.701056",
+        "updated_at": "2026-04-30T13:23:52.701056"
+      }
+    ]
+  },
+  "CSLA7UP1V": {
+    "case_id": "CSLA7UP1V",
+    "folio_number": "TATA9090",
+    "company_id": "COMP002",
+    "case_type": "transmission",
+    "status": "mail_sent",
+    "created_at": "2026-05-01T10:16:29.252533",
+    "form_data": {},
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-01T12:37:44.095852",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSLA7UP1V/mail_sent/44815826-5b41-4057-aeb1-47f2ee0a9656_aadhar-front.pdf",
+            "uploaded_at": "2026-05-01T12:37:41.799238"
+          }
+        ]
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CSMNVAVZK": {
+    "case_id": "CSMNVAVZK",
+    "folio_number": "HDFC123",
+    "company_id": "COMP004",
+    "case_type": "joint",
+    "status": "fresh",
+    "created_at": "2026-05-01T12:41:17.454665",
+    "form_data": {},
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC/LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  }
+}
