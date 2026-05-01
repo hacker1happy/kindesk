@@ -380,7 +380,7 @@ const DuplicateProcess = () => {
 
       <div className="duplicate-process-header">
         <div>
-          <h1>Duplicate Process</h1>
+          <h2>Duplicate Process</h2>
         </div>
       </div>
 

@@ -34,7 +34,7 @@
   display: grid;
   grid-template-columns: 1fr 120px;
   align-items: center;
-  padding: 10px 12px;
+  padding: 5px 12px;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -43,6 +43,7 @@
 }
 
 .document-row.header {
+  display: grid;
   background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
 }
