@@ -9,3 +9,13 @@ Permission on login based
 
 - Feature to duplicate a case for a particular client (duplicate case can copy duplicate but transmission and joint case can both copy each other)
 
+- to have checkbox to print selected documents
+- Document Sent to Client, Document Received from Client is optional 
+- Ops Review & Sign-off, to open new form for yes n NO and then when this is filled successfully mark the stage as done
+- Sent to Company/RTA {document sent to Company and POD receipt}
+- in document generation there are multiple files
+- if LOC Received then we don't have IEPF Generated, IEPF Submitted & E-Verification Approved stages to be marked
+- E-Verification Approved and reject option, if rejected then again activate IEPF Generated, IEPF Submitted, else allow further stages
+- IEPF Submitted - {document sent to Company and POD receipt}
+- to show client name and Company name when deleting a case
+- to case close after 2 steps only 
