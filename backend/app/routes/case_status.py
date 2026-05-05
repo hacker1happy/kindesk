@@ -99,6 +99,23 @@ def get_stage(case, stage_key: str):
     return stage
 
 
+def get_query_item(case, query_no: int):
+    query = next((item for item in case.get("queries", []) if item["query_no"] == query_no), None)
+    if not query:
+        raise HTTPException(404, "Query not found")
+    return query
+
+
+def remove_document_file(url: str):
+    if not url:
+        return
+
+    relative_path = url.removeprefix("/data/uploads/")
+    file_path = UPLOADS_DIR / relative_path
+    if file_path.exists() and file_path.is_file():
+        file_path.unlink()
+
+
 def is_stage_completed(case, stage_key: str):
     return bool(get_stage(case, stage_key).get("completed"))
 
@@ -257,8 +274,12 @@ def revert_stage(client_id: str, case_id: str, stage_key: str):
 
     for key in active_stage_order[stage_index:]:
         stage = get_stage(case, key)
+        for document in stage.get("documents", []):
+            remove_document_file(document.get("url", ""))
+
         stage["completed"] = False
         stage["updated_at"] = now
+        stage["documents"] = []
 
         if key == "ops_review":
             stage.pop("ops_review_form", None)
@@ -603,6 +624,7 @@ def add_query(client_id: str, case_id: str, payload: dict):
         "status": "open",
         "documents": [],
         "details": details,
+        "resolution_details": "",
         "opened_at": now,
         "closed_at": None,
         "updated_at": now
@@ -620,9 +642,7 @@ def add_query(client_id: str, case_id: str, payload: dict):
 async def upload_query_doc(client_id: str, case_id: str, query_no: int, file: UploadFile = File(...)):
     cases, case = get_owned_case(client_id, case_id)
 
-    query = next((item for item in case.get("queries", []) if item["query_no"] == query_no), None)
-    if not query:
-        raise HTTPException(404, "Query not found")
+    query = get_query_item(case, query_no)
 
     if query.get("status") == "closed":
         raise HTTPException(400, "Cannot upload documents to a closed query")
@@ -651,6 +671,35 @@ async def upload_query_doc(client_id: str, case_id: str, query_no: int, file: Up
     return {"message": "query doc uploaded", "file": file_info}
 
 
+@router.put("/clients/{client_id}/cases/{case_id}/queries/{query_no}")
+def update_query(client_id: str, case_id: str, query_no: int, payload: dict):
+    cases, case = get_owned_case(client_id, case_id)
+    query = get_query_item(case, query_no)
+
+    details = (payload.get("details") or query.get("details") or "").strip()
+    resolution_details = (payload.get("resolution_details") or "").strip()
+
+    if not details:
+        raise HTTPException(400, "Query details are required")
+
+    for label, value in {
+        "Query details": details,
+        "Resolution details": resolution_details,
+    }.items():
+        if len(value) > 1000:
+            raise HTTPException(400, f"{label} cannot exceed 1000 characters")
+
+    query["details"] = details
+    query["resolution_details"] = resolution_details
+    query.pop("remarks", None)
+    query.pop("resolution_method", None)
+    query["updated_at"] = datetime.now().isoformat()
+
+    write_cases(cases)
+
+    return {"message": f"Query {query_no} updated", "query": query}
+
+
 @router.post("/clients/{client_id}/cases/{case_id}/queries/{query_no}/documents/replace")
 async def replace_query_doc(
     client_id: str,
@@ -660,9 +709,7 @@ async def replace_query_doc(
     file: UploadFile = File(...)
 ):
     cases, case = get_owned_case(client_id, case_id)
-    query = next((item for item in case.get("queries", []) if item["query_no"] == query_no), None)
-    if not query:
-        raise HTTPException(404, "Query not found")
+    query = get_query_item(case, query_no)
 
     documents = query.setdefault("documents", [])
     document_index = next((index for index, item in enumerate(documents) if item.get("url") == old_url), None)
@@ -695,9 +742,7 @@ async def replace_query_doc(
 @router.delete("/clients/{client_id}/cases/{case_id}/queries/{query_no}/documents")
 def remove_query_doc(client_id: str, case_id: str, query_no: int, url: str = Query(...)):
     cases, case = get_owned_case(client_id, case_id)
-    query = next((item for item in case.get("queries", []) if item["query_no"] == query_no), None)
-    if not query:
-        raise HTTPException(404, "Query not found")
+    query = get_query_item(case, query_no)
 
     documents = query.setdefault("documents", [])
     if len(documents) <= 1:
@@ -719,12 +764,10 @@ def remove_query_doc(client_id: str, case_id: str, query_no: int, url: str = Que
 
 
 @router.put("/clients/{client_id}/cases/{case_id}/queries/{query_no}/close")
-def close_query(client_id: str, case_id: str, query_no: int):
+def close_query(client_id: str, case_id: str, query_no: int, payload: dict | None = None):
     cases, case = get_owned_case(client_id, case_id)
 
-    query = next((item for item in case.get("queries", []) if item["query_no"] == query_no), None)
-    if not query:
-        raise HTTPException(404, "Query not found")
+    query = get_query_item(case, query_no)
 
     if query.get("status") == "closed":
         return {"message": f"Query {query_no} already closed", "query": query}
@@ -732,8 +775,17 @@ def close_query(client_id: str, case_id: str, query_no: int):
     if not query.get("documents"):
         raise HTTPException(400, "Upload at least one query document before closing")
 
+    resolution_details = ((payload or {}).get("resolution_details") or "").strip()
+    if not resolution_details:
+        raise HTTPException(400, "Resolution remarks are required")
+    if len(resolution_details) > 1000:
+        raise HTTPException(400, "Resolution details cannot exceed 1000 characters")
+
     now = datetime.now().isoformat()
     query["status"] = "closed"
+    query["resolution_details"] = resolution_details
+    query.pop("remarks", None)
+    query.pop("resolution_method", None)
     query["closed_at"] = now
     query["updated_at"] = now
     case["status"] = f"q{query_no}_closed"

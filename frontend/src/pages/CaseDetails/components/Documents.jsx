@@ -86,16 +86,18 @@ export default function Documents({ caseData, refresh }) {
       if (loeCompleted) return stage.key !== "loc_received";
       return !IEPF_WORKFLOW_STAGES.has(stage.key);
     });
-    const stageGroups = visibleStages.map((stage) => ({
-      id: `stage-${stage.key}`,
-      type: "stage",
-      key: stage.key,
-      label: stage.label,
-      documents:
-        stage.key === "doc_generated"
-          ? sortByFilename(stage.documents || [])
-          : sortByUploadTime(stage.documents || []),
-    }));
+    const stageGroups = visibleStages
+      .map((stage) => ({
+        id: `stage-${stage.key}`,
+        type: "stage",
+        key: stage.key,
+        label: stage.label,
+        documents:
+          stage.key === "doc_generated"
+            ? sortByFilename(stage.documents || [])
+            : sortByUploadTime(stage.documents || []),
+      }))
+      .filter((group) => !NON_UPLOAD_STAGE_KEYS.has(group.key) || group.documents.length > 0);
 
     const queryGroups = (caseData?.queries || []).map((query) => ({
       id: `query-${query.query_no}`,

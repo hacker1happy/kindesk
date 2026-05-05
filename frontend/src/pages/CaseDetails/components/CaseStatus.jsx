@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   addQuery,
-  closeQuery,
   decideEVerification,
   revertStage,
+  resolveQuery,
   submitOpsReviewForm,
+  updateQuery,
   updateStage,
   uploadQueryDocument,
   uploadStageDocument,
@@ -62,9 +63,12 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [closeReason, setCloseReason] = useState("");
-  const [undoStage, setUndoStage] = useState(null);
+  const [revertCandidate, setRevertCandidate] = useState(null);
+  const [resolveCandidate, setResolveCandidate] = useState(null);
+  const [resolutionRemarks, setResolutionRemarks] = useState("");
+  const [editQueryMode, setEditQueryMode] = useState(false);
+  const [editQueryForm, setEditQueryForm] = useState(buildEmptyQueryEditForm());
   const [queryPanelOpen, setQueryPanelOpen] = useState(false);
-  const undoTimerRef = useRef(null);
 
   const stages = useMemo(() => caseData.stages || [], [caseData.stages]);
   const queries = caseData.queries || [];
@@ -78,10 +82,8 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
     () => getVisibleStages(stages, locCompleted, loeCompleted),
     [stages, locCompleted, loeCompleted]
   );
-
-  useEffect(() => {
-    return () => window.clearTimeout(undoTimerRef.current);
-  }, []);
+  const actionableStages = useMemo(() => getActionableStages(visibleStages, stages), [visibleStages, stages]);
+  const latestCompletedStageKey = [...actionableStages].reverse().find((stage) => stage.completed)?.key || null;
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";
@@ -100,22 +102,10 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
     await refresh();
   };
 
-  const showUndoForStage = (stageKey) => {
-    const stage = stages.find((item) => item.key === stageKey);
-
-    window.clearTimeout(undoTimerRef.current);
-    setUndoStage({
-      key: stageKey,
-      label: stage?.label || stageKey,
-    });
-    undoTimerRef.current = window.setTimeout(() => setUndoStage(null), 7000);
-  };
-
   const handleStageComplete = async (stageKey, payload = {}) => {
     try {
       setLoadingKey(stageKey);
       await refreshAfter(() => updateStage(clientId, caseData.case_id, stageKey, payload));
-      showUndoForStage(stageKey);
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.detail || "Failed to update stage");
@@ -124,20 +114,28 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
     }
   };
 
-  const handleUndoStage = async () => {
-    if (!undoStage) return;
+  const performStageRevert = async (stage) => {
+    if (!stage) return;
 
     try {
-      window.clearTimeout(undoTimerRef.current);
-      setLoadingKey(`${undoStage.key}-undo`);
-      await refreshAfter(() => revertStage(clientId, caseData.case_id, undoStage.key));
-      setUndoStage(null);
+      setLoadingKey(`${stage.key}-revert`);
+      await refreshAfter(() => revertStage(clientId, caseData.case_id, stage.key));
+      setRevertCandidate(null);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.detail || "Failed to undo stage update");
+      alert(err.response?.data?.detail || "Failed to revert stage");
     } finally {
       setLoadingKey(null);
     }
+  };
+
+  const handleRequestStageRevert = (stage) => {
+    if (getRevertConsequences(stage, caseData).length > 0) {
+      setRevertCandidate(stage);
+      return;
+    }
+
+    performStageRevert(stage);
   };
 
   const handleStageUpload = async (stageKey, selectedFiles, documentType = "") => {
@@ -169,7 +167,6 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
       setLoadingKey("ops_review-form");
       await refreshAfter(() => submitOpsReviewForm(clientId, caseData.case_id, { answers: opsAnswers, draft }));
       if (!draft) setOpsFormOpen(false);
-      if (!draft) showUndoForStage("ops_review");
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.detail || "Failed to submit Ops review form");
@@ -204,7 +201,6 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
       );
       setEverificationComment("");
       setShowRejectModal(false);
-      if (decision === "approved") showUndoForStage("everification");
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.detail || "Failed to update E-Verification");
@@ -245,13 +241,48 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
     }
   };
 
-  const handleCloseQuery = async (queryNo) => {
+  const handleOpenResolveQuery = (query) => {
+    setResolveCandidate(query);
+    setResolutionRemarks(query.resolution_details || "");
+  };
+
+  const handleResolveQuery = async () => {
+    if (!resolveCandidate) return;
+
     try {
-      setLoadingKey(`query-${queryNo}-close`);
-      await refreshAfter(() => closeQuery(clientId, caseData.case_id, queryNo));
+      setLoadingKey(`query-${resolveCandidate.query_no}-close`);
+      await refreshAfter(() =>
+        resolveQuery(clientId, caseData.case_id, resolveCandidate.query_no, {
+          resolution_details: resolutionRemarks,
+        })
+      );
+      setResolveCandidate(null);
+      setResolutionRemarks("");
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.detail || "Failed to close query");
+    } finally {
+      setLoadingKey(null);
+    }
+  };
+
+  const handleViewQueryDetails = (query) => {
+    setViewingQuery(query);
+    setEditQueryMode(false);
+    setEditQueryForm(buildQueryEditForm(query));
+  };
+
+  const handleSaveQueryDetails = async () => {
+    if (!viewingQuery) return;
+
+    try {
+      setLoadingKey(`query-${viewingQuery.query_no}-update`);
+      await refreshAfter(() => updateQuery(clientId, caseData.case_id, viewingQuery.query_no, editQueryForm));
+      setViewingQuery({ ...viewingQuery, ...editQueryForm });
+      setEditQueryMode(false);
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.detail || "Failed to update query");
     } finally {
       setLoadingKey(null);
     }
@@ -285,6 +316,8 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                 onRequestEverificationReject={() => setShowRejectModal(true)}
                 onOpenOpsForm={handleOpenOpsForm}
                 onEverificationDecision={handleEverificationDecision}
+                canRevert={stage.key === latestCompletedStageKey}
+                onRevert={handleRequestStageRevert}
               />
 
               {stage.key === QUERY_AFTER_STAGE && (canManageQueries || queries.length > 0) && (
@@ -333,8 +366,8 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                               loadingKey={loadingKey}
                               formatDateTime={formatDateTime}
                               onUpload={handleQueryUpload}
-                              onClose={handleCloseQuery}
-                              onViewDetails={setViewingQuery}
+                              onResolve={handleOpenResolveQuery}
+                              onViewDetails={handleViewQueryDetails}
                             />
                           ))
                         )}
@@ -366,6 +399,8 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                         onRequestEverificationReject={() => setShowRejectModal(true)}
                         onOpenOpsForm={handleOpenOpsForm}
                         onEverificationDecision={handleEverificationDecision}
+                        canRevert={childStage.key === latestCompletedStageKey}
+                        onRevert={handleRequestStageRevert}
                       />
                     );
                   })}
@@ -404,9 +439,94 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
         <div className="modal-backdrop">
           <div className="query-modal">
             <h3>Query {viewingQuery.query_no} Details</h3>
-            <p className="query-detail-text">{viewingQuery.details || "No details saved."}</p>
+            {editQueryMode ? (
+              <div className="query-edit-form">
+                <label>
+                  Query description
+                  <textarea
+                    value={editQueryForm.details}
+                    maxLength={1000}
+                    rows={4}
+                    onChange={(event) => setEditQueryForm({ ...editQueryForm, details: event.target.value })}
+                  />
+                </label>
+                <label>
+                  Resolution remarks
+                  <textarea
+                    value={editQueryForm.resolution_details}
+                    maxLength={1000}
+                    rows={3}
+                    onChange={(event) => setEditQueryForm({ ...editQueryForm, resolution_details: event.target.value })}
+                  />
+                </label>
+              </div>
+            ) : (
+              <div className="query-detail-stack">
+                <QueryDetailBlock title="Description" value={viewingQuery.details} />
+                <QueryDetailBlock title="Resolution remarks" value={viewingQuery.resolution_details} />
+              </div>
+            )}
             <div className="modal-actions">
-              <button className="btn" onClick={() => setViewingQuery(null)}>Close</button>
+              {editQueryMode ? (
+                <>
+                  <button
+                    className="btn-secondary"
+                    onClick={() => {
+                      setEditQueryMode(false);
+                      setEditQueryForm(buildQueryEditForm(viewingQuery));
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="btn"
+                    disabled={!editQueryForm.details.trim() || loadingKey === `query-${viewingQuery.query_no}-update`}
+                    onClick={handleSaveQueryDetails}
+                  >
+                    Save
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button className="btn-outline" onClick={() => setEditQueryMode(true)}>
+                    Edit
+                  </button>
+                  <button className="btn" onClick={() => setViewingQuery(null)}>Close</button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {resolveCandidate && (
+        <div className="modal-backdrop">
+          <div className="query-modal">
+            <h3>Resolve Query {resolveCandidate.query_no}</h3>
+            <label className="modal-field">
+              Resolution remarks
+              <textarea
+                value={resolutionRemarks}
+                maxLength={1000}
+                rows={4}
+                placeholder="Add remarks or details for audit tracking"
+                onChange={(event) => setResolutionRemarks(event.target.value)}
+              />
+            </label>
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setResolveCandidate(null)}>
+                Cancel
+              </button>
+              <button
+                className="btn"
+                disabled={
+                  !resolutionRemarks.trim() ||
+                  loadingKey === `query-${resolveCandidate.query_no}-close`
+                }
+                onClick={handleResolveQuery}
+              >
+                Resolve Query
+              </button>
             </div>
           </div>
         </div>
@@ -485,17 +605,31 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
         </div>
       )}
 
-      {undoStage && (
-        <div className="undo-toast">
-          <span>{undoStage.label} marked done.</span>
-          <button
-            type="button"
-            className="btn-outline"
-            disabled={loadingKey === `${undoStage.key}-undo`}
-            onClick={handleUndoStage}
-          >
-            Undo
-          </button>
+      {revertCandidate && (
+        <div className="modal-backdrop">
+          <div className="query-modal">
+            <h3>Revert {revertCandidate.label}?</h3>
+            <p className="query-detail-text">
+              Reverting this stage will return it to pending and show the normal Mark as done action again.
+            </p>
+            <ul className="revert-warning-list">
+              {getRevertConsequences(revertCandidate, caseData).map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="modal-actions">
+              <button className="btn-secondary" onClick={() => setRevertCandidate(null)}>
+                Cancel
+              </button>
+              <button
+                className="btn-outline remove-btn"
+                disabled={loadingKey === `${revertCandidate.key}-revert`}
+                onClick={() => performStageRevert(revertCandidate)}
+              >
+                Confirm Revert
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </section>
@@ -515,6 +649,8 @@ function StageRow({
   onRequestEverificationReject,
   onOpenOpsForm,
   onEverificationDecision,
+  canRevert,
+  onRevert,
 }) {
   const documents = stage.documents || [];
   const latestDocument = [...documents].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0))[0];
@@ -611,9 +747,10 @@ function StageRow({
             className="btn-outline"
             disabled={
               loadingKey === stage.key ||
-              stage.completed ||
+              loadingKey === `${stage.key}-revert` ||
+              (stage.completed && !canRevert) ||
               (!isCloseStage && !canComplete) ||
-              missingRequiredDocument ||
+              (!stage.completed && missingRequiredDocument) ||
               isBranchLocked
             }
             title={
@@ -625,9 +762,19 @@ function StageRow({
                     ? "Upload required document before marking this stage done."
                     : ""
             }
-            onClick={() => (isCloseStage ? onRequestClose() : onComplete(stage.key))}
+            onClick={() => (stage.completed ? onRevert(stage) : isCloseStage ? onRequestClose() : onComplete(stage.key))}
           >
-            {stage.completed ? "Done" : isCloseStage ? "Close Case" : "Mark as done"}
+            {stage.completed ? (canRevert ? "Revert" : "Done") : isCloseStage ? "Close Case" : "Mark as done"}
+          </button>
+        )}
+
+        {!canUseCompleteButton && stage.completed && (
+          <button
+            className="btn-outline"
+            disabled={!canRevert || loadingKey === `${stage.key}-revert`}
+            onClick={() => onRevert(stage)}
+          >
+            {canRevert ? "Revert" : "Done"}
           </button>
         )}
       </div>
@@ -726,7 +873,7 @@ function OpsReviewModal({ answers, readOnly, loading, onAnswersChange, onCancel,
   );
 }
 
-function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose, onViewDetails }) {
+function QueryRow({ query, loadingKey, formatDateTime, onUpload, onResolve, onViewDetails }) {
   const documents = query.documents || [];
   const latestDocument = [...documents].sort((a, b) => new Date(b.uploaded_at || 0) - new Date(a.uploaded_at || 0))[0];
   const isClosed = query.status === "closed";
@@ -759,7 +906,7 @@ function QueryRow({ query, loadingKey, formatDateTime, onUpload, onClose, onView
         <button
           className="btn-outline"
           disabled={isClosed || loadingKey === `query-${query.query_no}-close`}
-          onClick={() => onClose(query.query_no)}
+          onClick={() => onResolve(query)}
         >
           {isClosed ? "Resolved" : "Resolve"}
         </button>
@@ -786,6 +933,58 @@ function getVisibleStages(stages, locCompleted, loeCompleted) {
 
 function getLoeChildStages(stages) {
   return stages.filter((stage) => IEPF_WORKFLOW_STAGES.has(stage.key));
+}
+
+function getActionableStages(visibleStages, stages) {
+  return visibleStages.flatMap((stage) => {
+    if (stage.key === "loe_received") {
+      return [stage, ...getLoeChildStages(stages)];
+    }
+
+    return [stage];
+  });
+}
+
+function getRevertConsequences(stage, caseData) {
+  const consequences = [];
+
+  if ((stage.documents || []).length > 0) {
+    consequences.push("Uploaded or generated documents related to this stage will be deleted.");
+  }
+  if (stage.ops_review_form) {
+    consequences.push("The filled Ops Review form for this stage will be reset.");
+  }
+  if (stage.approval_status || stage.approval_comment) {
+    consequences.push("The saved E-Verification decision and remarks will be cleared.");
+  }
+  if (stage.key === "closed" && (caseData.closure_reason || caseData.closure_comment)) {
+    consequences.push("The closure reason and closure remarks will be cleared.");
+  }
+
+  return consequences;
+}
+
+function QueryDetailBlock({ title, value }) {
+  return (
+    <div>
+      <strong>{title}</strong>
+      <p className="query-detail-text">{value || "Not recorded."}</p>
+    </div>
+  );
+}
+
+function buildEmptyQueryEditForm() {
+  return {
+    details: "",
+    resolution_details: "",
+  };
+}
+
+function buildQueryEditForm(query) {
+  return {
+    details: query?.details || "",
+    resolution_details: query?.resolution_details || "",
+  };
 }
 
 function buildEmptyOpsAnswers() {

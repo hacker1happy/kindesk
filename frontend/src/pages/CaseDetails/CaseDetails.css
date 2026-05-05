@@ -488,26 +488,35 @@
   white-space: pre-wrap;
 }
 
-.undo-toast {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 45;
-  display: flex;
-  align-items: center;
+.query-detail-stack,
+.query-edit-form {
+  display: grid;
   gap: 12px;
-  max-width: min(420px, calc(100vw - 40px));
-  padding: 12px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.18);
-  color: #111827;
-  font-size: 14px;
 }
 
-.undo-toast .btn-outline {
-  flex: 0 0 auto;
+.query-detail-stack strong,
+.query-edit-form label,
+.modal-field {
+  display: grid;
+  gap: 6px;
+  color: #111827;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.query-edit-form textarea,
+.modal-field textarea {
+  font-weight: 400;
+}
+
+.revert-warning-list {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding-left: 18px;
+  color: #991b1b;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .files-list {

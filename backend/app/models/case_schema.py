@@ -15,7 +15,12 @@ class Stage(BaseModel):
 
 class QueryItem(BaseModel):
     query_no: int
+    status: str = "open"
+    details: str = ""
+    resolution_details: str = ""
     documents: List[dict] = []
+    opened_at: Optional[datetime] = None
+    closed_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
 class CaseCreateRequest(BaseModel):

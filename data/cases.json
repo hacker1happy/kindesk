@@ -196,14 +196,8 @@
         "key": "ops_review",
         "label": "Ops Review & Sign-off",
         "completed": true,
-        "updated_at": "2026-05-05T03:09:56.016322",
-        "documents": [
-          {
-            "name": "aadhar-front.pdf",
-            "url": "/data/uploads/CL000001/CSMS4MUFE/ops_review/faa08a17-deb8-4c4f-ae68-64ba3edb10a8_aadhar-front.pdf",
-            "uploaded_at": "2026-05-05T03:08:43.971430"
-          }
-        ],
+        "updated_at": "2026-05-05T19:27:13.644889",
+        "documents": [],
         "ops_review_form": {
           "questions": {
             "documents_verified": {
@@ -1837,7 +1831,7 @@
     "folio_number": "HDFC1678",
     "company_id": "COMP004",
     "case_type": "duplicate",
-    "status": "iepf_generated",
+    "status": "mail_sent",
     "created_at": "2026-05-05T14:48:38.338865",
     "form_data": {
       "shareholders": [
@@ -1947,188 +1941,92 @@
       {
         "key": "client_docs_received",
         "label": "Client Docs Received",
-        "completed": true,
-        "updated_at": "2026-05-05T14:49:54.580074",
-        "documents": [
-          {
-            "name": "aadhar-front.pdf",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/client_docs_received/7debe36f-54c2-48dd-a13d-33ca2c0c324c_aadhar-front.pdf",
-            "uploaded_at": "2026-05-05T14:49:52.272488"
-          }
-        ]
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
+        "documents": []
       },
       {
         "key": "doc_generated",
         "label": "Document Generated",
-        "completed": true,
-        "updated_at": "2026-05-05T14:51:19.820584",
-        "documents": [
-          {
-            "name": "1. Authorization_Letter.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/1. Authorization_Letter.docx",
-            "uploaded_at": "2026-05-05T14:51:11.037285"
-          },
-          {
-            "name": "2. Request_Letter.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/2. Request_Letter.docx",
-            "uploaded_at": "2026-05-05T14:51:11.337972"
-          },
-          {
-            "name": "3. ISR1.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/3. ISR1.docx",
-            "uploaded_at": "2026-05-05T14:51:17.426731"
-          },
-          {
-            "name": "4. SH-13.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/4. SH-13.docx",
-            "uploaded_at": "2026-05-05T14:51:17.793061"
-          },
-          {
-            "name": "5. ISR4.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/5. ISR4.docx",
-            "uploaded_at": "2026-05-05T14:51:18.500420"
-          },
-          {
-            "name": "6. FormA.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/6. FormA.docx",
-            "uploaded_at": "2026-05-05T14:51:19.176648"
-          },
-          {
-            "name": "7. FormB_Indemnity.docx",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/7. FormB_Indemnity.docx",
-            "uploaded_at": "2026-05-05T14:51:19.810262"
-          }
-        ]
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
+        "documents": []
       },
       {
         "key": "doc_sent",
         "label": "Document Sent to Client",
-        "completed": true,
-        "updated_at": "2026-05-05T14:51:28.254792",
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       },
       {
         "key": "doc_received",
         "label": "Document Received from Client",
-        "completed": true,
-        "updated_at": "2026-05-05T14:51:35.269747",
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       },
       {
         "key": "ops_review",
         "label": "Ops Review & Sign-off",
-        "completed": true,
-        "updated_at": "2026-05-05T14:51:51.244242",
-        "documents": [],
-        "ops_review_form": {
-          "questions": {
-            "documents_verified": {
-              "question": "All required client documents verified",
-              "answer": "yes",
-              "comment": ""
-            },
-            "case_details_matched": {
-              "question": "Case details match company and folio records",
-              "answer": "yes",
-              "comment": ""
-            },
-            "rta_packet_ready": {
-              "question": "RTA submission packet is ready",
-              "answer": "no",
-              "comment": ""
-            },
-            "exceptions_recorded": {
-              "question": "Exceptions or special notes are recorded",
-              "answer": "yes",
-              "comment": ""
-            }
-          },
-          "status": "submitted",
-          "draft_saved_at": "2026-05-05T14:51:41.947348",
-          "submitted_at": "2026-05-05T14:51:51.244242"
-        }
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
+        "documents": []
       },
       {
         "key": "sent_to_rta",
         "label": "Sent to Company/RTA",
-        "completed": true,
-        "updated_at": "2026-05-05T14:52:37.451360",
-        "documents": [
-          {
-            "name": "aadhar-front.pdf",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/sent_to_rta/39b706ca-c9db-489a-9799-9b6c39b64a78_aadhar-front.pdf",
-            "uploaded_at": "2026-05-05T14:52:30.313740",
-            "document_type": "document_sent_to_company_rta",
-            "document_label": "Document sent to Company/RTA"
-          },
-          {
-            "name": "aadhar-front.pdf",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/sent_to_rta/669f4dd1-cf2b-449e-93e7-408267661a82_aadhar-front.pdf",
-            "uploaded_at": "2026-05-05T14:52:35.402144",
-            "document_type": "pod_receipt",
-            "document_label": "POD receipt"
-          }
-        ]
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
+        "documents": []
       },
       {
         "key": "loc_received",
         "label": "LOC Received",
         "completed": false,
-        "updated_at": "2026-05-05T14:53:14.697076",
-        "documents": [
-          {
-            "name": "aadhar-front.pdf",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/loc_received/d6e054f0-a9dd-453a-8685-d582360a68f0_aadhar-front.pdf",
-            "uploaded_at": "2026-05-05T14:53:14.697060"
-          }
-        ]
+        "updated_at": "2026-05-05T19:29:06.896100",
+        "documents": []
       },
       {
         "key": "loe_received",
         "label": "LOE Received",
-        "completed": true,
-        "updated_at": "2026-05-05T14:53:37.857169",
-        "documents": [
-          {
-            "name": "aadhar-front.pdf",
-            "url": "/data/uploads/CL000001/CS4PIVKSQ/loe_received/f4a4e06a-6d10-4f5d-8daa-935ef5fa6513_aadhar-front.pdf",
-            "uploaded_at": "2026-05-05T14:53:22.478663"
-          }
-        ]
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
+        "documents": []
       },
       {
         "key": "iepf_generated",
         "label": "IEPF Generated",
-        "completed": true,
-        "updated_at": "2026-05-05T15:14:12.593878",
+        "completed": false,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       },
       {
         "key": "iepf_submitted",
         "label": "IEPF Submitted",
         "completed": false,
-        "updated_at": null,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       },
       {
         "key": "everification",
         "label": "E-Verification Approved",
         "completed": false,
-        "updated_at": null,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       },
       {
         "key": "shares_credited",
         "label": "Shares Credited",
         "completed": false,
-        "updated_at": null,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       },
       {
         "key": "closed",
         "label": "Case Closed",
         "completed": false,
-        "updated_at": null,
+        "updated_at": "2026-05-05T19:29:06.896100",
         "documents": []
       }
     ],
@@ -2139,7 +2037,7 @@
     "folio_number": "HDFC89989",
     "company_id": "COMP002",
     "case_type": "duplicate",
-    "status": "q1_closed",
+    "status": "q3_closed",
     "created_at": "2026-05-05T15:59:18.981506",
     "form_data": {
       "shareholders": [
@@ -2401,6 +2299,42 @@
         "opened_at": "2026-05-05T16:01:09.936507",
         "closed_at": "2026-05-05T16:01:19.101864",
         "updated_at": "2026-05-05T16:01:19.101864"
+      },
+      {
+        "query_no": 2,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/query_2/a4c85fcb-22e4-40e8-a6f8-280daeed647d_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T19:31:26.124303"
+          }
+        ],
+        "details": "test",
+        "remarks": "t",
+        "resolution_method": "test trick",
+        "resolution_details": "ok ok",
+        "opened_at": "2026-05-05T19:31:17.758707",
+        "closed_at": "2026-05-05T19:31:50.376651",
+        "updated_at": "2026-05-05T19:34:18.173348"
+      },
+      {
+        "query_no": 3,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/query_3/43c1d545-4f62-48ca-bc7b-4bce4baca485_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T19:34:45.418676"
+          }
+        ],
+        "details": "test",
+        "remarks": "",
+        "resolution_method": "test resolution",
+        "resolution_details": "t",
+        "opened_at": "2026-05-05T19:34:26.153792",
+        "closed_at": "2026-05-05T19:35:10.790823",
+        "updated_at": "2026-05-05T19:35:10.790823"
       }
     ]
   },
