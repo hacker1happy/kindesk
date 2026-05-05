@@ -14,18 +14,18 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const loadClients = async () => {
+      const [clientsRes, casesRes] = await Promise.all([
+        getClients(),
+        getAllCases(),
+      ]);
+
+      setClients(clientsRes.data || {});
+      setCases(casesRes.data || []);
+    };
+
     loadClients();
   }, []);
-
-  const loadClients = async () => {
-    const [clientsRes, casesRes] = await Promise.all([
-      getClients(),
-      getAllCases(),
-    ]);
-
-    setClients(clientsRes.data || {});
-    setCases(casesRes.data || []);
-  };
 
   // Convert object -> array
   const clientList = useMemo(() => {
@@ -78,21 +78,15 @@ export default function Dashboard() {
   });
 
   const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
-  const pageStartIndex = (currentPage - 1) * pageSize;
+  const visiblePage = Math.min(currentPage, totalPages);
+  const pageStartIndex = (visiblePage - 1) * pageSize;
   const paginatedClients = filteredClients.slice(pageStartIndex, pageStartIndex + pageSize);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [search, assignedToFilter, assignedFromFilter, pageSize]);
-
-  useEffect(() => {
-    setCurrentPage((page) => Math.min(page, totalPages));
-  }, [totalPages]);
 
   const clearFilters = () => {
     setSearch("");
     setAssignedToFilter("");
     setAssignedFromFilter("");
+    setCurrentPage(1);
   };
 
   // Stats
@@ -109,7 +103,9 @@ export default function Dashboard() {
       {/* Header */}
       <div className="header">
         <div className="brand-lockup">
-          <img src="/kindesk.jpg" alt="KinDesk" />
+          <div className="brand-logo-frame" aria-hidden="true">
+            <img src="/kindesk.jpg" alt="" />
+          </div>
           <div>
             <h1>KinDesk</h1>
             <span>Succession Care Boutique</span>
@@ -147,14 +143,20 @@ export default function Dashboard() {
         className="search-box"
         placeholder="Search clients by name, ID, or phone..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setCurrentPage(1);
+        }}
       />
 
       <div className="dashboard-filters">
         <select
           className="input"
           value={assignedToFilter}
-          onChange={(e) => setAssignedToFilter(e.target.value)}
+          onChange={(e) => {
+            setAssignedToFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">Assigned To</option>
           {assignedToOptions.map((option) => (
@@ -165,7 +167,10 @@ export default function Dashboard() {
         <select
           className="input"
           value={assignedFromFilter}
-          onChange={(e) => setAssignedFromFilter(e.target.value)}
+          onChange={(e) => {
+            setAssignedFromFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">Assigned From</option>
           {assignedFromOptions.map((option) => (
@@ -187,7 +192,10 @@ export default function Dashboard() {
             <select
               className="input"
               value={pageSize}
-              onChange={(event) => setPageSize(Number(event.target.value))}
+              onChange={(event) => {
+                setPageSize(Number(event.target.value));
+                setCurrentPage(1);
+              }}
             >
               {[10, 25, 50].map((size) => (
                 <option key={size} value={size}>{size}</option>
@@ -258,15 +266,15 @@ export default function Dashboard() {
             <div className="pagination-actions">
               <button
                 className="btn-outline"
-                disabled={currentPage === 1}
+                disabled={visiblePage === 1}
                 onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
               >
                 Prev
               </button>
-              <span>Page {currentPage} of {totalPages}</span>
+              <span>Page {visiblePage} of {totalPages}</span>
               <button
                 className="btn-outline"
-                disabled={currentPage === totalPages}
+                disabled={visiblePage === totalPages}
                 onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
               >
                 Next

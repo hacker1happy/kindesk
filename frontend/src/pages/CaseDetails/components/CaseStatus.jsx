@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   addQuery,
   closeQuery,
@@ -63,6 +63,7 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [closeReason, setCloseReason] = useState("");
   const [undoStage, setUndoStage] = useState(null);
+  const [queryPanelOpen, setQueryPanelOpen] = useState(false);
   const undoTimerRef = useRef(null);
 
   const stages = useMemo(() => caseData.stages || [], [caseData.stages]);
@@ -70,10 +71,17 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
   const sentToRtaStage = stages.find((stage) => stage.key === QUERY_AFTER_STAGE);
   const locCompleted = isCompleted(stages, "loc_received");
   const loeCompleted = isCompleted(stages, "loe_received");
+  const hasOpenQuery = queries.some((query) => query.status === "open");
+  const canManageQueries = sentToRtaStage?.completed && !locCompleted && !loeCompleted;
+  const canAddQuery = canManageQueries && !hasOpenQuery;
   const visibleStages = useMemo(
     () => getVisibleStages(stages, locCompleted, loeCompleted),
     [stages, locCompleted, loeCompleted]
   );
+
+  useEffect(() => {
+    return () => window.clearTimeout(undoTimerRef.current);
+  }, []);
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";
@@ -211,6 +219,7 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
       await refreshAfter(() => addQuery(clientId, caseData.case_id, { details: queryDetails }));
       setQueryDetails("");
       setShowQueryModal(false);
+      setQueryPanelOpen(true);
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.detail || "Failed to add query");
@@ -248,21 +257,10 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
     }
   };
 
-  const canAddQuery = sentToRtaStage?.completed && !locCompleted && !loeCompleted;
-
   return (
     <section className="info-card case-progress-card">
       <div className="section-header">
         <h3>Case Stages</h3>
-        {canAddQuery && (
-          <button
-            className="btn-outline"
-            onClick={() => setShowQueryModal(true)}
-            disabled={loadingKey === "add-query"}
-          >
-            + Add Query
-          </button>
-        )}
       </div>
 
       <div className="stage-list">
@@ -289,22 +287,59 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                 onEverificationDecision={handleEverificationDecision}
               />
 
-              {stage.key === QUERY_AFTER_STAGE && (
-                <div className="query-list">
-                  {queries.length === 0 ? (
-                    <p className="empty-text compact-empty">No queries opened</p>
-                  ) : (
-                    queries.map((query) => (
-                      <QueryRow
-                        key={query.query_no}
-                        query={query}
-                        loadingKey={loadingKey}
-                        formatDateTime={formatDateTime}
-                        onUpload={handleQueryUpload}
-                        onClose={handleCloseQuery}
-                        onViewDetails={setViewingQuery}
-                      />
-                    ))
+              {stage.key === QUERY_AFTER_STAGE && (canManageQueries || queries.length > 0) && (
+                <div className="query-panel">
+                  <button
+                    type="button"
+                    className="query-panel-toggle"
+                    aria-expanded={queryPanelOpen}
+                    onClick={() => setQueryPanelOpen((open) => !open)}
+                  >
+                    <span>
+                      <span className="query-panel-icon">{queryPanelOpen ? "-" : "+"}</span>
+                      Company/RTA queries
+                    </span>
+                    <span className="query-panel-meta">
+                      {queries.length} {queries.length === 1 ? "query" : "queries"}
+                    </span>
+                  </button>
+
+                  {queryPanelOpen && (
+                    <div className="query-panel-body">
+                      <div className="query-panel-toolbar">
+                        <span className={hasOpenQuery ? "query-state open" : "query-state"}>
+                          {hasOpenQuery ? "Open query active" : "No open query"}
+                        </span>
+                        {canManageQueries && (
+                          <button
+                            className="btn-outline"
+                            onClick={() => setShowQueryModal(true)}
+                            disabled={!canAddQuery || loadingKey === "add-query"}
+                            title={hasOpenQuery ? "Resolve the open query before adding another." : ""}
+                          >
+                            + Add Query
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="query-list">
+                        {queries.length === 0 ? (
+                          <p className="empty-text compact-empty">No queries opened</p>
+                        ) : (
+                          queries.map((query) => (
+                            <QueryRow
+                              key={query.query_no}
+                              query={query}
+                              loadingKey={loadingKey}
+                              formatDateTime={formatDateTime}
+                              onUpload={handleQueryUpload}
+                              onClose={handleCloseQuery}
+                              onViewDetails={setViewingQuery}
+                            />
+                          ))
+                        )}
+                      </div>
+                    </div>
                   )}
                 </div>
               )}

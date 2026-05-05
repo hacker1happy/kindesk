@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { deleteCase, getCaseDetails } from "../../api/caseApi";
 import ConfirmationModal from "../../components/ConfirmationModal";
@@ -17,16 +17,7 @@ export default function CaseDetails() {
   const [showDeleteCase, setShowDeleteCase] = useState(false);
   const [deleteCaseInput, setDeleteCaseInput] = useState("");
 
-  useEffect(() => {
-    if (!clientId) {
-      setError("Client ID missing. Please navigate from client page.");
-      return;
-    }
-
-    fetchData();
-  }, [caseId, clientId]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -38,7 +29,16 @@ export default function CaseDetails() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [caseId, clientId]);
+
+  useEffect(() => {
+    if (!clientId) {
+      setError("Client ID missing. Please navigate from client page.");
+      return;
+    }
+
+    fetchData();
+  }, [clientId, fetchData]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -96,7 +96,7 @@ export default function CaseDetails() {
   return (
     <div className="container case-details-page">
       <div className="back-link" onClick={() => navigate(`/clients/${clientId}`)}>
-        ← Back to Client
+        &larr; Back to Client
       </div>
 
       <div className="details-header">

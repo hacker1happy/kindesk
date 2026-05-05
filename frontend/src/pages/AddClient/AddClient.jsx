@@ -1,7 +1,37 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import { createClient } from "../../api/clientApi";
 import { useNavigate } from "react-router-dom";
 import "./AddClient.css";
+
+const nameRegex = /^[A-Za-z ]+$/;
+const phoneRegex = /^\+91\d{10}$/;
+
+const validateField = (name, value) => {
+  switch (name) {
+    case "name":
+      if (!value) return "Name is required";
+      if (!nameRegex.test(value)) return "Only alphabets allowed";
+      return "";
+
+    case "phone":
+      if (!phoneRegex.test(value)) return "Enter 10 digit number after +91";
+      return "";
+
+    case "assigned_to":
+      if (!value) return "Select Assigned To";
+      return "";
+
+    case "assigned_from":
+      if (!value) return "Select Assigned From";
+      return "";
+
+    case "comment":
+      return "";
+
+    default:
+      return "";
+  }
+};
 
 export default function AddClient() {
   const navigate = useNavigate();
@@ -15,45 +45,11 @@ export default function AddClient() {
   });
 
   const [files, setFiles] = useState([]);
-  const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const [isValid, setIsValid] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
   const assignedToOptions = ["Sachin", "Hari", "Deepak"];
   const assignedFromOptions = ["Pratha", "Richa", "Archana", "Gurmeen", "Dipesh"];
-
-  const nameRegex = /^[A-Za-z ]+$/;
-  const phoneRegex = /^\+91\d{10}$/;
-
-  // Validate single field
-  const validateField = (name, value) => {
-    switch (name) {
-      case "name":
-        if (!value) return "Name is required";
-        if (!nameRegex.test(value)) return "Only alphabets allowed";
-        return "";
-
-      case "phone":
-        if (!phoneRegex.test(value))
-          return "Enter 10 digit number after +91";
-        return "";
-
-      case "assigned_to":
-        if (!value) return "Select Assigned To";
-        return "";
-
-      case "assigned_from":
-        if (!value) return "Select Assigned From";
-        return "";
-
-      case "comment":
-        return "";
-
-      default:
-        return "";
-    }
-  };
 
   // Handle controlled typing
   const handleChange = (e) => {
@@ -81,12 +77,6 @@ export default function AddClient() {
       [name]: updatedValue,
     }));
 
-    const error = validateField(name, updatedValue);
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: error,
-    }));
   };
 
   const handleBlur = (e) => {
@@ -98,8 +88,7 @@ export default function AddClient() {
     }));
   };
 
-  // Check full form validity
-  useEffect(() => {
+  const errors = useMemo(() => {
     const newErrors = {};
 
     Object.keys(form).forEach((key) => {
@@ -107,35 +96,41 @@ export default function AddClient() {
       if (error) newErrors[key] = error;
     });
 
-    setIsValid(Object.keys(newErrors).length === 0);
+    return newErrors;
   }, [form]);
+
+  const isValid = Object.keys(errors).length === 0;
 
   const handleSubmit = async () => {
     if (!isValid) return;
 
-    const formData = new FormData();
+    try {
+      const formData = new FormData();
 
-    Object.entries(form).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
 
-    files.forEach((file) => formData.append("files", file));
+      files.forEach((file) => formData.append("files", file));
 
-    await createClient(formData);
+      await createClient(formData);
 
-    // Show success toast
-    setShowToast(true);
+      setShowToast(true);
 
-    setTimeout(() => {
-      setShowToast(false);
-      navigate("/");
-    }, 1500);
+      setTimeout(() => {
+        setShowToast(false);
+        navigate("/");
+      }, 1500);
+    } catch (err) {
+      console.error("Error creating client:", err);
+      alert(err.response?.data?.detail || "Failed to add client");
+    }
   };
 
   return (
     <main className="container add-client-page">
       <button className="back-link add-client-back" onClick={() => navigate("/")}>
-        ← Back to Dashboard
+        &larr; Back to Dashboard
       </button>
 
       <div className="add-client-header">
@@ -146,7 +141,7 @@ export default function AddClient() {
 
       {/* Toast */}
       {showToast && (
-        <div className="toast success">Client Added Successfully ✅</div>
+        <div className="toast success">Client added successfully</div>
       )}
 
       <div className="form-card">

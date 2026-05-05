@@ -7,12 +7,4 @@
     - admin to have all access to delete any client details as well
     - admin can also add-delete assigned to and assigned from person
 
-- make look and feel similar to our main website page
-
-- make sure the mobile size screen is also working similar to the desktop, so the website should be dynamic in nature to work on any device without effecting the styles
-
-- clean up the code whereever requried as redundant to make the code structure look modular. clean the redundant css if used, remove the useless css if it is getting over written by another class.
-
-- check for any possible error in the whole application, if any then address it in a better way
-
 - Feature to duplicate a case for a particular client (duplicate case can copy a duplicate but transmission and joint case can both copy each other as the fields are similar)

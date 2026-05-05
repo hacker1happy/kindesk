@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteClient, getClientById, uploadClientDocuments, removeClientDocument, updateClient } from "../../api/clientApi";
 import { getCases } from "../../api/caseApi";
@@ -38,14 +38,7 @@ export default function ClientDetails() {
   const assignedToOptions = ["Sachin", "Hari", "Deepak"];
   const assignedFromOptions = ["Pratha", "Richa", "Archana", "Gurmeen", "Dipesh"];
 
-  useEffect(() => {
-    if (id) {
-      loadClient();
-      loadCases();
-    }
-  }, [id]);
-
-  const loadClient = async () => {
+  const loadClient = useCallback(async () => {
     try {
       setLoadingClient(true);
 
@@ -69,9 +62,9 @@ export default function ClientDetails() {
     } finally {
       setLoadingClient(false);
     }
-  };
+  }, [id]);
 
-  const loadCases = async () => {
+  const loadCases = useCallback(async () => {
     try {
       setLoadingCases(true);
 
@@ -83,7 +76,14 @@ export default function ClientDetails() {
     } finally {
       setLoadingCases(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      loadClient();
+      loadCases();
+    }
+  }, [id, loadCases, loadClient]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -254,7 +254,7 @@ export default function ClientDetails() {
 
       {/* Back */}
       <div className="back-link" onClick={() => navigate("/")}>
-        ← Back to Dashboard
+        &larr; Back to Dashboard
       </div>
 
       {/* Header */}
