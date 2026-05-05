@@ -17,11 +17,26 @@ import ConfirmationModal from "../../../components/ConfirmationModal";
 const API_BASE = "http://127.0.0.1:8000";
 const OPTIONAL_DOCUMENT_STAGES = new Set([
   "mail_sent",
+  "doc_sent",
+  "doc_received",
+  "ops_review",
   "iepf_generated",
   "everification",
   "shares_credited",
   "closed",
 ]);
+const NON_UPLOAD_STAGE_KEYS = new Set([
+  "mail_sent",
+  "doc_generated",
+  "doc_sent",
+  "doc_received",
+  "ops_review",
+  "iepf_generated",
+  "everification",
+  "shares_credited",
+  "closed",
+]);
+const IEPF_WORKFLOW_STAGES = new Set(["iepf_generated", "iepf_submitted", "everification"]);
 
 export default function Documents({ caseData, refresh }) {
   const { clientId, caseId } = useParams();
@@ -63,7 +78,15 @@ export default function Documents({ caseData, refresh }) {
   };
 
   const managedDocumentGroups = useMemo(() => {
-    const stageGroups = (caseData?.stages || []).map((stage) => ({
+    const stages = caseData?.stages || [];
+    const locCompleted = Boolean(stages.find((stage) => stage.key === "loc_received")?.completed);
+    const loeCompleted = Boolean(stages.find((stage) => stage.key === "loe_received")?.completed);
+    const visibleStages = stages.filter((stage) => {
+      if (locCompleted) return stage.key !== "loe_received" && !IEPF_WORKFLOW_STAGES.has(stage.key);
+      if (loeCompleted) return stage.key !== "loc_received";
+      return !IEPF_WORKFLOW_STAGES.has(stage.key);
+    });
+    const stageGroups = visibleStages.map((stage) => ({
       id: `stage-${stage.key}`,
       type: "stage",
       key: stage.key,
@@ -248,15 +271,17 @@ export default function Documents({ caseData, refresh }) {
                   <strong>{group.label}</strong>
                   <span>{getDocumentSummary(group.documents)}</span>
                 </div>
-                <label className="btn-outline compact-upload" onClick={(e) => e.stopPropagation()}>
-                  {workingKey === `${group.id}-upload` ? "Uploading..." : group.documents.length ? "Add" : "Upload"}
-                  <input
-                    type="file"
-                    multiple={group.type === "stage"}
-                    hidden
-                    onChange={(e) => handleGroupUpload(group, e.target.files)}
-                  />
-                </label>
+                {!NON_UPLOAD_STAGE_KEYS.has(group.key) && (
+                  <label className="btn-outline compact-upload" onClick={(e) => e.stopPropagation()}>
+                    {workingKey === `${group.id}-upload` ? "Uploading..." : group.documents.length ? "Add" : "Upload"}
+                    <input
+                      type="file"
+                      multiple={group.type === "stage"}
+                      hidden
+                      onChange={(e) => handleGroupUpload(group, e.target.files)}
+                    />
+                  </label>
+                )}
               </summary>
 
               {group.details && <p className="managed-doc-note">{group.details}</p>}
@@ -284,6 +309,7 @@ export default function Documents({ caseData, refresh }) {
                       onOpen={group.key === "doc_generated" ? null : handleOpenFile}
                       onDownload={handleDownloadFile}
                       onReplace={(document, file) => handleReplaceManagedDocument(group, document, file)}
+                      replaceDisabled={group.key === "doc_generated"}
                       onDelete={
                         group.key === "doc_generated"
                           ? null
@@ -359,6 +385,7 @@ function DocumentRow({
   onDownload,
   onDelete,
   onReplace,
+  replaceDisabled,
   removeDisabledReason,
 }) {
   return (
@@ -377,7 +404,7 @@ function DocumentRow({
         <button className="btn-outline file-btn download-file-btn" onClick={() => onDownload(doc.name, doc.url)}>
           Download
         </button>
-        {onReplace && (
+        {onReplace && !replaceDisabled && (
           <label className="btn-outline file-btn">
             Replace
             <input

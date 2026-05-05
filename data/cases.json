@@ -4,10 +4,106 @@
     "folio_number": "RIL123",
     "company_id": "COMP001",
     "case_type": "duplicate",
-    "status": "client_docs_received",
+    "status": "closed",
     "created_at": "2026-05-01T18:53:21.487843",
-    "form_data": {},
-    "files": [],
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "test",
+            "panNumber": "DETPO7788Y"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "pinCode": "713347",
+            "email": "finassure.dataset@gmail.com",
+            "mobile": "9123456780"
+          },
+          "bankDetails": {
+            "accountNumber": "1234567890",
+            "bankName": "hdfc",
+            "branch": "rnj",
+            "ifscCode": "HDFC0001015"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "",
+          "distinctiveFrom": "",
+          "distinctiveTo": "",
+          "shares": ""
+        }
+      ],
+      "companyInfo": {
+        "name": "Reliance Industries Limited",
+        "address": "Maker Chambers IV, Nariman Point, Mumbai, Maharashtra - 400021"
+      },
+      "rtaInfo": {
+        "name": "KFin Technologies Limited",
+        "address": "Selenium Tower B, Plot 31 & 32, Financial District, Nanakramguda, Hyderabad, Telangana - 500032"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "",
+        "folioNumber": "RIL123",
+        "faceValue": ""
+      },
+      "totalShares": 0
+    },
+    "files": [
+      "4. SH-13.docx",
+      "7. FormB_Indemnity.docx",
+      "3. ISR1.docx",
+      "5. ISR4.docx",
+      "6. FormA.docx",
+      "2. Request_Letter.docx",
+      "1. Authorization_Letter.docx"
+    ],
     "stages": [
       {
         "key": "mail_sent",
@@ -20,53 +116,158 @@
         "key": "client_docs_received",
         "label": "Client Docs Received",
         "completed": true,
-        "updated_at": "2026-05-01T20:59:56.585777",
+        "updated_at": "2026-05-05T02:25:59.942802",
         "documents": [
           {
             "name": "aadhar-front.pdf",
             "url": "/data/uploads/CL000001/CSMS4MUFE/client_docs_received/ed10b901-ed29-4d03-852f-0a8aaa659922_aadhar-front.pdf",
             "uploaded_at": "2026-05-01T20:59:54.488804"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/client_docs_received/e6e7878d-fea6-46d2-ad26-352e31860e70_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T02:25:59.942769"
           }
         ]
       },
       {
         "key": "doc_generated",
         "label": "Document Generated",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:08:09.140708",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/1. Authorization_Letter.docx",
+            "uploaded_at": "2026-05-05T03:07:50.846301"
+          },
+          {
+            "name": "2. Request_Letter.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/2. Request_Letter.docx",
+            "uploaded_at": "2026-05-05T03:07:50.974043"
+          },
+          {
+            "name": "3. ISR1.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/3. ISR1.docx",
+            "uploaded_at": "2026-05-05T03:07:56.534415"
+          },
+          {
+            "name": "4. SH-13.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/4. SH-13.docx",
+            "uploaded_at": "2026-05-05T03:07:56.806027"
+          },
+          {
+            "name": "5. ISR4.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/5. ISR4.docx",
+            "uploaded_at": "2026-05-05T03:07:57.365671"
+          },
+          {
+            "name": "6. FormA.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/6. FormA.docx",
+            "uploaded_at": "2026-05-05T03:07:57.836389"
+          },
+          {
+            "name": "7. FormB_Indemnity.docx",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/7. FormB_Indemnity.docx",
+            "uploaded_at": "2026-05-05T03:07:58.252437"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/doc_generated/7ebaae3e-eca0-411c-8315-409112ef79fb_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:08:09.140692"
+          }
+        ]
       },
       {
         "key": "doc_sent",
         "label": "Document Sent to Client",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:08:34.168466",
         "documents": []
       },
       {
         "key": "doc_received",
         "label": "Document Received from Client",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:08:37.053555",
         "documents": []
       },
       {
         "key": "ops_review",
         "label": "Ops Review & Sign-off",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:09:56.016322",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/ops_review/faa08a17-deb8-4c4f-ae68-64ba3edb10a8_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:08:43.971430"
+          }
+        ],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "yes",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "yes",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "yes",
+              "comment": ""
+            }
+          },
+          "submitted_at": "2026-05-05T03:09:56.016322"
+        }
       },
       {
         "key": "sent_to_rta",
         "label": "Sent to Company/RTA",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:10:06.298115",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/sent_to_rta/6206be6f-b784-45f0-b2a6-a4d51ea1bda9_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:09:29.238080",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "Cover letter.pdf",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/sent_to_rta/acfe5884-2401-42c5-b643-0a1df1e5c4df_Cover letter.pdf",
+            "uploaded_at": "2026-05-05T03:09:35.894267",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
       },
       {
         "key": "loc_received",
-        "label": "LOC/LOE Received",
+        "label": "LOC Received",
+        "completed": true,
+        "updated_at": "2026-05-05T03:11:04.498047",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMS4MUFE/loc_received/bf16dcc5-b098-4555-8f68-7d9a171adeb8_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:11:00.540622"
+          }
+        ]
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
         "completed": false,
         "updated_at": null,
         "documents": []
@@ -95,15 +296,15 @@
       {
         "key": "shares_credited",
         "label": "Shares Credited",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:11:22.377740",
         "documents": []
       },
       {
         "key": "closed",
         "label": "Case Closed",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:11:24.361821",
         "documents": []
       }
     ],
@@ -114,7 +315,7 @@
     "folio_number": "HDFC123",
     "company_id": "COMP004",
     "case_type": "duplicate",
-    "status": "doc_generated",
+    "status": "closed",
     "created_at": "2026-05-01T20:11:58.270081",
     "form_data": {
       "shareholders": [
@@ -286,71 +487,147 @@
       {
         "key": "doc_sent",
         "label": "Document Sent to Client",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:15:38.596377",
         "documents": []
       },
       {
         "key": "doc_received",
         "label": "Document Received from Client",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:15:41.154121",
         "documents": []
       },
       {
         "key": "ops_review",
         "label": "Ops Review & Sign-off",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:16:11.864179",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMBDU8C7/ops_review/09948f1e-563c-4817-97ee-840d9cfec917_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:16:00.813010"
+          }
+        ],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "yes",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "yes",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "yes",
+              "comment": ""
+            }
+          },
+          "submitted_at": "2026-05-05T03:16:11.864179"
+        }
       },
       {
         "key": "sent_to_rta",
         "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-05-05T03:16:35.906968",
+        "documents": [
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CSMBDU8C7/sent_to_rta/8ded6f17-1b89-4e5f-a1d2-2b3043f5542b_epfo.pdf",
+            "uploaded_at": "2026-05-05T03:16:20.277414",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMBDU8C7/sent_to_rta/fdf93293-9fd4-40a6-9de0-56911a6e7a30_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:16:25.397767",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
         "completed": false,
         "updated_at": null,
         "documents": []
       },
       {
-        "key": "loc_received",
-        "label": "LOC/LOE Received",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": true,
+        "updated_at": "2026-05-05T03:16:47.361838",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMBDU8C7/loe_received/6d00ca89-d9d8-4aae-a78f-6dc149f4fd81_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:16:43.038721"
+          }
+        ]
       },
       {
         "key": "iepf_generated",
         "label": "IEPF Generated",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:14.663059",
         "documents": []
       },
       {
         "key": "iepf_submitted",
         "label": "IEPF Submitted",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:35.379328",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMBDU8C7/iepf_submitted/1b656222-8d7b-4970-a963-2403784cd4f9_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:17:28.131707",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMBDU8C7/iepf_submitted/aede528a-c5f4-410e-9206-9bd3bebbe6e1_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:17:32.981612",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
       },
       {
         "key": "everification",
         "label": "E-Verification Approved",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:39.642201",
+        "documents": [],
+        "approval_status": "approved",
+        "approval_comment": ""
       },
       {
         "key": "shares_credited",
         "label": "Shares Credited",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:43.040671",
         "documents": []
       },
       {
         "key": "closed",
         "label": "Case Closed",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:47.074976",
         "documents": []
       }
     ],
@@ -361,7 +638,7 @@
     "folio_number": "HDFC9090",
     "company_id": "COMP004",
     "case_type": "transmission",
-    "status": "doc_generated",
+    "status": "closed",
     "created_at": "2026-05-02T02:19:33.451919",
     "form_data": {
       "legalHeirs": [
@@ -554,58 +831,141 @@
       {
         "key": "doc_sent",
         "label": "Document Sent to Client",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:55.606825",
         "documents": []
       },
       {
         "key": "doc_received",
         "label": "Document Received from Client",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T03:17:57.909042",
         "documents": []
       },
       {
         "key": "ops_review",
         "label": "Ops Review & Sign-off",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "completed": true,
+        "updated_at": "2026-05-05T03:18:24.725677",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/ops_review/b71b538e-bbbf-42f4-aaa4-e41ebe469954_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:18:14.532715"
+          }
+        ],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "yes",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "yes",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "yes",
+              "comment": ""
+            }
+          },
+          "submitted_at": "2026-05-05T03:18:24.725677"
+        }
       },
       {
         "key": "sent_to_rta",
         "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-05-05T03:18:42.900438",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/sent_to_rta/41a7a87d-6498-4311-9dcf-ba205f4abdba_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:18:34.615613",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/sent_to_rta/dac43bd8-6391-480e-842d-1beee4f43faf_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:18:39.679736",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
         "completed": false,
         "updated_at": null,
         "documents": []
       },
       {
-        "key": "loc_received",
-        "label": "LOC/LOE Received",
-        "completed": false,
-        "updated_at": null,
-        "documents": []
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": true,
+        "updated_at": "2026-05-05T03:18:53.063241",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/loe_received/8045e60e-b272-4aa7-8cd5-ba2c80412c83_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:18:50.337893"
+          }
+        ]
       },
       {
         "key": "iepf_generated",
         "label": "IEPF Generated",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T10:24:16.161678",
         "documents": []
       },
       {
         "key": "iepf_submitted",
         "label": "IEPF Submitted",
         "completed": false,
-        "updated_at": null,
-        "documents": []
+        "updated_at": "2026-05-05T10:24:09.731596",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/iepf_submitted/2c25be9f-7711-4692-b7ba-26954c37c6d5_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:19:01.270007",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/iepf_submitted/119cf7e9-a258-4afb-968d-2143953f8ea5_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:19:05.750361",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/iepf_submitted/03cb7339-43c2-40aa-88eb-e355f9e34b02_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T03:19:34.599425",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
       },
       {
         "key": "everification",
         "label": "E-Verification Approved",
         "completed": false,
-        "updated_at": null,
-        "documents": []
+        "updated_at": "2026-05-05T10:24:09.731596",
+        "documents": [],
+        "approval_status": "rejected",
+        "approval_comment": "test"
       },
       {
         "key": "shares_credited",
@@ -617,19 +977,54 @@
       {
         "key": "closed",
         "label": "Case Closed",
-        "completed": false,
-        "updated_at": null,
+        "completed": true,
+        "updated_at": "2026-05-05T10:31:32.578367",
         "documents": []
       }
     ],
-    "queries": []
+    "queries": [],
+    "print_history": [
+      {
+        "printed_at": "2026-05-05T10:26:49.585364",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/1. Authorization_Letter.docx",
+            "source": "Document Generated"
+          }
+        ],
+        "document_count": 1
+      },
+      {
+        "printed_at": "2026-05-05T10:26:17.327430",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS75021BJ/client_docs_received/0e40d866-ed0b-4731-98fe-ec3980d963c1_aadhar-front.pdf",
+            "source": "Client Docs Received"
+          },
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CS75021BJ/doc_generated/1. Authorization_Letter.docx",
+            "source": "Document Generated"
+          }
+        ],
+        "document_count": 2
+      }
+    ],
+    "closure_reason": "Not required",
+    "closure_comment": {
+      "comment": "Not required",
+      "created_at": "2026-05-05T10:31:32.578367",
+      "stage_key": "closed"
+    }
   },
   "CS87EG0KE": {
     "case_id": "CS87EG0KE",
     "folio_number": "RIL8978",
     "company_id": "COMP001",
     "case_type": "joint",
-    "status": "fresh",
+    "status": "closed",
     "created_at": "2026-05-02T03:29:25.184770",
     "form_data": {},
     "files": [],
@@ -685,7 +1080,1272 @@
       },
       {
         "key": "loc_received",
-        "label": "LOC/LOE Received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": true,
+        "updated_at": "2026-05-05T10:32:04.441471",
+        "documents": []
+      }
+    ],
+    "queries": [],
+    "print_history": [],
+    "closure_reason": "Created by mistake",
+    "closure_comment": {
+      "comment": "Created by mistake",
+      "created_at": "2026-05-05T10:32:04.441471",
+      "stage_key": "closed"
+    }
+  },
+  "CS5UHA23I": {
+    "case_id": "CS5UHA23I",
+    "folio_number": "RIL198",
+    "company_id": "COMP001",
+    "case_type": "joint",
+    "status": "closed",
+    "created_at": "2026-05-05T10:32:31.253428",
+    "form_data": {
+      "legalHeirs": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "test father name",
+            "panNumber": "DETPO9090I"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "city": "Raniganj",
+            "state": "West Bengal",
+            "pinCode": "713347",
+            "mobile": "9234567890",
+            "email": "finassure.dataset@gmail.com"
+          },
+          "bankDetails": {
+            "accountNumber": "1234567890",
+            "bankName": "SBI",
+            "ifscCode": "SBIN0001004",
+            "bankCity": "Raniganj",
+            "bankPin": "713347"
+          }
+        }
+      ],
+      "shareholders": [
+        {
+          "name": "Ramlal Verma",
+          "dateOfDemise": "01-05-2026"
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "",
+          "distinctiveFrom": "",
+          "distinctiveTo": "",
+          "shares": ""
+        }
+      ],
+      "companyInfo": {
+        "name": "Reliance Industries Limited",
+        "address": "Maker Chambers IV, Nariman Point, Mumbai, Maharashtra - 400021"
+      },
+      "rtaInfo": {
+        "name": "KFin Technologies Limited",
+        "address": "Selenium Tower B, Plot 31 & 32, Financial District, Nanakramguda, Hyderabad, Telangana - 500032"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authorization Letter",
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "selected": true
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "selected": true
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "selected": true
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "selected": true
+        },
+        {
+          "id": "isr5-annexure-c",
+          "name": "ISR5 - Annexure C",
+          "selected": true
+        },
+        {
+          "id": "annexure-d-heir-1",
+          "name": "Annexure D - Affidavit Legal Heir 1",
+          "heirIndex": 1,
+          "selected": true
+        },
+        {
+          "id": "annexure-d-heir-2",
+          "name": "Annexure D - Affidavit Legal Heir 2",
+          "heirIndex": 2,
+          "selected": false
+        },
+        {
+          "id": "annexure-d-heir-3",
+          "name": "Annexure D - Affidavit Legal Heir 3",
+          "heirIndex": 3,
+          "selected": false
+        },
+        {
+          "id": "annexure-e-indemnity",
+          "name": "Annexure E - Indemnity from Legal Heir",
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "",
+        "folioNumber": "RIL198",
+        "faceValue": "",
+        "stateName": "West Bengal",
+        "cityName": "Raniganj"
+      },
+      "totalShares": 0
+    },
+    "files": [
+      "6. FormA.docx",
+      "10. AnnexureE-Indemnity_from_LegalHeir.docx",
+      "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+      "7. FormB_Indemnity.docx",
+      "5. ISR4.docx",
+      "4. SH-13.docx",
+      "1. Authorization_Letter.docx",
+      "3. ISR1.docx",
+      "2. Request_Letter.docx",
+      "8. ISR5-AnnexureC.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T10:34:02.383374",
+        "documents": []
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-05T10:34:09.499883",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS5UHA23I/client_docs_received/c1b732ce-d19b-4039-9b1b-7f2894387db9_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T10:34:07.386085"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-05-05T10:34:35.563841",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/1. Authorization_Letter.docx",
+            "uploaded_at": "2026-05-05T10:34:17.536793"
+          },
+          {
+            "name": "2. Request_Letter.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/2. Request_Letter.docx",
+            "uploaded_at": "2026-05-05T10:34:17.877120"
+          },
+          {
+            "name": "3. ISR1.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/3. ISR1.docx",
+            "uploaded_at": "2026-05-05T10:34:27.999794"
+          },
+          {
+            "name": "4. SH-13.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/4. SH-13.docx",
+            "uploaded_at": "2026-05-05T10:34:28.941222"
+          },
+          {
+            "name": "5. ISR4.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/5. ISR4.docx",
+            "uploaded_at": "2026-05-05T10:34:30.071239"
+          },
+          {
+            "name": "6. FormA.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/6. FormA.docx",
+            "uploaded_at": "2026-05-05T10:34:31.087406"
+          },
+          {
+            "name": "7. FormB_Indemnity.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/7. FormB_Indemnity.docx",
+            "uploaded_at": "2026-05-05T10:34:31.873788"
+          },
+          {
+            "name": "8. ISR5-AnnexureC.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/8. ISR5-AnnexureC.docx",
+            "uploaded_at": "2026-05-05T10:34:33.738002"
+          },
+          {
+            "name": "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+            "uploaded_at": "2026-05-05T10:34:34.519978"
+          },
+          {
+            "name": "10. AnnexureE-Indemnity_from_LegalHeir.docx",
+            "url": "/data/uploads/CL000001/CS5UHA23I/doc_generated/10. AnnexureE-Indemnity_from_LegalHeir.docx",
+            "uploaded_at": "2026-05-05T10:34:35.563349"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T10:34:42.005435",
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": true,
+        "updated_at": "2026-05-05T10:34:46.353795",
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": true,
+        "updated_at": "2026-05-05T10:35:07.644144",
+        "documents": [],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "no",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "yes",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "no",
+              "comment": ""
+            }
+          },
+          "status": "submitted",
+          "draft_saved_at": "2026-05-05T10:34:59.444994",
+          "submitted_at": "2026-05-05T10:35:07.644144"
+        }
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-05-05T10:35:27.405559",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS5UHA23I/sent_to_rta/010eb582-dff4-47d7-8977-dfd31933f81e_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T10:35:19.910062",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "panCard.pdf",
+            "url": "/data/uploads/CL000001/CS5UHA23I/sent_to_rta/b1959532-8ee3-4df1-9fd3-271d425fc470_panCard.pdf",
+            "uploaded_at": "2026-05-05T10:35:25.361347",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": true,
+        "updated_at": "2026-05-05T10:58:35.105159",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS5UHA23I/loc_received/6b762c83-6c5d-4886-ba66-c2ef69b5a482_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T10:58:30.148479"
+          }
+        ]
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": true,
+        "updated_at": "2026-05-05T14:06:09.077067",
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": true,
+        "updated_at": "2026-05-05T14:06:34.491432",
+        "documents": []
+      }
+    ],
+    "queries": [
+      {
+        "query_no": 1,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS5UHA23I/query_1/959c2238-86de-479f-9fd9-e839f5f8291f_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T10:36:15.928622"
+          }
+        ],
+        "details": "Got q1",
+        "opened_at": "2026-05-05T10:36:08.145522",
+        "closed_at": "2026-05-05T10:36:38.665552",
+        "updated_at": "2026-05-05T10:36:38.665552"
+      }
+    ],
+    "print_history": [],
+    "closure_reason": "Case closed after all workflow steps were completed successfully.",
+    "closure_comment": {
+      "comment": "Case closed after all workflow steps were completed successfully.",
+      "created_at": "2026-05-05T14:06:34.491432",
+      "stage_key": "closed"
+    }
+  },
+  "CSY54IVOF": {
+    "case_id": "CSY54IVOF",
+    "folio_number": "TATA7867",
+    "company_id": "COMP002",
+    "case_type": "duplicate",
+    "status": "closed",
+    "created_at": "2026-05-05T11:24:05.067273",
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "test",
+            "panNumber": "DETGY6677Y"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "pinCode": "713347",
+            "email": "finassure.dataset@gmail.com",
+            "mobile": "9012345678"
+          },
+          "bankDetails": {
+            "accountNumber": "1234567890",
+            "bankName": "sbi",
+            "ifscCode": "SBIN0001004"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "",
+          "distinctiveFrom": "",
+          "distinctiveTo": "",
+          "shares": ""
+        }
+      ],
+      "companyInfo": {
+        "name": "Tata Consultancy Services Limited",
+        "address": "TCS House, Raveline Street, Fort, Mumbai, Maharashtra - 400001"
+      },
+      "rtaInfo": {
+        "name": "Link Intime India Private Limited",
+        "address": "C-101, 247 Park, LBS Marg, Vikhroli West, Mumbai, Maharashtra - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "",
+        "folioNumber": "TATA7867",
+        "faceValue": ""
+      },
+      "totalShares": 0
+    },
+    "files": [
+      "7. FormB_Indemnity.docx",
+      "6. FormA.docx",
+      "4. SH-13.docx",
+      "1. Authorization_Letter.docx",
+      "3. ISR1.docx",
+      "2. Request_Letter.docx",
+      "5. ISR4.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T11:24:50.049202",
+        "documents": []
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-05T11:24:57.400958",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/client_docs_received/6a2220ce-1fe5-4565-9d30-6a51bdcb58aa_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T11:24:55.036593"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-05-05T11:25:14.988950",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/1. Authorization_Letter.docx",
+            "uploaded_at": "2026-05-05T11:25:05.208311"
+          },
+          {
+            "name": "2. Request_Letter.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/2. Request_Letter.docx",
+            "uploaded_at": "2026-05-05T11:25:05.359595"
+          },
+          {
+            "name": "3. ISR1.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/3. ISR1.docx",
+            "uploaded_at": "2026-05-05T11:25:12.162075"
+          },
+          {
+            "name": "4. SH-13.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/4. SH-13.docx",
+            "uploaded_at": "2026-05-05T11:25:12.608797"
+          },
+          {
+            "name": "5. ISR4.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/5. ISR4.docx",
+            "uploaded_at": "2026-05-05T11:25:13.502319"
+          },
+          {
+            "name": "6. FormA.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/6. FormA.docx",
+            "uploaded_at": "2026-05-05T11:25:14.315677"
+          },
+          {
+            "name": "7. FormB_Indemnity.docx",
+            "url": "/data/uploads/CL000001/CSY54IVOF/doc_generated/7. FormB_Indemnity.docx",
+            "uploaded_at": "2026-05-05T11:25:14.986656"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T11:25:28.701630",
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": true,
+        "updated_at": "2026-05-05T11:25:30.723143",
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": true,
+        "updated_at": "2026-05-05T11:25:41.877099",
+        "documents": [],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "yes",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "yes",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "yes",
+              "comment": ""
+            }
+          },
+          "status": "submitted",
+          "draft_saved_at": null,
+          "submitted_at": "2026-05-05T11:25:41.877099"
+        }
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-05-05T11:25:55.389462",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/sent_to_rta/b460c003-5c9c-414a-ba75-50c97144becf_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T11:25:47.858953",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "epfo.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/sent_to_rta/f3ea3b05-23c1-4e44-81b2-28f4e0dd1376_epfo.pdf",
+            "uploaded_at": "2026-05-05T11:25:53.024381",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": "2026-05-05T11:26:18.767462",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/loc_received/5dc20956-eba3-428d-80e0-ee2bc03a99e0_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T11:26:18.767447"
+          }
+        ]
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": true,
+        "updated_at": "2026-05-05T11:26:41.864487",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/loe_received/85b7bb13-6a11-454b-bcc8-bfbf0c341803_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T11:26:03.932248"
+          }
+        ]
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": true,
+        "updated_at": "2026-05-05T11:27:01.143754",
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": true,
+        "updated_at": "2026-05-05T11:27:13.956909",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/iepf_submitted/d563602a-38c7-40d5-affd-604d7e11bb38_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T11:27:07.120489",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSY54IVOF/iepf_submitted/aee0f1b1-7408-48e0-82df-8687d35e9610_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T11:27:11.712348",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": true,
+        "updated_at": "2026-05-05T11:28:57.891081",
+        "documents": [],
+        "approval_status": "approved",
+        "approval_comment": ""
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": true,
+        "updated_at": "2026-05-05T11:29:00.072648",
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": true,
+        "updated_at": "2026-05-05T14:05:05.365356",
+        "documents": []
+      }
+    ],
+    "queries": [],
+    "closure_reason": "Case closed after all workflow steps were completed successfully.",
+    "closure_comment": {
+      "comment": "Case closed after all workflow steps were completed successfully.",
+      "created_at": "2026-05-05T14:05:05.365356",
+      "stage_key": "closed"
+    }
+  },
+  "CS4PIVKSQ": {
+    "case_id": "CS4PIVKSQ",
+    "folio_number": "HDFC1678",
+    "company_id": "COMP004",
+    "case_type": "duplicate",
+    "status": "iepf_generated",
+    "created_at": "2026-05-05T14:48:38.338865",
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "Test",
+            "panNumber": "DETPG9988I"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "pinCode": "713347",
+            "email": "finassure.dataset@gmail.com",
+            "mobile": "8901234567"
+          },
+          "bankDetails": {
+            "bankName": "hdfc",
+            "accountNumber": "123456789789",
+            "ifscCode": "HDFC0001015"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "",
+          "distinctiveFrom": "",
+          "distinctiveTo": "",
+          "shares": ""
+        }
+      ],
+      "companyInfo": {
+        "name": "HDFC Bank Limited",
+        "address": "HDFC Bank House, Senapati Bapat Marg, Mumbai - 400013"
+      },
+      "rtaInfo": {
+        "name": "Link Intime India Private Limited",
+        "address": "C-101, 247 Park, LBS Marg, Vikhroli West, Mumbai, Maharashtra - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": true
+        }
+      ],
+      "otherInfo": {
+        "formDate": "",
+        "folioNumber": "HDFC1678",
+        "faceValue": ""
+      },
+      "totalShares": 0
+    },
+    "files": [
+      "2. Request_Letter.docx",
+      "3. ISR1.docx",
+      "1. Authorization_Letter.docx",
+      "7. FormB_Indemnity.docx",
+      "6. FormA.docx",
+      "5. ISR4.docx",
+      "4. SH-13.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T14:49:44.743430",
+        "documents": []
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-05T14:49:54.580074",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/client_docs_received/7debe36f-54c2-48dd-a13d-33ca2c0c324c_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T14:49:52.272488"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-05-05T14:51:19.820584",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/1. Authorization_Letter.docx",
+            "uploaded_at": "2026-05-05T14:51:11.037285"
+          },
+          {
+            "name": "2. Request_Letter.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/2. Request_Letter.docx",
+            "uploaded_at": "2026-05-05T14:51:11.337972"
+          },
+          {
+            "name": "3. ISR1.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/3. ISR1.docx",
+            "uploaded_at": "2026-05-05T14:51:17.426731"
+          },
+          {
+            "name": "4. SH-13.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/4. SH-13.docx",
+            "uploaded_at": "2026-05-05T14:51:17.793061"
+          },
+          {
+            "name": "5. ISR4.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/5. ISR4.docx",
+            "uploaded_at": "2026-05-05T14:51:18.500420"
+          },
+          {
+            "name": "6. FormA.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/6. FormA.docx",
+            "uploaded_at": "2026-05-05T14:51:19.176648"
+          },
+          {
+            "name": "7. FormB_Indemnity.docx",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/doc_generated/7. FormB_Indemnity.docx",
+            "uploaded_at": "2026-05-05T14:51:19.810262"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T14:51:28.254792",
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": true,
+        "updated_at": "2026-05-05T14:51:35.269747",
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": true,
+        "updated_at": "2026-05-05T14:51:51.244242",
+        "documents": [],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "yes",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "no",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "yes",
+              "comment": ""
+            }
+          },
+          "status": "submitted",
+          "draft_saved_at": "2026-05-05T14:51:41.947348",
+          "submitted_at": "2026-05-05T14:51:51.244242"
+        }
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-05-05T14:52:37.451360",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/sent_to_rta/39b706ca-c9db-489a-9799-9b6c39b64a78_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T14:52:30.313740",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/sent_to_rta/669f4dd1-cf2b-449e-93e7-408267661a82_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T14:52:35.402144",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": "2026-05-05T14:53:14.697076",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/loc_received/d6e054f0-a9dd-453a-8685-d582360a68f0_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T14:53:14.697060"
+          }
+        ]
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": true,
+        "updated_at": "2026-05-05T14:53:37.857169",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CS4PIVKSQ/loe_received/f4a4e06a-6d10-4f5d-8daa-935ef5fa6513_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T14:53:22.478663"
+          }
+        ]
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": true,
+        "updated_at": "2026-05-05T15:14:12.593878",
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification Approved",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CSXGLOBMF": {
+    "case_id": "CSXGLOBMF",
+    "folio_number": "HDFC89989",
+    "company_id": "COMP002",
+    "case_type": "duplicate",
+    "status": "q1_closed",
+    "created_at": "2026-05-05T15:59:18.981506",
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu Gupta",
+            "fatherName": "test",
+            "panNumber": "TYUIO8909I"
+          },
+          "contactDetails": {
+            "address": "01 TDB College Road, Raniganj, West Bengal 713347, India",
+            "pinCode": "713347",
+            "email": "finassure.dataset@gmail.com",
+            "mobile": "8907897898"
+          },
+          "bankDetails": {
+            "bankName": "fgh",
+            "accountNumber": "12345678900",
+            "ifscCode": "HDFC0001015"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "",
+          "distinctiveFrom": "",
+          "distinctiveTo": "",
+          "shares": ""
+        }
+      ],
+      "companyInfo": {
+        "name": "Tata Consultancy Services Limited",
+        "address": "TCS House, Raveline Street, Fort, Mumbai, Maharashtra - 400001"
+      },
+      "rtaInfo": {
+        "name": "Link Intime India Private Limited",
+        "address": "C-101, 247 Park, LBS Marg, Vikhroli West, Mumbai, Maharashtra - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": true
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": false
+        }
+      ],
+      "otherInfo": {
+        "formDate": "",
+        "folioNumber": "HDFC89989",
+        "faceValue": ""
+      },
+      "totalShares": 0
+    },
+    "files": [
+      "1. Authorization_Letter.docx"
+    ],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T15:59:24.706912",
+        "documents": []
+      },
+      {
+        "key": "client_docs_received",
+        "label": "Client Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-05T15:59:33.791777",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/client_docs_received/fde0abed-07f5-4c2a-9857-f73a2557e311_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T15:59:29.253840"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": true,
+        "updated_at": "2026-05-05T16:00:28.858669",
+        "documents": [
+          {
+            "name": "1. Authorization_Letter.docx",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/doc_generated/1. Authorization_Letter.docx",
+            "uploaded_at": "2026-05-05T16:00:28.854486"
+          }
+        ]
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-05T16:00:33.715727",
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": true,
+        "updated_at": "2026-05-05T16:00:36.348789",
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": true,
+        "updated_at": "2026-05-05T16:00:45.819278",
+        "documents": [],
+        "ops_review_form": {
+          "questions": {
+            "documents_verified": {
+              "question": "All required client documents verified",
+              "answer": "yes",
+              "comment": ""
+            },
+            "case_details_matched": {
+              "question": "Case details match company and folio records",
+              "answer": "yes",
+              "comment": ""
+            },
+            "rta_packet_ready": {
+              "question": "RTA submission packet is ready",
+              "answer": "yes",
+              "comment": ""
+            },
+            "exceptions_recorded": {
+              "question": "Exceptions or special notes are recorded",
+              "answer": "yes",
+              "comment": ""
+            }
+          },
+          "status": "submitted",
+          "draft_saved_at": null,
+          "submitted_at": "2026-05-05T16:00:45.819278"
+        }
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": true,
+        "updated_at": "2026-05-05T16:00:58.282053",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/sent_to_rta/8d9ca87c-f585-4659-afba-f8faf4ac3745_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T16:00:51.080522",
+            "document_type": "document_sent_to_company_rta",
+            "document_label": "Document sent to Company/RTA"
+          },
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/sent_to_rta/773808f1-925f-4fb9-a6f1-c519d4b3e7d2_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T16:00:55.605096",
+            "document_type": "pod_receipt",
+            "document_label": "POD receipt"
+          }
+        ]
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
         "completed": false,
         "updated_at": null,
         "documents": []
@@ -726,6 +2386,22 @@
         "documents": []
       }
     ],
-    "queries": []
+    "queries": [
+      {
+        "query_no": 1,
+        "status": "closed",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSXGLOBMF/query_1/65748f60-b234-4eb6-8697-fed87ac93f28_aadhar-front.pdf",
+            "uploaded_at": "2026-05-05T16:01:16.785314"
+          }
+        ],
+        "details": "q1 opening",
+        "opened_at": "2026-05-05T16:01:09.936507",
+        "closed_at": "2026-05-05T16:01:19.101864",
+        "updated_at": "2026-05-05T16:01:19.101864"
+      }
+    ]
   }
 }

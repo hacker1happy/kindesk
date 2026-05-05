@@ -9,6 +9,8 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [assignedToFilter, setAssignedToFilter] = useState("");
   const [assignedFromFilter, setAssignedFromFilter] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,6 +77,18 @@ export default function Dashboard() {
     );
   });
 
+  const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
+  const pageStartIndex = (currentPage - 1) * pageSize;
+  const paginatedClients = filteredClients.slice(pageStartIndex, pageStartIndex + pageSize);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, assignedToFilter, assignedFromFilter, pageSize]);
+
+  useEffect(() => {
+    setCurrentPage((page) => Math.min(page, totalPages));
+  }, [totalPages]);
+
   const clearFilters = () => {
     setSearch("");
     setAssignedToFilter("");
@@ -94,7 +108,13 @@ export default function Dashboard() {
 
       {/* Header */}
       <div className="header">
-        <h1>TrackSure System</h1>
+        <div className="brand-lockup">
+          <img src="/kindesk.jpg" alt="KinDesk" />
+          <div>
+            <h1>KinDesk</h1>
+            <span>Succession Care Boutique</span>
+          </div>
+        </div>
 
         <button
           className="btn"
@@ -160,7 +180,21 @@ export default function Dashboard() {
 
       {/* Client List */}
       <div className="table-card">
-        <h3 style={{ marginBottom: "10px" }}>Clients</h3>
+        <div className="table-card-header">
+          <h3>Clients</h3>
+          <div className="page-size-control">
+            <span>Show</span>
+            <select
+              className="input"
+              value={pageSize}
+              onChange={(event) => setPageSize(Number(event.target.value))}
+            >
+              {[10, 25, 50].map((size) => (
+                <option key={size} value={size}>{size}</option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {filteredClients.length === 0 ? (
           <div className="client-box">
@@ -182,7 +216,7 @@ export default function Dashboard() {
             </thead>
 
             <tbody>
-              {filteredClients.map((c) => (
+              {paginatedClients.map((c) => (
                 <tr key={c.id}>
                   <td><HighlightedText text={c.id} query={search} /></td>
 
@@ -214,6 +248,31 @@ export default function Dashboard() {
               ))}
             </tbody>
           </table>
+        )}
+
+        {filteredClients.length > 0 && (
+          <div className="pagination-bar">
+            <span>
+              Showing {pageStartIndex + 1}-{Math.min(pageStartIndex + pageSize, filteredClients.length)} of {filteredClients.length}
+            </span>
+            <div className="pagination-actions">
+              <button
+                className="btn-outline"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+              >
+                Prev
+              </button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <button
+                className="btn-outline"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

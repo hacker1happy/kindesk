@@ -574,8 +574,8 @@ export default function ClientDetails() {
       {showDeleteClient && (
         <ConfirmationModal
           title="Delete client?"
-          message={`This will permanently delete client ${client.id}, its uploaded files, and all linked cases.`}
-          detail="Type the Client ID exactly to confirm this irreversible action."
+          message={`This will permanently delete client ${client.name || "-"} (${client.id}).`}
+          detail="Uploaded files and all linked cases will also be removed. Type the Client ID exactly to confirm this irreversible action."
           confirmLabel="Delete Client"
           danger
           confirmDisabled={deleteClientInput !== client.id}

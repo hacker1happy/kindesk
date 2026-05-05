@@ -40,6 +40,29 @@ body {
   font-weight: 600;
 }
 
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-lockup img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+.brand-lockup span {
+  display: block;
+  margin-top: 2px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
 .back-link {
   cursor: pointer;
   color: #374151;
@@ -214,7 +237,7 @@ textarea {
 
 .dashboard-filters {
   display: grid;
-  grid-template-columns: minmax(160px, 220px) minmax(160px, 220px) auto;
+  grid-template-columns: minmax(150px, 220px) minmax(150px, 220px) auto;
   gap: 10px;
   align-items: center;
   margin: -8px 0 20px;
@@ -281,6 +304,42 @@ textarea:focus {
 
 .table {
   margin-top: 10px;
+}
+
+.table-card-header,
+.pagination-bar,
+.pagination-actions,
+.page-size-control {
+  display: flex;
+  align-items: center;
+}
+
+.table-card-header {
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.page-size-control {
+  gap: 8px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.page-size-control .input {
+  width: 86px;
+}
+
+.pagination-bar {
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.pagination-actions {
+  gap: 8px;
 }
 
 .table th,
@@ -583,4 +642,20 @@ textarea:focus {
   color: #374151;
   font-size: 13px;
   font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .header,
+  .pagination-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dashboard-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    flex-direction: column;
+  }
 }

@@ -132,6 +132,9 @@ export default function CaseDetails() {
           <InfoItem label="Case Type" value={caseData.case_type} />
           <InfoItem label="Created" value={formatDate(caseData.created_at)} />
         </div>
+        {caseData.closure_reason && (
+          <p className="managed-doc-note">Closure Reason: {caseData.closure_reason}</p>
+        )}
       </section>
 
       <div className="case-tabs">
@@ -177,8 +180,8 @@ export default function CaseDetails() {
       {showDeleteCase && (
         <ConfirmationModal
           title="Delete case?"
-          message={`This will permanently delete case ${caseData.case_id}, and all files uploaded for this case.`}
-          detail="Type the Case ID exactly to confirm this irreversible action."
+          message={`This will permanently delete case ${caseData.case_id}, for ${client.name}.`}
+          detail={`Company: ${caseData.company_name || caseData.company || caseData.company_id}. All files uploaded for this case will be removed. Type the Case ID exactly to confirm this irreversible action.`}
           confirmLabel="Delete Case"
           danger
           confirmDisabled={deleteCaseInput !== caseData.case_id}

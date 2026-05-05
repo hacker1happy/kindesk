@@ -24,8 +24,17 @@ export const deleteCase = (clientId, caseId, confirmationId) =>
 
 
 // ✅ Stage update
-export const updateStage = (clientId, caseId, stageKey) =>
-  API.put(`/clients/${clientId}/cases/${caseId}/stages/${stageKey}`);
+export const updateStage = (clientId, caseId, stageKey, data = {}) =>
+  API.put(`/clients/${clientId}/cases/${caseId}/stages/${stageKey}`, data);
+
+export const revertStage = (clientId, caseId, stageKey) =>
+  API.put(`/clients/${clientId}/cases/${caseId}/stages/${stageKey}/revert`);
+
+export const submitOpsReviewForm = (clientId, caseId, data) =>
+  API.post(`/clients/${clientId}/cases/${caseId}/stages/ops_review/form`, data);
+
+export const decideEVerification = (clientId, caseId, data) =>
+  API.put(`/clients/${clientId}/cases/${caseId}/stages/everification/decision`, data);
 
 // ✅ Upload stage doc
 export const uploadStageDocument = (clientId, caseId, stageKey, formData) =>

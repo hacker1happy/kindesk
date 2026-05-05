@@ -1,21 +1,18 @@
-- client mobile no and name should be consider as PK
-- Add Pagination in home page (important later)
+- prepare db-schema and to use oracle database for data-storage
+    - client mobile no and name should be consider as PK
 
-Permission on login based
+- Permission on login based
     - caller can only add the clients and view them
     - ops team can add, update, client details and add new cases with related features
     - admin to have all access to delete any client details as well
     - admin can also add-delete assigned to and assigned from person
 
-- Feature to duplicate a case for a particular client (duplicate case can copy duplicate but transmission and joint case can both copy each other)
+- make look and feel similar to our main website page
 
-- to have checkbox to print selected documents
-- Document Sent to Client, Document Received from Client is optional 
-- Ops Review & Sign-off, to open new form for yes n NO and then when this is filled successfully mark the stage as done
-- Sent to Company/RTA {document sent to Company and POD receipt}
-- in document generation there are multiple files
-- if LOC Received then we don't have IEPF Generated, IEPF Submitted & E-Verification Approved stages to be marked
-- E-Verification Approved and reject option, if rejected then again activate IEPF Generated, IEPF Submitted, else allow further stages
-- IEPF Submitted - {document sent to Company and POD receipt}
-- to show client name and Company name when deleting a case
-- to case close after 2 steps only 
+- make sure the mobile size screen is also working similar to the desktop, so the website should be dynamic in nature to work on any device without effecting the styles
+
+- clean up the code whereever requried as redundant to make the code structure look modular. clean the redundant css if used, remove the useless css if it is getting over written by another class.
+
+- check for any possible error in the whole application, if any then address it in a better way
+
+- Feature to duplicate a case for a particular client (duplicate case can copy a duplicate but transmission and joint case can both copy each other as the fields are similar)

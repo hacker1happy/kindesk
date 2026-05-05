@@ -21,7 +21,34 @@ def init_stages():
     ]
 
 
+def normalize_case_stages(case):
+    stages = case.setdefault("stages", [])
+    by_key = {stage.get("key"): stage for stage in stages}
+    normalized = []
+
+    for default_stage in DEFAULT_STAGES:
+        stage = by_key.get(default_stage["key"])
+        if not stage:
+            stage = {
+                **default_stage,
+                "completed": False,
+                "updated_at": None,
+                "documents": []
+            }
+        else:
+            stage["label"] = default_stage["label"]
+            stage.setdefault("completed", False)
+            stage.setdefault("updated_at", None)
+            stage.setdefault("documents", [])
+
+        normalized.append(stage)
+
+    case["stages"] = normalized
+    return case
+
+
 def with_company_info(case):
+    normalize_case_stages(case)
     companies = read_companies()
     rtas = read_rtas()
     company = companies.get(case.get("company_id"), {})
