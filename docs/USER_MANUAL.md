@@ -1,6 +1,6 @@
-# TrackSure Startup & User Guide
+# KinDesk Startup & User Guide
 
-TrackSure helps teams manage share-related service cases, collect documents, track stage progress, and generate Word documents for Duplicate, Transmission, and Joint workflows.
+KinDesk helps teams manage share-related service cases, collect documents, track stage progress, and generate Word documents for Duplicate, Transmission, and Joint workflows.
 
 ## 1. Start The Application
 
@@ -210,7 +210,7 @@ Default maximum size:
 10 MB per file
 ```
 
-The limit is configurable through `TRACKSURE_MAX_UPLOAD_MB` before backend startup.
+The limit is configurable through `KinDesk_MAX_UPLOAD_MB` before backend startup.
 
 ## 11. Recommended Workflow
 

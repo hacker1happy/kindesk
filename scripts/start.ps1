@@ -1,55 +1,61 @@
-param(
-    [int]$BackendPort = 8000,
-    [int]$FrontendPort = 5173,
-    [switch]$NoBrowser
-)
-
 $ErrorActionPreference = "Stop"
 
 $RootDir = Resolve-Path (Join-Path $PSScriptRoot "..")
 $BackendDir = Join-Path $RootDir "backend"
 $FrontendDir = Join-Path $RootDir "frontend"
-$VenvPython = Join-Path $BackendDir ".venv\Scripts\python.exe"
+$LogsDir = Join-Path $RootDir "logs"
 
-if (-not (Test-Path $VenvPython)) {
-    throw "Backend environment was not found. Run setup.bat or scripts\setup.ps1 first."
+$BackendPython = Join-Path $BackendDir ".venv\Scripts\python.exe"
+$FrontendUrl = "http://127.0.0.1:5173"
+
+New-Item -ItemType Directory -Force -Path $LogsDir | Out-Null
+
+$RunId = Get-Date -Format "yyyyMMdd-HHmmss"
+$StartupLog = Join-Path $LogsDir "startup.log"
+$BackendOutLog = Join-Path $LogsDir "backend-$RunId.out.log"
+$BackendErrLog = Join-Path $LogsDir "backend-$RunId.err.log"
+$FrontendOutLog = Join-Path $LogsDir "frontend-$RunId.out.log"
+$FrontendErrLog = Join-Path $LogsDir "frontend-$RunId.err.log"
+
+function Write-StartupLog($Message) {
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    Add-Content -Path $StartupLog -Value "[$timestamp] $Message"
 }
 
-if (-not (Test-Path (Join-Path $FrontendDir "node_modules"))) {
-    throw "Frontend dependencies were not found. Run setup.bat or scripts\setup.ps1 first."
+try {
+    Write-StartupLog "Starting KinDesk from $RootDir"
+
+    if (-not (Test-Path $BackendPython)) {
+        throw "Backend Python was not found at $BackendPython. Run setup.bat first."
+    }
+
+    if (-not (Test-Path (Join-Path $FrontendDir "node_modules"))) {
+        throw "Frontend dependencies were not found. Run setup.bat first."
+    }
+
+    Start-Process `
+        -FilePath $BackendPython `
+        -ArgumentList @("-m", "uvicorn", "app.main:app", "--host", "127.0.0.1", "--port", "8000") `
+        -WorkingDirectory $BackendDir `
+        -WindowStyle Hidden `
+        -RedirectStandardOutput $BackendOutLog `
+        -RedirectStandardError $BackendErrLog
+
+    Start-Sleep -Seconds 2
+
+    Start-Process `
+        -FilePath "npm.cmd" `
+        -ArgumentList @("run", "dev", "--", "--host", "127.0.0.1", "--port", "5173") `
+        -WorkingDirectory $FrontendDir `
+        -WindowStyle Hidden `
+        -RedirectStandardOutput $FrontendOutLog `
+        -RedirectStandardError $FrontendErrLog
+
+    Start-Sleep -Seconds 4
+    Start-Process $FrontendUrl
+
+    Write-StartupLog "KinDesk started. Frontend: $FrontendUrl Backend: http://127.0.0.1:8000"
+} catch {
+    Write-StartupLog "Startup failed: $($_.Exception.Message)"
+    throw
 }
-
-function Test-PortAvailable($Port) {
-    $connection = Get-NetTCPConnection -LocalPort $Port -ErrorAction SilentlyContinue
-    return -not $connection
-}
-
-if (-not (Test-PortAvailable $BackendPort)) {
-    throw "Port $BackendPort is already in use. Stop the existing backend or pass -BackendPort <port>."
-}
-
-if (-not (Test-PortAvailable $FrontendPort)) {
-    throw "Port $FrontendPort is already in use. Stop the existing frontend or pass -FrontendPort <port>."
-}
-
-$backendCommand = "Set-Location '$BackendDir'; '$VenvPython' -m uvicorn app.main:app --host 127.0.0.1 --port $BackendPort"
-$frontendCommand = "Set-Location '$FrontendDir'; npm run dev -- --host 127.0.0.1 --port $FrontendPort"
-$frontendUrl = "http://127.0.0.1:$FrontendPort"
-
-Write-Host "Starting TrackSure..." -ForegroundColor Green
-Write-Host "Backend:  http://127.0.0.1:$BackendPort"
-Write-Host "Frontend: $frontendUrl"
-Write-Host ""
-Write-Host "Two server windows will open. Keep them open while using the application."
-
-Start-Process powershell -ArgumentList "-NoExit", "-ExecutionPolicy", "Bypass", "-Command", $backendCommand
-Start-Sleep -Seconds 2
-Start-Process powershell -ArgumentList "-NoExit", "-ExecutionPolicy", "Bypass", "-Command", $frontendCommand
-Start-Sleep -Seconds 4
-
-if (-not $NoBrowser) {
-    Start-Process $frontendUrl
-}
-
-Write-Host ""
-Write-Host "TrackSure is starting. If the browser opens before the page is ready, refresh after a few seconds."

@@ -4,5 +4,6 @@ data/clients.json
 backend/.venv/
 frontend/node_modules/
 frontend/dist/
+logs/
 __pycache__/
 *.pyc
