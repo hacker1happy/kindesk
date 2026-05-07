@@ -8,3 +8,22 @@
     - admin can also add-delete assigned to and assigned from person
 
 - Feature to duplicate a case for a particular client (duplicate case can copy a duplicate but transmission and joint case can both copy each other as the fields are similar)
+
+
+
+- to remove 5.irs4-old.docx if testing af all forms are correct
+
+- read companies and rta details from excel file - kindesk_companies.xlsx. this excel sheet have two sheets companies_master and rta_master containing similar data like we had in companies_master.json and rta_master.json. now we want to remove .json and take values from .xlsx that's it
+
+- don't upload same document name files in the case on any stage, let's say we have upload file.txt on some case stage, and we are trying to upload file.txt again on some other stage or miscellaneous docs then it should not be allowed. apply same on client file upload option as well
+- to allow only defined types of files upload like .pdf, .docx, .xlsx, .jpeg, .jpg, .png, .txt
+- to apply file size limit on upload option, let's keep it 5-10 MB for now, this should be configurable somewhere for later updates
+
+- E-Verification - reject button should not work after the next stages are marked as done. it should only work when the n+1 is reverted, like in other stages
+
+- work on the setup and startup scripts and improve them. for backend check the requirement.txt with all the dependencies needed, and in frontend as well include only the dependecies and modules required. remove any files which are not required in the whole project, but ask me before removal.
+
+- work on the setup & startup manual to include all necessary points 
+    - in setup what all things we need to have like node, python, etc...and the steps to follow to do the setup, better to have a .pdf of this
+    - in startup, how to start the application for now and what all features we have on each page, how all workflow works and how to add client it's cases how to view client details case details and fill form and upload options delete case and client(to verify client and case details before delt), to close case before hand also, to upload required docs on some particular steps, to add querys and it's resolution, to revert the stages, etc... how to download files, download all features, search and filter options, form save draft reset options...etc it would be better if we can have .pdf file for this we screenshots of the same
+

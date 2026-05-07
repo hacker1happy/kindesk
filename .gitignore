@@ -1,13 +1,6 @@
-*.pdf
-*.docx
-*.doc
-*.xlsx
-*.xls
-*.xlsm
-*.jpg
-*.jpeg
-*.png
-*.zip
+data/uploads/
+data/cases.json
+data/clients.json
 backend/.venv/
 frontend/node_modules/
 frontend/dist/

@@ -10,7 +10,7 @@ DEFAULT_STAGES = [
     {"key": "loe_received", "label": "LOE Received"},
     {"key": "iepf_generated", "label": "IEPF Generated"},
     {"key": "iepf_submitted", "label": "IEPF Submitted"},
-    {"key": "everification", "label": "E-Verification Approved"},
+    {"key": "everification", "label": "E-Verification"},
     {"key": "shares_credited", "label": "Shares Credited"},
     {"key": "closed", "label": "Case Closed"},
 ]

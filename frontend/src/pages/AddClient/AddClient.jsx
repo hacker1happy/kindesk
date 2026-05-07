@@ -48,7 +48,7 @@ export default function AddClient() {
   const [touched, setTouched] = useState({});
   const [showToast, setShowToast] = useState(false);
 
-  const assignedToOptions = ["Sachin", "Hari", "Deepak"];
+  const assignedToOptions = ["Rohit", "Sangeeta", "Bandana", "Pari"];
   const assignedFromOptions = ["Pratha", "Richa", "Archana", "Gurmeen", "Dipesh"];
 
   // Handle controlled typing
