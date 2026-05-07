@@ -6,6 +6,13 @@ from typing import List
 
 from app.repository.storage import UPLOADS_DIR, read_cases, read_clients, write_cases, write_clients
 from app.utils.id_generator_utils import generate_client_id
+from app.utils.upload_validation import (
+    build_stored_filename,
+    client_upload_names,
+    ensure_not_duplicate,
+    ensure_unique_batch,
+    read_validated_upload,
+)
 
 router = APIRouter()
 
@@ -35,15 +42,19 @@ async def create_client(
     os.makedirs(client_dir, exist_ok=True)
 
     files_info = {}
+    ensure_unique_batch(files)
 
     for file in files:
-        path = os.path.join(client_dir, file.filename)
+        filename, content = await read_validated_upload(file)
+        ensure_not_duplicate(filename, files_info.keys())
+        stored_name = build_stored_filename(filename)
+        path = os.path.join(client_dir, stored_name)
 
         with open(path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+            buffer.write(content)
 
-        files_info[file.filename] = {
-            "path": f"data/uploads/{client_id}/{file.filename}",
+        files_info[filename] = {
+            "path": f"data/uploads/{client_id}/{stored_name}",
             "uploaded_at": datetime.now().isoformat()
         }
 
@@ -145,22 +156,25 @@ async def upload_client_documents(
     os.makedirs(client_dir, exist_ok=True)
 
     uploaded_files = []
+    ensure_unique_batch(files)
+    existing_names = client_upload_names(client)
 
     for file in files:
-        path = os.path.join(client_dir, file.filename)
+        filename, content = await read_validated_upload(file)
+        ensure_not_duplicate(filename, existing_names)
+
+        stored_name = build_stored_filename(filename)
+        path = os.path.join(client_dir, stored_name)
 
         with open(path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+            buffer.write(content)
 
         uploaded_files.append(path)
-
-    client.setdefault("files_info", {}).update({
-        file.filename: {
-            "path": f"data/uploads/{client_id}/{file.filename}",
+        client.setdefault("files_info", {})[filename] = {
+            "path": f"data/uploads/{client_id}/{stored_name}",
             "uploaded_at": datetime.now().isoformat()
         }
-        for file in files
-    })
+        existing_names.add(filename)
 
     write_clients(data)
 

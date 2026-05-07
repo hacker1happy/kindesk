@@ -1,317 +1,252 @@
-# TrackSure User Manual
+# TrackSure Startup & User Guide
 
-TrackSure helps teams manage share-related service cases, collect documents, track each stage of work, and generate required Word documents for Duplicate, Transmission, and Joint processes.
+TrackSure helps teams manage share-related service cases, collect documents, track stage progress, and generate Word documents for Duplicate, Transmission, and Joint workflows.
 
-## 1. Application Overview
+## 1. Start The Application
 
-TrackSure is used to:
+Run:
 
-- Maintain client records
-- Create and track cases for a client
-- Upload and organize case documents
-- Fill process forms
-- Generate process-specific Word documents
-- Track case stages from first client communication to closure
-- Download generated, stage, and miscellaneous documents
+```powershell
+.\start.bat
+```
 
-## 2. Recommended Workflow
+Open:
 
-Use this sequence for every case:
+```text
+http://127.0.0.1:5173
+```
 
-1. Add or open the client.
-2. Add the case with the correct case type.
-3. Send the initial mail to the client.
-4. Mark `Mail Sent to Client` as completed.
-5. Upload client documents in `Client Docs Received`.
-6. Mark `Client Docs Received` as completed.
-7. Fill the process form.
-8. Select required documents and generate them.
-9. Continue uploading documents at each stage.
-10. Mark each stage completed only after the required document is uploaded.
+Keep both server windows open while using the application.
 
-Important rule: upload the document first, then mark the stage as completed.
+![Dashboard with client](assets/03-dashboard-with-client.png)
 
-## 3. Client Management
+## 2. Dashboard
 
-### Add a Client
+Use the Dashboard to:
 
-1. Go to the Dashboard.
-2. Click `Add Client`.
-3. Enter the required client details.
-4. Save the client.
+- View total clients, total cases, and active cases
+- Search clients by name, ID, or phone
+- Filter clients by assigned team members
+- Open client details
+- Add a new client
 
-### Edit a Client
+Actions:
 
-1. Open the client from the Dashboard.
-2. Review the client information.
-3. Use the edit option if available.
-4. Update the details and save.
+- `+ Add Client`: opens the client creation page.
+- `Clear Filters`: resets search and assignment filters.
+- `View Details`: opens the selected client.
+- Pagination controls: move through large client lists.
 
-### Delete a Client
+## 3. Add Client
 
-1. Open the client record.
-2. Use the delete option if available.
-3. Confirm only after checking that the client and case data are no longer required.
+![Add Client](assets/02-add-client.png)
 
-Deletion should be used carefully because client cases and documents may be important for audit or follow-up.
+Required fields:
 
-### Upload Client Files
+- Client name
+- Phone number in `+91XXXXXXXXXX` format
+- Assigned To
+- Assigned From
 
-1. Open the client or case area where uploads are available.
-2. Click `Upload`.
-3. Select one or more files.
-4. Confirm that the file count or document list updates after upload.
+Optional fields:
 
-Use clear file names before uploading, such as `PAN_ClientName.pdf` or `DeathCertificate.pdf`.
+- Comment
+- Initial client documents
 
-## 4. Case Management
+Upload rules:
 
-### Add a Case
+- Allowed types: `.pdf`, `.docx`, `.xlsx`, `.jpeg`, `.jpg`, `.png`, `.txt`
+- Default size limit: 10 MB per file
+- Same filename cannot be uploaded again for the same client
 
-1. Open the client.
-2. Click `Add Case`.
-3. Enter the folio number.
-4. Select the company.
-5. Select the case type:
-   - Duplicate
-   - Transmission
-   - Joint
-6. Continue to the case form.
+## 4. Client Details
 
-### Update a Case
+![Client Details](assets/04-client-details.png)
 
-1. Open the case from the client details page.
-2. Review case details, form status, stages, and documents.
-3. Use the available edit or form options to update information.
+Use Client Details to:
 
-### Delete a Case
+- Review client contact and assignment information
+- Edit client information
+- Delete the client after ID confirmation
+- Upload, open, download, and remove client documents
+- View all cases for the client
+- Add a case
 
-1. Open the case.
-2. Use the delete option if available.
-3. Confirm only after checking that documents and stage history are no longer needed.
+Client document actions:
 
-### Fill Forms
+- `+ Upload`: add allowed client files.
+- `Open`: open a stored file in a browser tab.
+- `Download`: download a stored file.
+- `Remove`: delete a selected client file after confirmation.
 
-1. Open the case.
-2. Click `Fill Case Form` or `Edit Form`.
-3. Complete all required fields.
-4. Use `Save Draft` if the case is not ready for document generation.
-5. Use `Generate Documents` after required stages are completed.
+## 5. Add Case
 
-### Generate Documents
+![Add Case](assets/05-add-case.png)
 
-Document generation is available only after:
+Required fields:
+
+- Folio number
+- Company, searched from `kindesk_companies.xlsx`
+- Case type: Duplicate, Transmission, or Joint
+
+Company and RTA details are resolved from:
+
+- `companies_master` sheet
+- `rta_master` sheet
+
+After creating a case, open `View Details` from the client case list.
+
+![Client With Case](assets/06-client-with-case.png)
+
+## 6. Case Details
+
+Case Details has three tabs:
+
+- `Case Stages`
+- `Documents`
+- `Form`
+
+The header shows client info, case ID, folio, company, case type, creation date, and current status.
+
+## 7. Case Stages
+
+![Case Stages](assets/07-case-stages.png)
+
+Stages must be completed in order. If a button is disabled, check that previous stages and required uploads are complete.
+
+Main stage flow:
+
+| Stage | Purpose | Typical Action |
+| --- | --- | --- |
+| Mail Sent to Client | Initial client communication | Mark done after communication is sent |
+| Client Docs Received | Client submitted documents | Upload files, then mark done |
+| Document Generated | System documents are generated | Created from the Form tab |
+| Document Sent to Client | Generated packet sent to client | Mark done after sending |
+| Document Received from Client | Signed documents returned | Mark done when received |
+| Ops Review & Sign-off | Internal review | Fill and submit Ops Review form |
+| Sent to Company/RTA | Packet sent to company/RTA | Upload required submission and POD files |
+| LOC Received | LOC workflow branch | Upload LOC proof |
+| LOE Received | LOE workflow branch | Upload LOE proof |
+| IEPF Generated | IEPF documents ready | Mark done if applicable |
+| IEPF Submitted | IEPF submission done | Upload required submission and POD files |
+| E-Verification | Approve or reject e-verification | Approve or reject with comment |
+| Shares Credited | Final credit complete | Mark done when confirmed |
+| Case Closed | Case finished | Close with reason if not fully successful |
+
+E-Verification rule:
+
+- `Reject` is available only while the next stage is not completed.
+- If `Shares Credited` is completed, revert it first before rejecting E-Verification.
+
+Queries:
+
+- Queries can be opened after `Sent to Company/RTA`.
+- Only one query can remain open at a time.
+- Upload a query document before resolving the query.
+- Later stages remain blocked while a query is open.
+
+Ops Review:
+
+- Use `Fill Form`.
+- Answer all checklist questions.
+- Save as draft or submit.
+
+Revert:
+
+- Only the latest completed stage can be reverted.
+- Reverting clears documents and decision data for that stage and later stages in the workflow.
+
+## 8. Documents Tab
+
+![Case Documents](assets/08-case-documents.png)
+
+Use Documents to manage case-level files grouped by stage, query, and miscellaneous files.
+
+Actions:
+
+- `Download All`: downloads all stage/query documents as a zip.
+- Stage `Upload` or `Add`: upload files to an upload-enabled stage.
+- `Open`: open the file in the browser.
+- `Download`: download a single file.
+- `Replace`: replace a file while preserving required document metadata.
+- `Remove`: remove a document when stage rules allow it.
+- `Miscellaneous Files + Upload`: add supporting files that do not belong to a stage.
+
+Duplicate prevention:
+
+- A filename already used in any stage, query, or miscellaneous file cannot be uploaded again in the same case.
+- Replacing a document with its own filename is allowed.
+
+## 9. Form Tab
+
+![Case Form](assets/09-case-form.png)
+
+Use the Form tab to enter process information and generate Word documents.
+
+Generation is available after:
 
 - `Mail Sent to Client` is completed
 - `Client Docs Received` is completed
 
-Steps:
+Common form actions:
 
-1. Open the form.
-2. Fill required information.
-3. Select the required documents from the Documents section.
-4. Click `Generate Documents` or `Update & Generate`.
-5. Wait for the generating state to finish.
-6. Return to case details and review the generated documents.
+- `Save Draft`: keep partial form data.
+- `Reset`: clear current on-screen form entries after confirmation.
+- `Generate Documents` or `Update & Generate`: produce selected Word files.
 
-## 5. Case Stage Workflow
-
-Case stages must be completed in order. Some stages require document uploads before they can be marked as done.
-
-### Stage List
-
-| Stage | What It Means | Document Guidance |
-| --- | --- | --- |
-| Mail Sent to Client | Initial communication has been sent to the client. | Upload is optional. Use it for email copy or proof if needed. |
-| Client Docs Received | Client has shared initial required documents. | Upload received client documents before marking done. |
-| Document Generated | System-generated documents are ready. | Documents are added automatically after generation. |
-| Document Sent to Client | Generated documents have been sent to the client for signatures or review. | Upload email proof, courier proof, or sent document copy before marking done. |
-| Document Received from Client | Signed or completed documents are received back from the client. | Upload signed forms and supporting documents before marking done. |
-| Ops Review & Sign-off | Internal operations review is completed. | Upload reviewed packet, checklist, or sign-off proof before marking done. |
-| Sent to Company/RTA | Final packet has been sent to company or RTA. | Upload courier receipt, email proof, or submission copy before marking done. |
-| LOC/LOE Received | Letter of confirmation or entitlement has been received. | Upload received LOC/LOE before marking done. |
-| IEPF Generated | IEPF documents have been generated, if applicable. | Upload is optional. |
-| IEPF Submitted | IEPF submission is complete, if applicable. | Upload acknowledgement or submitted copy before marking done. |
-| E-Verification Approved | E-verification is approved, if applicable. | Upload is optional. |
-| Shares Credited | Shares have been credited. | Upload is optional, but proof is recommended. |
-| Case Closed | Work is complete. | Upload is optional, but closure proof or final notes are recommended. |
-
-### How to Upload Stage Documents
-
-1. Open the case.
-2. Go to `Case Stages`.
-3. Find the correct stage.
-4. Click `Upload`.
-5. Select the file.
-6. Wait for the upload to complete.
-7. Confirm that the document count increases.
-
-### How to Mark a Stage Completed
-
-1. Upload the stage document first if the stage requires it.
-2. Click `Mark as done`.
-3. Confirm the stage now shows as done.
-
-If `Mark as done` is disabled, check:
-
-- Previous stages are completed
-- Required document has been uploaded
-- Any open query is resolved
-
-### Queries
-
-Queries can be opened after `Sent to Company/RTA` is completed and before `LOC/LOE Received` is completed.
-
-To handle a query:
-
-1. Click `Add Query`.
-2. Enter query details.
-3. Upload the query-related document.
-4. Resolve the query after the response document is uploaded.
-
-The case cannot move past certain later stages while a query is open.
-
-## 6. Document Management
-
-### Generated Documents
-
-Generated documents are created from the selected process form and Word templates. They appear in the generated documents area after successful generation.
-
-Use generated documents for forms and letters that must be sent to the client, company, RTA, or used in the case packet.
-
-### Stage Documents
-
-Stage documents are uploaded directly against a stage. Examples:
-
-- Client submitted documents
-- Signed forms
-- Courier proofs
-- RTA submission proofs
-- LOC/LOE files
-- IEPF acknowledgements
-
-### Miscellaneous Documents
-
-Use miscellaneous documents for supporting files that do not belong to a specific stage, such as reference notes or extra client communication.
-
-### Download All
-
-Use download-all options to export grouped documents:
-
-- Generated documents
-- All stage documents
-- Documents for a specific stage
-
-Before sharing a downloaded zip file, check that it contains the expected files.
-
-## 7. Form Processes
-
-### Duplicate Process
-
-Use this when the shareholder needs duplicate share certificate related documents.
-
-Information usually required:
+Duplicate Process information:
 
 - Shareholder details
-- Contact details
-- Bank details
+- Contact and bank details
 - Securities information
 - Company and RTA details
-- Other information such as form date and face value
+- Document selection
 
-Documents may include Authorization Letter, Request Letter, ISR forms, SH-13, Form A, and Form B Indemnity.
-
-### Transmission Process
-
-Use this when shares need to be transmitted after the shareholder has passed away.
-
-Information usually required:
+Transmission and Joint Process information:
 
 - Legal heir details
 - Shareholder information
 - Date of demise where applicable
-- Bank details for legal heir
-- Securities information
+- Securities and bank details
 - Company and RTA details
+- Document selection
 
-At least one shareholder name is required in the Shareholder Information section.
+## 10. Upload Policy
 
-### Joint Process
+Allowed file extensions:
 
-Use this when the case requires the combined Joint process document set. It uses the same form structure as Transmission, but generates the Joint process templates.
+```text
+.pdf, .docx, .xlsx, .jpeg, .jpg, .png, .txt
+```
 
-Information usually required:
+Default maximum size:
 
-- Legal heir details
-- Shareholder information
-- Securities information
-- Bank details
-- Company and RTA details
+```text
+10 MB per file
+```
 
-Joint process documents include Authorization Letter, Request Letter, ISR1, SH-13, ISR4, FormA, FormB Indemnity, ISR5 Annexure C, Annexure D affidavits, and Annexure E indemnity.
+The limit is configurable through `TRACKSURE_MAX_UPLOAD_MB` before backend startup.
 
-## 8. Reset, Save, and Generate
+## 11. Recommended Workflow
 
-### Save Draft
+1. Add or open a client.
+2. Add a case with the correct case type.
+3. Mark `Mail Sent to Client` when initial communication is sent.
+4. Upload client documents in `Client Docs Received`.
+5. Fill the process form.
+6. Generate required documents.
+7. Progress stages in order.
+8. Open/resolve Company/RTA queries if they occur.
+9. Complete LOC or LOE branch.
+10. Complete IEPF/E-Verification steps if applicable.
+11. Mark shares credited or close with a reason.
 
-Use `Save Draft` when:
+## 12. Best Practices
 
-- Information is partially filled
-- Required stages are not complete
-- You want to return later
-
-### Reset
-
-Use `Reset` only when you want to clear the current form entries on screen and restore case defaults. A confirmation popup appears before reset.
-
-### Generate or Update & Generate
-
-Use this after:
-
-- Required stages are complete
-- Required form fields are filled
-- Required documents are selected
-
-The button shows a generating state while documents are being created.
-
-## 9. Troubleshooting
-
-### Generate Button Is Disabled
-
-Check:
-
-- `Mail Sent to Client` is completed
-- `Client Docs Received` is completed
-- Required form fields are filled correctly
-- At least one shareholder name is entered for Transmission or Joint
-
-### Stage Cannot Be Marked Done
-
-Check:
-
-- Previous stages are completed
-- Required stage document is uploaded
-- No open query is blocking progress
-
-### Uploaded File Is Missing
-
-Refresh the page. If still missing, upload the file again and confirm that the document count changes.
-
-### Wrong Document Was Uploaded
-
-Remove or replace the document if the option is available. If not, upload the correct file and clearly identify it by name.
-
-### Generated Document Looks Incorrect
-
-Check the form data and update it if needed. Then click `Update & Generate`.
-
-## 10. Best Practices
-
-- Use clear file names before uploading.
-- Complete stages in order.
-- Always upload the document first, then mark the stage complete.
-- Save drafts when information is incomplete.
-- Review selected documents before generation.
-- Download and verify generated documents before sending them externally.
-- Keep server windows open while using the application.
-- Do not edit files inside the `data` folder manually unless instructed by a technical owner.
+- Rename files clearly before upload.
+- Avoid generic names such as `scan.pdf`.
+- Upload proof before marking required stages done.
+- Use replace when correcting a required document.
+- Review generated documents before sending externally.
+- Use Download All before external sharing or archival.
+- Keep server windows open while working.

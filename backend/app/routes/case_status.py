@@ -1,4 +1,3 @@
-import uuid
 import zipfile
 from datetime import datetime
 from io import BytesIO
@@ -10,6 +9,13 @@ from fastapi.responses import StreamingResponse
 from app.constants.helper_constants import DEFAULT_STAGES
 from app.repository.storage import UPLOADS_DIR, read_cases, read_clients, write_cases
 from app.utils.document_utils import get_case_dir
+from app.utils.upload_validation import (
+    build_stored_filename,
+    case_upload_names,
+    ensure_not_duplicate,
+    ensure_unique_batch,
+    read_validated_upload,
+)
 
 router = APIRouter()
 
@@ -140,6 +146,18 @@ def effective_stage_order(case):
 
 def has_open_query(case):
     return any(query.get("status") == "open" for query in case.get("queries", []))
+
+
+def is_next_required_stage_completed(case, stage_key: str):
+    active_stage_order = effective_stage_order(case)
+    if stage_key not in active_stage_order:
+        return False
+
+    stage_index = active_stage_order.index(stage_key)
+    if stage_index >= len(active_stage_order) - 1:
+        return False
+
+    return is_stage_completed(case, active_stage_order[stage_index + 1])
 
 
 def validate_stage_can_complete(case, stage_key: str, skip_stage_specific: bool = False):
@@ -350,6 +368,9 @@ def decide_everification(client_id: str, case_id: str, payload: dict):
         raise HTTPException(400, "Comment is required when rejecting E-Verification")
 
     stage = get_stage(case, "everification")
+    if decision == "rejected" and is_next_required_stage_completed(case, "everification"):
+        raise HTTPException(400, "Reject is disabled after the next stage is completed. Revert the next stage first.")
+
     if decision == "approved":
         validate_stage_can_complete(case, "everification", skip_stage_specific=True)
     else:
@@ -394,17 +415,21 @@ async def upload_stage_documents(
     stage_dir.mkdir(parents=True, exist_ok=True)
 
     uploaded_files = []
+    existing_names = case_upload_names(case)
+    ensure_unique_batch(files)
 
     for file in files:
-        unique_name = f"{uuid.uuid4()}_{file.filename}"
+        filename, content = await read_validated_upload(file)
+        ensure_not_duplicate(filename, existing_names)
+
+        unique_name = build_stored_filename(filename)
         file_path = stage_dir / unique_name
-        content = await file.read()
 
         with open(file_path, "wb") as buffer:
             buffer.write(content)
 
         file_info = {
-            "name": file.filename,
+            "name": filename,
             "url": f"/data/uploads/{client_id}/{case_id}/{stage_key}/{unique_name}",
             "uploaded_at": datetime.now().isoformat()
         }
@@ -414,6 +439,7 @@ async def upload_stage_documents(
 
         uploaded_files.append(file_info)
         stage.setdefault("documents", []).append(file_info)
+        existing_names.add(filename)
 
     stage["updated_at"] = datetime.now().isoformat()
     write_cases(cases)
@@ -442,18 +468,20 @@ async def replace_stage_document(
 
     old_document = documents[document_index]
     old_file_path = get_case_dir(client_id, case_id) / stage_key / old_url.split("/")[-1]
-    if old_file_path.exists():
-        old_file_path.unlink()
+    filename, content = await read_validated_upload(file)
+    ensure_not_duplicate(filename, case_upload_names(case), current_name=old_document.get("name"))
 
-    unique_name = f"{uuid.uuid4()}_{file.filename}"
+    unique_name = build_stored_filename(filename)
     file_path = get_case_dir(client_id, case_id) / stage_key / unique_name
-    content = await file.read()
 
     with open(file_path, "wb") as buffer:
         buffer.write(content)
 
+    if old_file_path.exists():
+        old_file_path.unlink()
+
     replacement_document = {
-        "name": file.filename,
+        "name": filename,
         "url": f"/data/uploads/{client_id}/{case_id}/{stage_key}/{unique_name}",
         "uploaded_at": datetime.now().isoformat()
     }
@@ -509,23 +537,28 @@ async def upload_misc_documents(
     misc_dir.mkdir(parents=True, exist_ok=True)
 
     uploaded_files = []
+    existing_names = case_upload_names(case)
+    ensure_unique_batch(files)
 
     for file in files:
-        unique_name = f"{uuid.uuid4()}_{file.filename}"
+        filename, content = await read_validated_upload(file)
+        ensure_not_duplicate(filename, existing_names)
+
+        unique_name = build_stored_filename(filename)
         file_path = misc_dir / unique_name
-        content = await file.read()
 
         with open(file_path, "wb") as buffer:
             buffer.write(content)
 
         file_info = {
-            "name": file.filename,
+            "name": filename,
             "url": f"/data/uploads/{client_id}/{case_id}/misc/{unique_name}",
             "uploaded_at": datetime.now().isoformat()
         }
 
         uploaded_files.append(file_info)
         case.setdefault("misc_documents", []).append(file_info)
+        existing_names.add(filename)
 
     write_cases(cases)
 
@@ -650,15 +683,17 @@ async def upload_query_doc(client_id: str, case_id: str, query_no: int, file: Up
     query_dir = get_case_dir(client_id, case_id) / f"query_{query_no}"
     query_dir.mkdir(parents=True, exist_ok=True)
 
-    unique_name = f"{uuid.uuid4()}_{file.filename}"
+    filename, content = await read_validated_upload(file)
+    ensure_not_duplicate(filename, case_upload_names(case))
+
+    unique_name = build_stored_filename(filename)
     file_path = query_dir / unique_name
-    content = await file.read()
 
     with open(file_path, "wb") as buffer:
         buffer.write(content)
 
     file_info = {
-        "name": file.filename,
+        "name": filename,
         "url": f"/data/uploads/{client_id}/{case_id}/query_{query_no}/{unique_name}",
         "uploaded_at": datetime.now().isoformat()
     }
@@ -718,18 +753,21 @@ async def replace_query_doc(
 
     query_dir = get_case_dir(client_id, case_id) / f"query_{query_no}"
     old_file_path = query_dir / old_url.split("/")[-1]
-    if old_file_path.exists():
-        old_file_path.unlink()
+    old_document = documents[document_index]
+    filename, content = await read_validated_upload(file)
+    ensure_not_duplicate(filename, case_upload_names(case), current_name=old_document.get("name"))
 
-    unique_name = f"{uuid.uuid4()}_{file.filename}"
+    unique_name = build_stored_filename(filename)
     file_path = query_dir / unique_name
-    content = await file.read()
 
     with open(file_path, "wb") as buffer:
         buffer.write(content)
 
+    if old_file_path.exists():
+        old_file_path.unlink()
+
     documents[document_index] = {
-        "name": file.filename,
+        "name": filename,
         "url": f"/data/uploads/{client_id}/{case_id}/query_{query_no}/{unique_name}",
         "uploaded_at": datetime.now().isoformat()
     }
