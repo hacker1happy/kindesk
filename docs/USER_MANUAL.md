@@ -16,7 +16,7 @@ Open:
 http://127.0.0.1:5173
 ```
 
-Keep both server windows open while using the application.
+Keep the KinDesk control console open while using the application. Closing that console stops both the backend and frontend servers.
 
 
 ## 2. Dashboard
@@ -210,7 +210,7 @@ Default maximum size:
 10 MB per file
 ```
 
-The limit is configurable through `KinDesk_MAX_UPLOAD_MB` before backend startup.
+The limit is configurable through `TRACKSURE_MAX_UPLOAD_MB` before backend startup.
 
 ## 11. Recommended Workflow
 
@@ -234,4 +234,4 @@ The limit is configurable through `KinDesk_MAX_UPLOAD_MB` before backend startup
 - Use replace when correcting a required document.
 - Review generated documents before sending externally.
 - Use Download All before external sharing or archival.
-- Keep server windows open while working.
+- Keep the KinDesk control console open while working.

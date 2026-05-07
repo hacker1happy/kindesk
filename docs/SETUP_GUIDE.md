@@ -87,21 +87,11 @@ Default URLs:
 - Frontend: `http://127.0.0.1:5173`
 - Backend API: `http://127.0.0.1:8000`
 
-The startup script checks whether the ports are free before launching the backend and frontend windows.
+The startup script launches the backend and frontend in the background and keeps one control console open.
 
-## 6. Custom Ports
+Keep the control console open while using KinDesk. Closing that console, or pressing `Ctrl+C`, stops both the backend and frontend servers.
 
-Use custom ports when defaults are already occupied:
-
-```powershell
-.\scripts\start.ps1 -BackendPort 8010 -FrontendPort 5174
-```
-
-Skip automatic browser launch:
-
-```powershell
-.\scripts\start.ps1 -NoBrowser
-```
+Startup logs are written to `logs\startup.log`, and backend/frontend logs are written to timestamped files in the same folder.
 
 ## 7. Upload Configuration
 
@@ -118,7 +108,7 @@ Allowed upload file types:
 The default upload size limit is 10 MB. Override it before starting the backend:
 
 ```powershell
-$env:KinDesk_MAX_UPLOAD_MB = "5"
+$env:TRACKSURE_MAX_UPLOAD_MB = "5"
 .\scripts\start.ps1
 ```
 
@@ -130,9 +120,9 @@ Duplicate filenames are blocked:
 
 ## 8. Stopping KinDesk
 
-Close the backend and frontend server windows opened by the startup script.
+Close the single KinDesk control console or press `Ctrl+C`.
 
-If a hidden/manual server is running, stop the matching `python` or `node` process from Task Manager or your terminal.
+If a manually started server is running outside the launcher, stop the matching `python` or `node` process from Task Manager or your terminal.
 
 ## 9. Verification Commands
 
