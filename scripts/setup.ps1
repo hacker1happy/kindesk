@@ -73,7 +73,7 @@ function Invoke-Python($Arguments) {
     throw "Python 3 was not found. Install Python 3.11+ and run this setup again."
 }
 
-Write-Host "TrackSure setup" -ForegroundColor Green
+Write-Host "KinDesk setup" -ForegroundColor Green
 Write-Host "Project: $RootDir"
 
 Write-Step "Checking Node.js"
@@ -120,4 +120,4 @@ if ($Clean) {
 
 Write-Host ""
 Write-Host "Setup complete." -ForegroundColor Green
-Write-Host "Run start.bat or scripts\start.ps1 to start TrackSure."
+Write-Host "Run start.bat or scripts\start.ps1 to start KinDesk."

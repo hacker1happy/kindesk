@@ -1,6 +1,6 @@
-# TrackSure Setup Guide
+# KinDesk Setup Guide
 
-This guide explains how to install, configure, start, stop, and maintain TrackSure on a Windows workstation.
+This guide explains how to install, configure, start, stop, and maintain KinDesk on a Windows workstation.
 
 ## 1. Prerequisites
 
@@ -68,7 +68,7 @@ Generated caches are not deleted automatically. To review and confirm cleanup:
 
 The script lists generated/cache folders such as `__pycache__`, `.pyc`, `frontend\dist`, and Vite cache files, then asks before deletion.
 
-## 5. Starting TrackSure
+## 5. Starting KinDesk
 
 From the project root:
 
@@ -118,7 +118,7 @@ Allowed upload file types:
 The default upload size limit is 10 MB. Override it before starting the backend:
 
 ```powershell
-$env:TRACKSURE_MAX_UPLOAD_MB = "5"
+$env:KinDesk_MAX_UPLOAD_MB = "5"
 .\scripts\start.ps1
 ```
 
@@ -128,7 +128,7 @@ Duplicate filenames are blocked:
 - Case stage, query, and miscellaneous files cannot repeat within the same case.
 - Replacement uploads may keep the same filename as the document being replaced.
 
-## 8. Stopping TrackSure
+## 8. Stopping KinDesk
 
 Close the backend and frontend server windows opened by the startup script.
 
