@@ -7,7 +7,7 @@ KinDesk helps teams manage share-related service cases, collect documents, track
 Run:
 
 ```powershell
-.\start.bat
+.\kindesk.bat
 ```
 
 Open:

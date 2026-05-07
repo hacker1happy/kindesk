@@ -41,7 +41,7 @@ The old `companies_master.json` and `rta_master.json` are no longer used by the 
 From the project root:
 
 ```powershell
-.\setup.bat
+.\kindesk-setup.bat
 ```
 
 Or run PowerShell directly:
@@ -73,7 +73,7 @@ The script lists generated/cache folders such as `__pycache__`, `.pyc`, `fronten
 From the project root:
 
 ```powershell
-.\start.bat
+.\kindesk.bat
 ```
 
 Or:
