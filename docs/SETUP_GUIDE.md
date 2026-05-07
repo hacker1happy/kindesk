@@ -2,8 +2,6 @@
 
 This guide explains how to install, configure, start, stop, and maintain TrackSure on a Windows workstation.
 
-![Dashboard](assets/01-dashboard.png)
-
 ## 1. Prerequisites
 
 Install these before running setup:

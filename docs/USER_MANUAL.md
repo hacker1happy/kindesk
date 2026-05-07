@@ -18,7 +18,6 @@ http://127.0.0.1:5173
 
 Keep both server windows open while using the application.
 
-![Dashboard with client](assets/03-dashboard-with-client.png)
 
 ## 2. Dashboard
 
@@ -38,8 +37,6 @@ Actions:
 - Pagination controls: move through large client lists.
 
 ## 3. Add Client
-
-![Add Client](assets/02-add-client.png)
 
 Required fields:
 
@@ -61,8 +58,6 @@ Upload rules:
 
 ## 4. Client Details
 
-![Client Details](assets/04-client-details.png)
-
 Use Client Details to:
 
 - Review client contact and assignment information
@@ -81,8 +76,6 @@ Client document actions:
 
 ## 5. Add Case
 
-![Add Case](assets/05-add-case.png)
-
 Required fields:
 
 - Folio number
@@ -96,8 +89,6 @@ Company and RTA details are resolved from:
 
 After creating a case, open `View Details` from the client case list.
 
-![Client With Case](assets/06-client-with-case.png)
-
 ## 6. Case Details
 
 Case Details has three tabs:
@@ -109,8 +100,6 @@ Case Details has three tabs:
 The header shows client info, case ID, folio, company, case type, creation date, and current status.
 
 ## 7. Case Stages
-
-![Case Stages](assets/07-case-stages.png)
 
 Stages must be completed in order. If a button is disabled, check that previous stages and required uploads are complete.
 
@@ -158,8 +147,6 @@ Revert:
 
 ## 8. Documents Tab
 
-![Case Documents](assets/08-case-documents.png)
-
 Use Documents to manage case-level files grouped by stage, query, and miscellaneous files.
 
 Actions:
@@ -178,8 +165,6 @@ Duplicate prevention:
 - Replacing a document with its own filename is allowed.
 
 ## 9. Form Tab
-
-![Case Form](assets/09-case-form.png)
 
 Use the Form tab to enter process information and generate Word documents.
 
