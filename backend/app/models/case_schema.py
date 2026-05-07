@@ -8,11 +8,19 @@ class Stage(BaseModel):
     label: str
     completed: bool = False
     updated_at: Optional[datetime] = None
-    documents: List[str] = []
+    documents: List[dict] = []
+    ops_review_form: Optional[dict] = None
+    approval_status: Optional[str] = None
+    approval_comment: Optional[str] = None
 
 class QueryItem(BaseModel):
     query_no: int
-    documents: List[str] = []
+    status: str = "open"
+    details: str = ""
+    resolution_details: str = ""
+    documents: List[dict] = []
+    opened_at: Optional[datetime] = None
+    closed_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
 class CaseCreateRequest(BaseModel):
@@ -31,3 +39,5 @@ class Case(BaseModel):
     files: Optional[List[str]] = []
     stages: Optional[List[Stage]] = []
     queries: Optional[List[QueryItem]] = []
+    closure_reason: Optional[str] = None
+    closure_comment: Optional[dict] = None

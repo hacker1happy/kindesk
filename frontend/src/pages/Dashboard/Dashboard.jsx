@@ -9,21 +9,23 @@ export default function Dashboard() {
   const [search, setSearch] = useState("");
   const [assignedToFilter, setAssignedToFilter] = useState("");
   const [assignedFromFilter, setAssignedFromFilter] = useState("");
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const loadClients = async () => {
+      const [clientsRes, casesRes] = await Promise.all([
+        getClients(),
+        getAllCases(),
+      ]);
+
+      setClients(clientsRes.data || {});
+      setCases(casesRes.data || []);
+    };
+
     loadClients();
   }, []);
-
-  const loadClients = async () => {
-    const [clientsRes, casesRes] = await Promise.all([
-      getClients(),
-      getAllCases(),
-    ]);
-
-    setClients(clientsRes.data || {});
-    setCases(casesRes.data || []);
-  };
 
   // Convert object -> array
   const clientList = useMemo(() => {
@@ -75,10 +77,16 @@ export default function Dashboard() {
     );
   });
 
+  const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
+  const visiblePage = Math.min(currentPage, totalPages);
+  const pageStartIndex = (visiblePage - 1) * pageSize;
+  const paginatedClients = filteredClients.slice(pageStartIndex, pageStartIndex + pageSize);
+
   const clearFilters = () => {
     setSearch("");
     setAssignedToFilter("");
     setAssignedFromFilter("");
+    setCurrentPage(1);
   };
 
   // Stats
@@ -94,7 +102,15 @@ export default function Dashboard() {
 
       {/* Header */}
       <div className="header">
-        <h1>TrackSure System</h1>
+        <div className="brand-lockup">
+          <div className="brand-logo-frame" aria-hidden="true">
+            <img src="/kindesk.jpg" alt="" />
+          </div>
+          <div>
+            <h1>KinDesk</h1>
+            <span>Succession Care Boutique</span>
+          </div>
+        </div>
 
         <button
           className="btn"
@@ -127,14 +143,20 @@ export default function Dashboard() {
         className="search-box"
         placeholder="Search clients by name, ID, or phone..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => {
+          setSearch(e.target.value);
+          setCurrentPage(1);
+        }}
       />
 
       <div className="dashboard-filters">
         <select
           className="input"
           value={assignedToFilter}
-          onChange={(e) => setAssignedToFilter(e.target.value)}
+          onChange={(e) => {
+            setAssignedToFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">Assigned To</option>
           {assignedToOptions.map((option) => (
@@ -145,7 +167,10 @@ export default function Dashboard() {
         <select
           className="input"
           value={assignedFromFilter}
-          onChange={(e) => setAssignedFromFilter(e.target.value)}
+          onChange={(e) => {
+            setAssignedFromFilter(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="">Assigned From</option>
           {assignedFromOptions.map((option) => (
@@ -160,7 +185,24 @@ export default function Dashboard() {
 
       {/* Client List */}
       <div className="table-card">
-        <h3 style={{ marginBottom: "10px" }}>Clients</h3>
+        <div className="table-card-header">
+          <h3>Clients</h3>
+          <div className="page-size-control">
+            <span>Show</span>
+            <select
+              className="input"
+              value={pageSize}
+              onChange={(event) => {
+                setPageSize(Number(event.target.value));
+                setCurrentPage(1);
+              }}
+            >
+              {[10, 25, 50].map((size) => (
+                <option key={size} value={size}>{size}</option>
+              ))}
+            </select>
+          </div>
+        </div>
 
         {filteredClients.length === 0 ? (
           <div className="client-box">
@@ -182,7 +224,7 @@ export default function Dashboard() {
             </thead>
 
             <tbody>
-              {filteredClients.map((c) => (
+              {paginatedClients.map((c) => (
                 <tr key={c.id}>
                   <td><HighlightedText text={c.id} query={search} /></td>
 
@@ -214,6 +256,31 @@ export default function Dashboard() {
               ))}
             </tbody>
           </table>
+        )}
+
+        {filteredClients.length > 0 && (
+          <div className="pagination-bar">
+            <span>
+              Showing {pageStartIndex + 1}-{Math.min(pageStartIndex + pageSize, filteredClients.length)} of {filteredClients.length}
+            </span>
+            <div className="pagination-actions">
+              <button
+                className="btn-outline"
+                disabled={visiblePage === 1}
+                onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+              >
+                Prev
+              </button>
+              <span>Page {visiblePage} of {totalPages}</span>
+              <button
+                className="btn-outline"
+                disabled={visiblePage === totalPages}
+                onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
       </div>
     </div>

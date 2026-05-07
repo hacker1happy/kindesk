@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { deleteCase, getCaseDetails } from "../../api/caseApi";
 import ConfirmationModal from "../../components/ConfirmationModal";
@@ -17,16 +17,7 @@ export default function CaseDetails() {
   const [showDeleteCase, setShowDeleteCase] = useState(false);
   const [deleteCaseInput, setDeleteCaseInput] = useState("");
 
-  useEffect(() => {
-    if (!clientId) {
-      setError("Client ID missing. Please navigate from client page.");
-      return;
-    }
-
-    fetchData();
-  }, [caseId, clientId]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -38,7 +29,16 @@ export default function CaseDetails() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [caseId, clientId]);
+
+  useEffect(() => {
+    if (!clientId) {
+      setError("Client ID missing. Please navigate from client page.");
+      return;
+    }
+
+    fetchData();
+  }, [clientId, fetchData]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -96,7 +96,7 @@ export default function CaseDetails() {
   return (
     <div className="container case-details-page">
       <div className="back-link" onClick={() => navigate(`/clients/${clientId}`)}>
-        ← Back to Client
+        &larr; Back to Client
       </div>
 
       <div className="details-header">
@@ -132,6 +132,9 @@ export default function CaseDetails() {
           <InfoItem label="Case Type" value={caseData.case_type} />
           <InfoItem label="Created" value={formatDate(caseData.created_at)} />
         </div>
+        {caseData.closure_reason && (
+          <p className="managed-doc-note">Closure Reason: {caseData.closure_reason}</p>
+        )}
       </section>
 
       <div className="case-tabs">
@@ -177,8 +180,8 @@ export default function CaseDetails() {
       {showDeleteCase && (
         <ConfirmationModal
           title="Delete case?"
-          message={`This will permanently delete case ${caseData.case_id}, and all files uploaded for this case.`}
-          detail="Type the Case ID exactly to confirm this irreversible action."
+          message={`This will permanently delete case ${caseData.case_id}, for ${client.name}.`}
+          detail={`Company: ${caseData.company_name || caseData.company || caseData.company_id}. All files uploaded for this case will be removed. Type the Case ID exactly to confirm this irreversible action.`}
           confirmLabel="Delete Case"
           danger
           confirmDisabled={deleteCaseInput !== caseData.case_id}

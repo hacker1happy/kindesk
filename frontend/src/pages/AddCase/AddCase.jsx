@@ -31,7 +31,7 @@ export default function AddCase() {
     }
   };
 
-  const handleContinue = async () => {
+  const handleCreateCase = async () => {
     if (!folioNumber || !companyId || !caseType) {
       alert("All fields required");
       return;
@@ -47,7 +47,7 @@ export default function AddCase() {
 
       const caseId = res.data.case_id;
 
-      navigate(`/clients/${clientId}/cases/${caseId}/${caseType.toLowerCase()}`);
+      navigate(`/clients/${clientId}/cases/${caseId}`);
     } catch (err) {
       console.error(err);
       alert("Error creating case");
@@ -131,8 +131,8 @@ export default function AddCase() {
             Cancel
           </button>
 
-          <button type="button" className="btn" onClick={handleContinue} disabled={loading}>
-            {loading ? "Creating..." : "Continue to Form"}
+          <button type="button" className="btn" onClick={handleCreateCase} disabled={loading}>
+            {loading ? "Creating..." : "Create New Case"}
           </button>
         </div>
       </section>
