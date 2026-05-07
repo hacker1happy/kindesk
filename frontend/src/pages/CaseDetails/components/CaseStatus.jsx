@@ -44,6 +44,7 @@ const REQUIRED_DOCUMENT_TYPES = {
     { key: "pod_receipt", label: "POD receipt" },
   ],
 };
+const ALLOWED_UPLOAD_ACCEPT = ".pdf,.docx,.xlsx,.jpeg,.jpg,.png,.txt";
 const OPS_REVIEW_QUESTIONS = [
   { key: "documents_verified", label: "All required client documents verified" },
   { key: "case_details_matched", label: "Case details match company and folio records" },
@@ -316,6 +317,7 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                 onRequestEverificationReject={() => setShowRejectModal(true)}
                 onOpenOpsForm={handleOpenOpsForm}
                 onEverificationDecision={handleEverificationDecision}
+                everificationRejectDisabled={isNextStageCompleted(actionableStages, stage.key)}
                 canRevert={stage.key === latestCompletedStageKey}
                 onRevert={handleRequestStageRevert}
               />
@@ -399,6 +401,7 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
                         onRequestEverificationReject={() => setShowRejectModal(true)}
                         onOpenOpsForm={handleOpenOpsForm}
                         onEverificationDecision={handleEverificationDecision}
+                        everificationRejectDisabled={isNextStageCompleted(actionableStages, childStage.key)}
                         canRevert={childStage.key === latestCompletedStageKey}
                         onRevert={handleRequestStageRevert}
                       />
@@ -649,6 +652,7 @@ function StageRow({
   onRequestEverificationReject,
   onOpenOpsForm,
   onEverificationDecision,
+  everificationRejectDisabled,
   canRevert,
   onRevert,
 }) {
@@ -699,6 +703,7 @@ function StageRow({
             <input
               type="file"
               multiple
+              accept={ALLOWED_UPLOAD_ACCEPT}
               hidden
               onChange={(e) => onUpload(stage.key, e.target.files)}
             />
@@ -734,7 +739,8 @@ function StageRow({
             </button>
             <button
               className="btn-outline remove-btn"
-              disabled={!canComplete || loadingKey === "everification-rejected"}
+              disabled={!canComplete || everificationRejectDisabled || loadingKey === "everification-rejected"}
+              title={everificationRejectDisabled ? "Revert the next completed stage before rejecting." : ""}
               onClick={onRequestEverificationReject}
             >
               Reject
@@ -793,6 +799,7 @@ function RequiredUploadControls({ stageKey, documentTypes, documents, loadingKey
             {hasDocument ? `Add ${documentType.label}` : documentType.label}
             <input
               type="file"
+              accept={ALLOWED_UPLOAD_ACCEPT}
               hidden
               onChange={(e) => onUpload(stageKey, e.target.files, documentType.key)}
               disabled={loadingKey === `${stageKey}-${documentType.key}`}
@@ -896,6 +903,7 @@ function QueryRow({ query, loadingKey, formatDateTime, onUpload, onResolve, onVi
           Upload
           <input
             type="file"
+            accept={ALLOWED_UPLOAD_ACCEPT}
             hidden
             onChange={(e) => onUpload(query.query_no, e.target.files?.[0])}
           />
@@ -943,6 +951,11 @@ function getActionableStages(visibleStages, stages) {
 
     return [stage];
   });
+}
+
+function isNextStageCompleted(actionableStages, stageKey) {
+  const stageIndex = actionableStages.findIndex((stage) => stage.key === stageKey);
+  return stageIndex >= 0 && Boolean(actionableStages[stageIndex + 1]?.completed);
 }
 
 function getRevertConsequences(stage, caseData) {

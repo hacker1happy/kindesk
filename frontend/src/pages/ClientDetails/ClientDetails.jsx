@@ -8,6 +8,7 @@ import "./ClientDetails.css";
 
 
 const API_BASE = "http://127.0.0.1:8000";
+const ALLOWED_UPLOAD_ACCEPT = ".pdf,.docx,.xlsx,.jpeg,.jpg,.png,.txt";
 
 export default function ClientDetails() {
   const { id } = useParams();
@@ -186,7 +187,7 @@ export default function ClientDetails() {
       e.target.value = "";
     } catch (err) {
       console.error("Error uploading files:", err);
-      alert("Failed to upload files");
+      alert(err.response?.data?.detail || "Failed to upload files");
     } finally {
       setUploadingFiles(false);
     }
@@ -398,6 +399,7 @@ export default function ClientDetails() {
         <input
           ref={fileInputRef}
           type="file"
+          accept={ALLOWED_UPLOAD_ACCEPT}
           multiple
           hidden
           onChange={handleUploadFiles}

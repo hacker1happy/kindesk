@@ -37,6 +37,7 @@ const NON_UPLOAD_STAGE_KEYS = new Set([
   "closed",
 ]);
 const IEPF_WORKFLOW_STAGES = new Set(["iepf_generated", "iepf_submitted", "everification"]);
+const ALLOWED_UPLOAD_ACCEPT = ".pdf,.docx,.xlsx,.jpeg,.jpg,.png,.txt";
 
 export default function Documents({ caseData, refresh }) {
   const { clientId, caseId } = useParams();
@@ -278,6 +279,7 @@ export default function Documents({ caseData, refresh }) {
                     {workingKey === `${group.id}-upload` ? "Uploading..." : group.documents.length ? "Add" : "Upload"}
                     <input
                       type="file"
+                      accept={ALLOWED_UPLOAD_ACCEPT}
                       multiple={group.type === "stage"}
                       hidden
                       onChange={(e) => handleGroupUpload(group, e.target.files)}
@@ -343,7 +345,7 @@ export default function Documents({ caseData, refresh }) {
           <h4>Miscellaneous Files</h4>
           <label className="btn-outline compact-upload">
             {workingKey === "misc-upload" ? "Uploading..." : "+ Upload"}
-            <input type="file" multiple hidden onChange={(e) => handleMiscUpload(e.target.files)} />
+            <input type="file" accept={ALLOWED_UPLOAD_ACCEPT} multiple hidden onChange={(e) => handleMiscUpload(e.target.files)} />
           </label>
         </div>
 
@@ -411,6 +413,7 @@ function DocumentRow({
             Replace
             <input
               type="file"
+              accept={ALLOWED_UPLOAD_ACCEPT}
               hidden
               onChange={(e) => onReplace(doc, e.target.files?.[0])}
             />

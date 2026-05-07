@@ -1,14 +1,21 @@
 import os
-import uuid
 import zipfile
 from io import BytesIO
 from datetime import datetime
 
 from typing import List
-from fastapi import APIRouter, File, HTTPException, HTTPException, Query, UploadFile
+from fastapi import APIRouter, File, HTTPException, Query, UploadFile
 from fastapi.responses import StreamingResponse
 
 from app.utils.document_utils import get_case_dir, remove_file_data, save_files_data
+from app.utils.upload_validation import (
+    build_stored_filename,
+    case_upload_names,
+    ensure_not_duplicate,
+    ensure_unique_batch,
+    read_validated_upload,
+)
+from app.repository.storage import read_cases
 
 router = APIRouter()
 
@@ -28,24 +35,30 @@ async def upload_documents(
     case_dir.mkdir(parents=True, exist_ok=True)
     
     uploaded_files = []
+    cases = read_cases()
+    case = cases.get(case_id, {})
+    existing_names = case_upload_names(case)
+    ensure_unique_batch(files)
 
     for file in files:
-        unique_name = f"{uuid.uuid4()}_{file.filename}"
-        file_path = case_dir / unique_name
+        filename, content = await read_validated_upload(file)
+        ensure_not_duplicate(filename, existing_names)
 
-        content = await file.read()
+        unique_name = build_stored_filename(filename)
+        file_path = case_dir / unique_name
 
         with open(file_path, "wb") as buffer:
             buffer.write(content)
 
         uploaded_files.append({
-            "name": file.filename,
+            "name": filename,
             "stored_name": unique_name,
             "url": f"/data/uploads/{client_id}/{case_id}/{unique_name}",
             "uploaded_at": datetime.now().isoformat()
         })
+        existing_names.add(filename)
 
-    save_files_data(client_id, case_id, [file.filename for file in files])
+    save_files_data(client_id, case_id, [file["name"] for file in uploaded_files])
 
     return {"files": uploaded_files}
 

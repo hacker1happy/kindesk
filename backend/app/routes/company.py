@@ -4,12 +4,11 @@ from app.repository.storage import read_companies, read_rtas
 
 router = APIRouter()
 
-companies = read_companies()
-rtas = read_rtas()
-
 
 @router.get("/companies")
 def get_companies(search: str = Query(default=""), limit: int = 50):
+    companies = read_companies()
+    rtas = read_rtas()
     search = search.strip().lower()
     results = []
 
@@ -32,6 +31,8 @@ def get_companies(search: str = Query(default=""), limit: int = 50):
 
 @router.get("/companies/{company_id}")
 def get_company(company_id: str):
+    companies = read_companies()
+    rtas = read_rtas()
     company = companies.get(company_id)
 
     if not company:
@@ -51,6 +52,8 @@ def get_company(company_id: str):
 
 @router.get("/companies/by-name/{company_name}")
 def get_company_by_name(company_name: str):
+    companies = read_companies()
+    rtas = read_rtas()
     company_name = company_name.strip().lower()
 
     for company_id, company in companies.items():
@@ -71,11 +74,12 @@ def get_company_by_name(company_name: str):
 
 @router.get("/rtas")
 def get_all_rtas():
-    return rtas
+    return read_rtas()
 
 
 @router.get("/rtas/{rta_id}")
 def get_rta(rta_id: str):
+    rtas = read_rtas()
     rta = rtas.get(rta_id)
 
     if not rta:
@@ -90,6 +94,8 @@ def get_rta(rta_id: str):
 
 @router.get("/companies/{company_id}/rta")
 def get_company_rta(company_id: str):
+    companies = read_companies()
+    rtas = read_rtas()
     company = companies.get(company_id)
 
     if not company:

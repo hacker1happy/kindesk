@@ -5,6 +5,7 @@ import "./AddClient.css";
 
 const nameRegex = /^[A-Za-z ]+$/;
 const phoneRegex = /^\+91\d{10}$/;
+const ALLOWED_UPLOAD_ACCEPT = ".pdf,.docx,.xlsx,.jpeg,.jpg,.png,.txt";
 
 const validateField = (name, value) => {
   switch (name) {
@@ -237,6 +238,7 @@ export default function AddClient() {
           <p>Upload files (Aadhar, PAN, etc.)</p>
           <input
             type="file"
+            accept={ALLOWED_UPLOAD_ACCEPT}
             multiple
             onChange={(e) => setFiles([...e.target.files])}
           />
