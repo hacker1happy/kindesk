@@ -10,3 +10,12 @@
 - Feature to duplicate a case for a particular client (duplicate case can copy a duplicate but transmission and joint case can both copy each other as the fields are similar)
 
 - to remove 5.irs4-old.docx if testing af all forms are correct
+
+- if we need to automate mail sent to client stage to send mail according to the case types we have, 
+ So that when a case is created and user clicks on send mail to client button they would be redirected 
+ to a inbox page where the mail body is written pre-hand the ops team can verify the mail body and subject once 
+ and can simply click on send mail button. and then can mark the stage as done
+
+ - to take mandatory and optional fields name from ops team for filling a form
+
+ - in isr4, the certB, certC are coming when not filled, whereas it is fine in other files
