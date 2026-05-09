@@ -30,7 +30,12 @@ async def create_client(
     name: str = Form(...),
     phone: str = Form(...),
     assigned_to: str = Form(...),
-    assigned_from: str = Form(...),
+    assigned_from: str = Form(""),
+    field_staff: str = Form(""),
+    partner_name: str = Form(""),
+    partner_company_name: str = Form(""),
+    partner_location: str = Form(""),
+    partner_phone: str = Form(""),
     comment: str = Form(""),
     files: List[UploadFile] = File([])
 ):
@@ -63,6 +68,11 @@ async def create_client(
         "phone": phone,
         "assigned_to": assigned_to,
         "assigned_from": assigned_from,
+        "field_staff": field_staff,
+        "partner_name": partner_name,
+        "partner_company_name": partner_company_name,
+        "partner_location": partner_location,
+        "partner_phone": partner_phone,
         "comment": comment,
         "created_at": datetime.now().isoformat(),
         "files_info": files_info,
@@ -95,7 +105,18 @@ def update_client(client_id: str, payload: dict):
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
-    for field in ["name", "phone", "assigned_to", "assigned_from", "comment"]:
+    for field in [
+        "name",
+        "phone",
+        "assigned_to",
+        "assigned_from",
+        "field_staff",
+        "partner_name",
+        "partner_company_name",
+        "partner_location",
+        "partner_phone",
+        "comment",
+    ]:
         if field in payload:
             client[field] = payload[field]
 

@@ -534,6 +534,19 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fafafa;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.compact-file-item:hover,
+.compact-file-item:focus-within {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  box-shadow: inset 3px 0 0 #2563eb;
+}
+
+.compact-file-item:hover .file-name,
+.compact-file-item:focus-within .file-name {
+  color: #1d4ed8;
 }
 
 .file-info-row {
@@ -624,6 +637,18 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fafafa;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.stage-document-row:hover,
+.stage-document-row:focus-within {
+  border-color: #bfdbfe;
+  background: #f8fbff;
+}
+
+#document-upload-stage {
+  border-color: #93c5fd;
+  box-shadow: inset 3px 0 0 #2563eb;
 }
 
 .stage-document-row summary {

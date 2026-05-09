@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { deleteCase, getCaseDetails } from "../../api/caseApi";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CaseStatus from "./components/CaseStatus";
@@ -10,6 +10,7 @@ import "./CaseDetails.css";
 export default function CaseDetails() {
   const { clientId, caseId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,6 +40,18 @@ export default function CaseDetails() {
 
     fetchData();
   }, [clientId, fetchData]);
+
+  useEffect(() => {
+    if (searchParams.get("tab") === "documents") {
+      setActiveTab("documents");
+      window.requestAnimationFrame(() => {
+        document.getElementById(searchParams.get("stage") || "documents-section")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }, [searchParams]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -112,8 +125,9 @@ export default function CaseDetails() {
         <div className="client-info-row">
           <InfoItem label="Client ID" value={client.id} />
           <InfoItem label="Phone" value={client.phone} />
-          <InfoItem label="Assigned To" value={client.assigned_to} />
-          <InfoItem label="Assigned From" value={client.assigned_from} />
+          <InfoItem label="Ops Owner" value={client.assigned_to} />
+          <InfoItem label="Telecaller" value={client.assigned_from} />
+          <InfoItem label="Field Staff" value={client.field_staff} />
         </div>
       </section>
 

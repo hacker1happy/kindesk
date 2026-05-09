@@ -330,7 +330,7 @@ export default function TransmissionLikeProcess({
       setFeedback({
         title: "Documents Generated",
         message: successMessage,
-        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}`),
+        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}?tab=documents&stage=document-upload-stage`),
       });
     } catch (err) {
       setFeedback({
