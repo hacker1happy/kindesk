@@ -36,6 +36,7 @@
   align-items: center;
   padding: 5px 12px;
   border-bottom: 1px solid #e5e7eb;
+  transition: background 0.15s, box-shadow 0.15s;
 }
 
 .document-row:last-child {
@@ -46,6 +47,21 @@
   display: grid;
   background-color: #f9fafb;
   border-bottom: 1px solid #e5e7eb;
+}
+
+.selectable-document-row {
+  cursor: pointer;
+}
+
+.selectable-document-row:hover,
+.selectable-document-row:focus-within {
+  background: #eff6ff;
+  box-shadow: inset 3px 0 0 #2563eb;
+}
+
+.selectable-document-row:hover .doc-name,
+.selectable-document-row:focus-within .doc-name {
+  color: #1d4ed8;
 }
 
 .document-row.header .doc-name,

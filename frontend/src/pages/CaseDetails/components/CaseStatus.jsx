@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   addQuery,
   decideEVerification,
@@ -85,6 +85,27 @@ export default function CaseStatus({ caseData, clientId, refresh }) {
   );
   const actionableStages = useMemo(() => getActionableStages(visibleStages, stages), [visibleStages, stages]);
   const latestCompletedStageKey = [...actionableStages].reverse().find((stage) => stage.completed)?.key || null;
+  const modalOpen = Boolean(
+    showQueryModal ||
+      viewingQuery ||
+      resolveCandidate ||
+      opsFormOpen ||
+      showCloseModal ||
+      showRejectModal ||
+      revertCandidate
+  );
+
+  useEffect(() => {
+    if (!modalOpen) return;
+
+    window.requestAnimationFrame(() => {
+      const modal = document.querySelector(".modal-backdrop .query-modal");
+      const focusable = modal?.querySelector(
+        "textarea, input, select, button:not(:disabled), [href], [tabindex]:not([tabindex='-1'])"
+      );
+      focusable?.focus();
+    });
+  }, [modalOpen]);
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";

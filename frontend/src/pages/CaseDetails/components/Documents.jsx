@@ -258,7 +258,7 @@ export default function Documents({ caseData, refresh }) {
   };
 
   return (
-    <section className="info-card">
+    <section className="info-card" id="documents-section">
       <div className="section-header">
         <h3>Stage Files</h3>
         <a className="btn-outline download-file-btn" href={downloadAllStageDocumentsUrl(clientId, caseId)}>
@@ -268,7 +268,12 @@ export default function Documents({ caseData, refresh }) {
 
         <div className="stage-document-list">
           {managedDocumentGroups.map((group) => (
-            <details key={group.id} className={`stage-document-row stage-${group.type === "query" ? "query" : group.key}`}>
+            <details
+              key={group.id}
+              id={group.key === "case_docs_received" ? "document-upload-stage" : undefined}
+              open={group.key === "case_docs_received"}
+              className={`stage-document-row stage-${group.type === "query" ? "query" : group.key}`}
+            >
               <summary>
                 <div className="stage-document-summary">
                   <strong>{group.label}</strong>

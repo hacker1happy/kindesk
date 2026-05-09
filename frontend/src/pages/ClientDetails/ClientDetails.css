@@ -110,6 +110,19 @@
   margin-top: 14px;
 }
 
+.client-edit-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.client-edit-subtitle {
+  margin-bottom: 10px;
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .client-edit-comment {
   min-height: 180px;
   max-height: 360px;
@@ -204,6 +217,19 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #fafafa;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.compact-file-item:hover,
+.compact-file-item:focus-within {
+  border-color: #bfdbfe;
+  background: #eff6ff;
+  box-shadow: inset 3px 0 0 #2563eb;
+}
+
+.compact-file-item:hover .file-name,
+.compact-file-item:focus-within .file-name {
+  color: #1d4ed8;
 }
 
 .file-info-row {
