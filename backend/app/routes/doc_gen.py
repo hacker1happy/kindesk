@@ -12,7 +12,7 @@ from app.repository.storage import UPLOADS_DIR, write_cases
 
 router = APIRouter()
 
-GENERATION_REQUIRED_STAGES = {"mail_sent", "client_docs_received"}
+GENERATION_REQUIRED_STAGES = {"mail_sent", "case_docs_received"}
 
 
 def documents_ready_for_generation(case: dict) -> bool:
@@ -33,7 +33,7 @@ def generate_documents_api(client_id: str, case_id: str, request: DocumentReques
         if not documents_ready_for_generation(case):
             return {
                 "success": False,
-                "message": "Complete Mail Sent to Client and Client Docs Received before generating documents"
+                "message": "Complete Mail Sent to Client and Case Docs Received before generating documents"
             }
 
         process_config = get_process_config(process)

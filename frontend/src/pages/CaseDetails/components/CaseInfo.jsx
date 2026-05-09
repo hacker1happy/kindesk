@@ -16,7 +16,7 @@ export default function CaseInfo({ caseData, documentsReadyForGeneration = false
   const statusText = hasFormData
     ? documentsReadyForGeneration
       ? "The required stages are complete. Review the saved form and generate documents when ready."
-      : "The form data is saved. Generate Documents will unlock after Mail Sent to Client and Client Docs Received are completed."
+      : "The form data is saved. Generate Documents will unlock after Mail Sent to Client and Case Docs Received are completed."
     : documentsReadyForGeneration
       ? "The required stages are complete. Fill the form to generate documents."
       : "You can fill and save this form now. Document generation unlocks after the required stages are completed.";

@@ -116,7 +116,7 @@ export default function TransmissionLikeProcess({
     try {
       const caseRes = await getCaseDetails(clientId, caseId);
       const caseData = caseRes.data.case;
-      const requiredStagesCompleted = ["mail_sent", "client_docs_received"].every((stageKey) =>
+      const requiredStagesCompleted = ["mail_sent", "case_docs_received"].every((stageKey) =>
         caseData.stages?.some((stage) => stage.key === stageKey && stage.completed)
       );
       const companyRes = await getCompanyById(caseData.company_id);
@@ -312,7 +312,7 @@ export default function TransmissionLikeProcess({
         setSaveStatus("Form Saved");
         setFeedback({
           title: "Form Saved",
-          message: "Complete Mail Sent to Client and Client Docs Received before generating documents.",
+          message: "Complete Mail Sent to Client and Case Docs Received before generating documents.",
           tone: "warning",
         });
         return;
@@ -476,7 +476,7 @@ export default function TransmissionLikeProcess({
               disabled={isGenerateInProgress || !isFormValid || !documentsReadyForGeneration}
               title={
                 !documentsReadyForGeneration
-                  ? "Complete Mail Sent to Client and Client Docs Received before generating documents."
+                  ? "Complete Mail Sent to Client and Case Docs Received before generating documents."
                   : ""
               }
             >

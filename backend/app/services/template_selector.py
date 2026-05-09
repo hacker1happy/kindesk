@@ -1,7 +1,7 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATE_ROOT = os.path.join(BASE_DIR, "templates", "word-template")
+TEMPLATE_ROOT = os.path.join(BASE_DIR, "templates")
 
 
 def build_template_paths(process, data, selected_files):
