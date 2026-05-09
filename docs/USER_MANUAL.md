@@ -108,7 +108,7 @@ Main stage flow:
 | Stage | Purpose | Typical Action |
 | --- | --- | --- |
 | Mail Sent to Client | Initial client communication | Mark done after communication is sent |
-| Client Docs Received | Client submitted documents | Upload files, then mark done |
+| Case Docs Received | Client submitted documents | Upload files, then mark done |
 | Document Generated | System documents are generated | Created from the Form tab |
 | Document Sent to Client | Generated packet sent to client | Mark done after sending |
 | Document Received from Client | Signed documents returned | Mark done when received |
@@ -171,7 +171,7 @@ Use the Form tab to enter process information and generate Word documents.
 Generation is available after:
 
 - `Mail Sent to Client` is completed
-- `Client Docs Received` is completed
+- `Case Docs Received` is completed
 
 Common form actions:
 
@@ -217,7 +217,7 @@ The limit is configurable through `KinDesk_MAX_UPLOAD_MB` before backend startup
 1. Add or open a client.
 2. Add a case with the correct case type.
 3. Mark `Mail Sent to Client` when initial communication is sent.
-4. Upload client documents in `Client Docs Received`.
+4. Upload client documents in `Case Docs Received`.
 5. Fill the process form.
 6. Generate required documents.
 7. Progress stages in order.

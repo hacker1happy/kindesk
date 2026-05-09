@@ -1,6 +1,6 @@
 DEFAULT_STAGES = [
     {"key": "mail_sent", "label": "Mail Sent to Client"},
-    {"key": "client_docs_received", "label": "Client Docs Received"},
+    {"key": "case_docs_received", "label": "Case Docs Received"},
     {"key": "doc_generated", "label": "Document Generated"},
     {"key": "doc_sent", "label": "Document Sent to Client"},
     {"key": "doc_received", "label": "Document Received from Client"},

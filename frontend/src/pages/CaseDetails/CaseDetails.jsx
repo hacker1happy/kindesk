@@ -91,7 +91,7 @@ export default function CaseDetails() {
   const client = data.client;
   const documentsReadyForGeneration =
     isStageCompleted(caseData, "mail_sent") &&
-    isStageCompleted(caseData, "client_docs_received");
+    isStageCompleted(caseData, "case_docs_received");
 
   return (
     <div className="container case-details-page">
