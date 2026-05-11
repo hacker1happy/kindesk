@@ -39,6 +39,9 @@ async def create_client(
     comment: str = Form(""),
     files: List[UploadFile] = File([])
 ):
+    if not assigned_to.strip():
+        raise HTTPException(status_code=400, detail="Ops Owner is required")
+
     data = read_clients()
 
     client_id = generate_client_id()
@@ -66,7 +69,7 @@ async def create_client(
     new_client = {
         "name": name,
         "phone": phone,
-        "assigned_to": assigned_to,
+        "assigned_to": assigned_to.strip(),
         "assigned_from": assigned_from,
         "field_staff": field_staff,
         "partner_name": partner_name,
@@ -105,6 +108,9 @@ def update_client(client_id: str, payload: dict):
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
+    if "assigned_to" in payload and not str(payload.get("assigned_to") or "").strip():
+        raise HTTPException(status_code=400, detail="Ops Owner is required")
+
     for field in [
         "name",
         "phone",
@@ -118,7 +124,10 @@ def update_client(client_id: str, payload: dict):
         "comment",
     ]:
         if field in payload:
-            client[field] = payload[field]
+            client[field] = str(payload[field]).strip() if field == "assigned_to" else payload[field]
+
+    if not str(client.get("assigned_to") or "").strip():
+        raise HTTPException(status_code=400, detail="Ops Owner is required")
 
     client["updated_at"] = datetime.now().isoformat()
     write_clients(data)
