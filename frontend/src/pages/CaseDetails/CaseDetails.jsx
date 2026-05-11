@@ -44,12 +44,6 @@ export default function CaseDetails() {
   useEffect(() => {
     if (searchParams.get("tab") === "documents") {
       setActiveTab("documents");
-      window.requestAnimationFrame(() => {
-        document.getElementById(searchParams.get("stage") || "documents-section")?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      });
     }
   }, [searchParams]);
 
@@ -188,7 +182,11 @@ export default function CaseDetails() {
       )}
 
       {activeTab === "documents" && (
-        <Documents caseData={caseData} refresh={fetchData} />
+        <Documents
+          caseData={caseData}
+          refresh={fetchData}
+          initialStageKey={searchParams.get("stage") || ""}
+        />
       )}
 
       {showDeleteCase && (

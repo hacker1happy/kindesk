@@ -355,7 +355,7 @@ const DuplicateProcess = () => {
       setFeedback({
         title: "Documents Generated",
         message: "The selected duplicate process documents were generated successfully.",
-        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}?tab=documents&stage=document-upload-stage`),
+        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}?tab=documents&stage=doc_generated`),
       });
 
       // ✅ Step 3: Redirect to Case Details

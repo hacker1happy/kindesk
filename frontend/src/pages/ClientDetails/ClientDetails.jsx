@@ -256,6 +256,8 @@ export default function ClientDetails() {
   };
 
   const handleSaveClient = async () => {
+    if (!editForm.assigned_to.trim()) return;
+
     try {
       setSavingClient(true);
       await updateClient(id, editForm);
@@ -285,6 +287,32 @@ export default function ClientDetails() {
 
   if (!client) return <p>Client not found</p>;
 
+  const editErrors = {
+    assigned_to: editForm.assigned_to.trim() ? "" : "Select an Ops Owner before saving.",
+  };
+  const canSaveClient = !editErrors.assigned_to && !savingClient;
+  const ownerOptions = [...new Set([editForm.assigned_to, client.assigned_to, ...assignedToOptions].filter(Boolean))];
+  const leadSources = [
+    client.assigned_from && {
+      type: "Telecaller Details",
+      primary: client.assigned_from,
+      details: "Lead source",
+    },
+    client.field_staff && {
+      type: "Field Staff Details",
+      primary: client.field_staff,
+      details: "Field referral",
+    },
+    (client.partner_name || client.partner_company_name || client.partner_location || client.partner_phone) && {
+      type: "Partner Details",
+      primary: client.partner_name || client.partner_company_name || client.partner_phone,
+      details: [
+        client.partner_company_name,
+        client.partner_location,
+        client.partner_phone,
+      ].filter(Boolean).join(" | "),
+    },
+  ].filter(Boolean);
   const comment = client.comment || "";
   const shouldCollapseComment = comment.length > 160 || comment.includes("\n");
   const visibleComment =
@@ -365,10 +393,11 @@ export default function ClientDetails() {
                 <span>{OPS_ASSIGNMENT_LABEL}</span>
                 <select name="assigned_to" className="input" value={editForm.assigned_to} onChange={handleEditChange}>
                   <option value="">Select {OPS_ASSIGNMENT_LABEL}</option>
-                  {assignedToOptions.map((option) => (
+                  {ownerOptions.map((option) => (
                     <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
+                {editErrors.assigned_to && <p className="error">{editErrors.assigned_to}</p>}
               </label>
             </div>
 
@@ -408,7 +437,7 @@ export default function ClientDetails() {
 
             <div className="modal-actions">
               <button className="btn-secondary" onClick={closeEditModal} disabled={savingClient}>Cancel</button>
-              <button className="btn" onClick={handleSaveClient} disabled={savingClient}>
+              <button className="btn" onClick={handleSaveClient} disabled={!canSaveClient}>
                 {savingClient ? "Saving..." : "Save Changes"}
               </button>
             </div>
@@ -417,47 +446,29 @@ export default function ClientDetails() {
       )}
 
       {/* Client Info */}
-      <div className="info-card">
-
-        <div className="client-info-row">
-
+      <section className="info-card client-summary-card">
+        <div className="client-primary-grid">
           <InfoItem label="Client ID" value={client.id} />
-
-          <InfoItem label="Phone" value={client.phone} />
-
-          <InfoItem
-            label={OPS_ASSIGNMENT_LABEL}
-            value={client.assigned_to}
-          />
-
-          <InfoItem
-            label={TELECALLER_LABEL}
-            value={client.assigned_from}
-          />
-
-          <InfoItem label="Field Staff" value={client.field_staff} />
-
-          <InfoItem
-            label="Created"
-            value={formatDate(client.created_at)}
-          />
-
+          <InfoItem label="Phone Number" value={client.phone} />
+          <InfoItem label="Ops Team Member" value={client.assigned_to} />
+          <InfoItem label="Created Date" value={formatDate(client.created_at)} />
         </div>
-      </div>
 
-      {(client.partner_name || client.partner_company_name || client.partner_location || client.partner_phone) && (
-        <div className="info-card">
-          <div className="section-header">
-            <h3>Partner Details</h3>
+        {leadSources.length > 0 && (
+          <div className="lead-source-panel">
+            <div className="lead-source-title">Lead Source Information</div>
+            <div className="lead-source-table">
+              {leadSources.map((source) => (
+                <div className="lead-source-row" key={source.type}>
+                  <span>{source.type}</span>
+                  <strong>{source.primary}</strong>
+                  {source.details && <em>{source.details}</em>}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="client-info-row">
-            <InfoItem label="Partner Name" value={client.partner_name} />
-            <InfoItem label="Company" value={client.partner_company_name} />
-            <InfoItem label="Location" value={client.partner_location} />
-            <InfoItem label="Phone" value={client.partner_phone} />
-          </div>
-        </div>
-      )}
+        )}
+      </section>
 
       <div className="info-card comment-card">
         <div className="comment-header">

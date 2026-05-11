@@ -467,13 +467,13 @@
       "totalShares": 8990
     },
     "files": [
-      "4. SH-13.docx",
-      "1. Authorization_Letter.docx",
-      "6. FormA.docx",
-      "2. Request_Letter.docx",
-      "5. ISR4.docx",
       "3. ISR1.docx",
-      "7. FormB_Indemnity.docx"
+      "7. FormB_Indemnity.docx",
+      "4. SH-13.docx",
+      "2. Request_Letter.docx",
+      "6. FormA.docx",
+      "1. Authorization_Letter.docx",
+      "5. ISR4.docx"
     ],
     "stages": [
       {
@@ -500,7 +500,7 @@
         "key": "doc_generated",
         "label": "Document Generated",
         "completed": true,
-        "updated_at": "2026-05-09T14:03:43.633075",
+        "updated_at": "2026-05-11T18:38:57.991421",
         "documents": [
           {
             "name": "1. Authorization_Letter.docx",
