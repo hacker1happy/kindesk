@@ -23,10 +23,10 @@ const DocumentList = ({ documents, onToggle, onSelectAll }) => {
         </div>
 
         {documents.map((doc, index) => (
-          <div key={doc.id} className="document-row">
+          <label key={doc.id} className="document-row selectable-document-row">
             <div className="doc-name">{doc.name}</div>
             <div className="doc-select">
-              <label className="toggle-switch">
+              <span className="toggle-switch">
                 <input
                   type="checkbox"
                   checked={doc.selected}
@@ -36,9 +36,9 @@ const DocumentList = ({ documents, onToggle, onSelectAll }) => {
                 <span className="toggle-label">
                   {doc.selected ? 'Yes' : 'No'}
                 </span>
-              </label>
+              </span>
             </div>
-          </div>
+          </label>
         ))}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { deleteCase, getCaseDetails } from "../../api/caseApi";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import CaseStatus from "./components/CaseStatus";
@@ -10,6 +10,7 @@ import "./CaseDetails.css";
 export default function CaseDetails() {
   const { clientId, caseId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -39,6 +40,12 @@ export default function CaseDetails() {
 
     fetchData();
   }, [clientId, fetchData]);
+
+  useEffect(() => {
+    if (searchParams.get("tab") === "documents") {
+      setActiveTab("documents");
+    }
+  }, [searchParams]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -91,7 +98,7 @@ export default function CaseDetails() {
   const client = data.client;
   const documentsReadyForGeneration =
     isStageCompleted(caseData, "mail_sent") &&
-    isStageCompleted(caseData, "client_docs_received");
+    isStageCompleted(caseData, "case_docs_received");
 
   return (
     <div className="container case-details-page">
@@ -112,8 +119,9 @@ export default function CaseDetails() {
         <div className="client-info-row">
           <InfoItem label="Client ID" value={client.id} />
           <InfoItem label="Phone" value={client.phone} />
-          <InfoItem label="Assigned To" value={client.assigned_to} />
-          <InfoItem label="Assigned From" value={client.assigned_from} />
+          <InfoItem label="Ops Owner" value={client.assigned_to} />
+          <InfoItem label="Telecaller" value={client.assigned_from} />
+          <InfoItem label="Field Staff" value={client.field_staff} />
         </div>
       </section>
 
@@ -174,7 +182,11 @@ export default function CaseDetails() {
       )}
 
       {activeTab === "documents" && (
-        <Documents caseData={caseData} refresh={fetchData} />
+        <Documents
+          caseData={caseData}
+          refresh={fetchData}
+          initialStageKey={searchParams.get("stage") || ""}
+        />
       )}
 
       {showDeleteCase && (

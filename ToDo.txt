@@ -1,21 +1,64 @@
-- prepare db-schema and to use oracle database for data-storage
-    - client mobile no and name should be consider as PK
+- Remove unused/testing file `5.irs4-old.docx` after validating all form outputs.
 
-- Permission on login based
-    - caller can only add the clients and view them
-    - ops team can add, update, client details and add new cases with related features
-    - admin to have all access to delete any client details as well
-    - admin can also add-delete assigned to and assigned from person
+- Fix ISR4 generation issue where `certB` and `certC` appear even when not filled.
 
-- Feature to duplicate a case for a particular client (duplicate case can copy a duplicate but transmission and joint case can both copy each other as the fields are similar)
+- in form in document secletion section, highlight the line or doc when mouse hover over it.
 
-- to remove 5.irs4-old.docx if testing af all forms are correct
+- in add telecaller name, field staff name, partner details ["Nitin Kr - Sharekhan - Mumbai"]
 
-- if we need to automate mail sent to client stage to send mail according to the case types we have, 
- So that when a case is created and user clicks on send mail to client button they would be redirected 
- to a inbox page where the mail body is written pre-hand the ops team can verify the mail body and subject once 
- and can simply click on send mail button. and then can mark the stage as done
+- after form is filled and documents are generated successfully then redirect to case details page document section in document upload stage
 
- - to take mandatory and optional fields name from ops team for filling a form
+- Define configurable mandatory and optional form fields based on Ops team input.
 
- - in isr4, the certB, certC are coming when not filled, whereas it is fine in other files
+- Claimant/non-Claimant feature in transmission and joint cases
+
+- Add case duplication feature:
+   * Allow duplicating cases for an existing client.
+   * Support cross-copying between Transmission and Joint case types due to similar fields.
+
+- Design Oracle DB schema for application data storage.
+   * Use client `mobile_number` as primary key.
+   * Use folio number + company_id as case composite PK
+
+- in dashboard let's have two tabs: 
+    * active clients
+    * archived clients/closed clients contract
+
+- when all the cases of the clients are closed then ops-team can mark the client "All cases closed and payments received" then we can move the client to archive tab in dashboard 
+
+- We need to discuss the login/authentication approach for the application, including the most suitable authentication mechanism for a simple and secure setup.
+
+- We should also finalize the role-based features and permissions for the following roles:
+    * Admin
+    * Ops Team Member
+    * Caller/field staff
+
+### Admin Features
+* Add/remove/manage Admins, Ops Team Members, and Callers.
+* Export all client data along with associated case details in excel format.
+* Access performance dashboards for Ops Team Members and Callers:
+  * Active clients
+  * Closed cases
+  * Pending cases
+  * Clients added by callers
+  * Filters for daily, weekly, monthly, and custom date ranges.
+* Bulk reassignment feature:
+  * Reassign clients/tasks/cases from one employee to another when someone leaves the organization.
+  * Applicable for both Callers and Ops Team Members.
+- edit master companies+rta details
+
+### Ops Team Member Features
+* Add new companies and RTAs if they do not already exist:
+  * Company name and address
+  * RTA name and address
+* View clients assigned by callers (`assigned_from`).
+* Edit client details assigned to them.
+* Create new clients.
+* Manage and process case-related workflows.
+
+### Caller Features
+* Add new clients.
+* View and edit client details added by them.
+* Upload client documents.
+* No permission to create or modify cases.
+

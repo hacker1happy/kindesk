@@ -7,10 +7,11 @@ export default function Dashboard() {
   const [clients, setClients] = useState({});
   const [cases, setCases] = useState([]);
   const [search, setSearch] = useState("");
-  const [assignedToFilter, setAssignedToFilter] = useState("");
-  const [assignedFromFilter, setAssignedFromFilter] = useState("");
+  const [filters, setFilters] = useState([]);
+  const [newFilterField, setNewFilterField] = useState("assigned_from");
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortConfig, setSortConfig] = useState({ key: "created_at", direction: "desc" });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,15 +36,25 @@ export default function Dashboard() {
     }));
   }, [clients]);
 
-  const assignedToOptions = useMemo(
-    () => [...new Set(clientList.map((client) => client.assigned_to).filter(Boolean))],
-    [clientList]
+  const filterDefinitions = useMemo(
+    () => [
+      { key: "assigned_to", label: "Ops Owner", type: "select" },
+      { key: "assigned_from", label: "Telecaller", type: "select" },
+      { key: "field_staff", label: "Field Staff", type: "select" },
+      { key: "partner_name", label: "Partner Name", type: "text" },
+      { key: "partner_phone", label: "Partner Phone Number", type: "text" },
+    ],
+    []
   );
 
-  const assignedFromOptions = useMemo(
-    () => [...new Set(clientList.map((client) => client.assigned_from).filter(Boolean))],
-    [clientList]
-  );
+  const filterValueOptions = useMemo(() => {
+    return filterDefinitions.reduce((options, definition) => {
+      options[definition.key] = [
+        ...new Set(clientList.map((client) => client[definition.key]).filter(Boolean)),
+      ].sort();
+      return options;
+    }, {});
+  }, [clientList, filterDefinitions]);
 
   const normalize = (value) => String(value || "").toLowerCase().replace(/\s+/g, "");
 
@@ -69,24 +80,94 @@ export default function Dashboard() {
     ) || getInitials(client.name).includes(compactQuery);
   };
 
+  const matchesFilter = (client, filter) => {
+    if (!filter.value) return true;
+    const rawValue = client[filter.field];
+    const definition = filterDefinitions.find((item) => item.key === filter.field);
+
+    if (definition?.type === "select") return rawValue === filter.value;
+
+    return normalize(rawValue).includes(normalize(filter.value));
+  };
+
   const filteredClients = clientList.filter((client) => {
-    return (
-      matchesSearch(client) &&
-      (!assignedToFilter || client.assigned_to === assignedToFilter) &&
-      (!assignedFromFilter || client.assigned_from === assignedFromFilter)
-    );
+    return matchesSearch(client) && filters.every((filter) => matchesFilter(client, filter));
   });
 
-  const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
+  const sortedClients = useMemo(() => {
+    const sortValue = (client) => {
+      if (sortConfig.key === "case_count") return client.case_ids?.length || 0;
+      if (sortConfig.key === "created_at") return new Date(client.created_at || 0).getTime();
+      return String(client[sortConfig.key] || "").toLowerCase();
+    };
+
+    return [...filteredClients].sort((a, b) => {
+      const first = sortValue(a);
+      const second = sortValue(b);
+      const comparison =
+        typeof first === "number" && typeof second === "number"
+          ? first - second
+          : String(first).localeCompare(String(second), undefined, { numeric: true, sensitivity: "base" });
+
+      return sortConfig.direction === "asc" ? comparison : -comparison;
+    });
+  }, [filteredClients, sortConfig]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedClients.length / pageSize));
   const visiblePage = Math.min(currentPage, totalPages);
   const pageStartIndex = (visiblePage - 1) * pageSize;
-  const paginatedClients = filteredClients.slice(pageStartIndex, pageStartIndex + pageSize);
+  const paginatedClients = sortedClients.slice(pageStartIndex, pageStartIndex + pageSize);
 
   const clearFilters = () => {
     setSearch("");
-    setAssignedToFilter("");
-    setAssignedFromFilter("");
+    setFilters([]);
     setCurrentPage(1);
+  };
+
+  const addFilter = () => {
+    const definition = filterDefinitions.find((item) => item.key === newFilterField);
+    if (!definition) return;
+
+    setFilters((prev) => [
+      ...prev,
+      {
+        id: `${newFilterField}-${Date.now()}`,
+        field: newFilterField,
+        value: "",
+      },
+    ]);
+  };
+
+  const updateFilter = (id, patch) => {
+    setFilters((prev) =>
+      prev.map((filter) =>
+        filter.id === id
+          ? {
+              ...filter,
+              ...patch,
+              value: patch.field && patch.field !== filter.field ? "" : patch.value ?? filter.value,
+            }
+          : filter
+      )
+    );
+    setCurrentPage(1);
+  };
+
+  const removeFilter = (id) => {
+    setFilters((prev) => prev.filter((filter) => filter.id !== id));
+    setCurrentPage(1);
+  };
+
+  const handleSort = (key) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  };
+
+  const sortIndicator = (key) => {
+    if (sortConfig.key !== key) return "";
+    return sortConfig.direction === "asc" ? " ↑" : " ↓";
   };
 
   // Stats
@@ -149,38 +230,71 @@ export default function Dashboard() {
         }}
       />
 
-      <div className="dashboard-filters">
-        <select
-          className="input"
-          value={assignedToFilter}
-          onChange={(e) => {
-            setAssignedToFilter(e.target.value);
-            setCurrentPage(1);
-          }}
-        >
-          <option value="">Assigned To</option>
-          {assignedToOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
+      <div className="dashboard-filter-builder">
+        <div className="filter-builder-toolbar">
+          <select
+            className="input"
+            value={newFilterField}
+            onChange={(event) => setNewFilterField(event.target.value)}
+          >
+            {filterDefinitions.map((definition) => (
+              <option key={definition.key} value={definition.key}>{definition.label}</option>
+            ))}
+          </select>
+          <button className="btn-outline" onClick={addFilter}>
+            Add Filter
+          </button>
+          <button className="btn-outline" onClick={clearFilters}>
+            Clear Filters
+          </button>
+        </div>
 
-        <select
-          className="input"
-          value={assignedFromFilter}
-          onChange={(e) => {
-            setAssignedFromFilter(e.target.value);
-            setCurrentPage(1);
-          }}
-        >
-          <option value="">Assigned From</option>
-          {assignedFromOptions.map((option) => (
-            <option key={option} value={option}>{option}</option>
-          ))}
-        </select>
+        {filters.length > 0 && (
+          <div className="active-filter-list">
+            {filters.map((filter) => {
+              const definition = filterDefinitions.find((item) => item.key === filter.field);
+              const options = filterValueOptions[filter.field] || [];
 
-        <button className="btn-outline" onClick={clearFilters}>
-          Clear Filters
-        </button>
+              return (
+                <div className="active-filter-row" key={filter.id}>
+                  <select
+                    className="input"
+                    value={filter.field}
+                    onChange={(event) => updateFilter(filter.id, { field: event.target.value })}
+                  >
+                    {filterDefinitions.map((item) => (
+                      <option key={item.key} value={item.key}>{item.label}</option>
+                    ))}
+                  </select>
+
+                  {definition?.type === "select" ? (
+                    <select
+                      className="input"
+                      value={filter.value}
+                      onChange={(event) => updateFilter(filter.id, { value: event.target.value })}
+                    >
+                      <option value="">Any {definition.label}</option>
+                      {options.map((option) => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      className="input"
+                      value={filter.value}
+                      placeholder={`Search ${definition?.label || "field"}`}
+                      onChange={(event) => updateFilter(filter.id, { value: event.target.value })}
+                    />
+                  )}
+
+                  <button className="btn-outline remove-filter-btn" onClick={() => removeFilter(filter.id)}>
+                    Remove
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Client List */}
@@ -212,13 +326,14 @@ export default function Dashboard() {
           <table className="table">
             <thead>
               <tr>
-                <th>Client ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Assigned To</th>
-                <th>Assigned From</th>
-                <th>Cases</th>
-                <th>Added On</th>
+                <SortableHeader label="Client ID" sortKey="id" onSort={handleSort} indicator={sortIndicator("id")} />
+                <SortableHeader label="Name" sortKey="name" onSort={handleSort} indicator={sortIndicator("name")} />
+                <SortableHeader label="Phone" sortKey="phone" onSort={handleSort} indicator={sortIndicator("phone")} />
+                <SortableHeader label="Ops Owner" sortKey="assigned_to" onSort={handleSort} indicator={sortIndicator("assigned_to")} />
+                <SortableHeader label="Telecaller" sortKey="assigned_from" onSort={handleSort} indicator={sortIndicator("assigned_from")} />
+                <SortableHeader label="Field Staff" sortKey="field_staff" onSort={handleSort} indicator={sortIndicator("field_staff")} />
+                <SortableHeader label="Cases" sortKey="case_count" onSort={handleSort} indicator={sortIndicator("case_count")} />
+                <SortableHeader label="Added On" sortKey="created_at" onSort={handleSort} indicator={sortIndicator("created_at")} />
                 <th>Actions</th>
               </tr>
             </thead>
@@ -235,6 +350,8 @@ export default function Dashboard() {
                   <td>{c.assigned_to}</td>
 
                   <td>{c.assigned_from}</td>
+
+                  <td>{c.field_staff || "-"}</td>
 
                   <td>
                     <span className="badge">
@@ -261,7 +378,7 @@ export default function Dashboard() {
         {filteredClients.length > 0 && (
           <div className="pagination-bar">
             <span>
-              Showing {pageStartIndex + 1}-{Math.min(pageStartIndex + pageSize, filteredClients.length)} of {filteredClients.length}
+              Showing {pageStartIndex + 1}-{Math.min(pageStartIndex + pageSize, sortedClients.length)} of {sortedClients.length}
             </span>
             <div className="pagination-actions">
               <button
@@ -346,4 +463,15 @@ function HighlightedText({ text, query }) {
   }
 
   return value;
+}
+
+function SortableHeader({ label, sortKey, onSort, indicator }) {
+  return (
+    <th>
+      <button type="button" className="sortable-header" onClick={() => onSort(sortKey)}>
+        {label}
+        <span aria-hidden="true">{indicator}</span>
+      </button>
+    </th>
+  );
 }

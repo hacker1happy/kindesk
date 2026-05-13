@@ -30,10 +30,18 @@ async def create_client(
     name: str = Form(...),
     phone: str = Form(...),
     assigned_to: str = Form(...),
-    assigned_from: str = Form(...),
+    assigned_from: str = Form(""),
+    field_staff: str = Form(""),
+    partner_name: str = Form(""),
+    partner_company_name: str = Form(""),
+    partner_location: str = Form(""),
+    partner_phone: str = Form(""),
     comment: str = Form(""),
     files: List[UploadFile] = File([])
 ):
+    if not assigned_to.strip():
+        raise HTTPException(status_code=400, detail="Ops Owner is required")
+
     data = read_clients()
 
     client_id = generate_client_id()
@@ -61,8 +69,13 @@ async def create_client(
     new_client = {
         "name": name,
         "phone": phone,
-        "assigned_to": assigned_to,
+        "assigned_to": assigned_to.strip(),
         "assigned_from": assigned_from,
+        "field_staff": field_staff,
+        "partner_name": partner_name,
+        "partner_company_name": partner_company_name,
+        "partner_location": partner_location,
+        "partner_phone": partner_phone,
         "comment": comment,
         "created_at": datetime.now().isoformat(),
         "files_info": files_info,
@@ -95,9 +108,26 @@ def update_client(client_id: str, payload: dict):
     if not client:
         raise HTTPException(status_code=404, detail="Client not found")
 
-    for field in ["name", "phone", "assigned_to", "assigned_from", "comment"]:
+    if "assigned_to" in payload and not str(payload.get("assigned_to") or "").strip():
+        raise HTTPException(status_code=400, detail="Ops Owner is required")
+
+    for field in [
+        "name",
+        "phone",
+        "assigned_to",
+        "assigned_from",
+        "field_staff",
+        "partner_name",
+        "partner_company_name",
+        "partner_location",
+        "partner_phone",
+        "comment",
+    ]:
         if field in payload:
-            client[field] = payload[field]
+            client[field] = str(payload[field]).strip() if field == "assigned_to" else payload[field]
+
+    if not str(client.get("assigned_to") or "").strip():
+        raise HTTPException(status_code=400, detail="Ops Owner is required")
 
     client["updated_at"] = datetime.now().isoformat()
     write_clients(data)

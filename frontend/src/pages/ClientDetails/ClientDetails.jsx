@@ -9,12 +9,16 @@ import "./ClientDetails.css";
 
 const API_BASE = "http://127.0.0.1:8000";
 const ALLOWED_UPLOAD_ACCEPT = ".pdf,.docx,.xlsx,.jpeg,.jpg,.png,.txt";
+const OPS_ASSIGNMENT_LABEL = "Ops Owner";
+const TELECALLER_LABEL = "Telecaller";
+const FIELD_STAFF_OPTIONS = ["Hari", "Sachin", "Jayram"];
 
 export default function ClientDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
+  const editModalRef = useRef(null);
 
   const [client, setClient] = useState(null);
   const [cases, setCases] = useState([]);
@@ -33,11 +37,29 @@ export default function ClientDetails() {
     phone: "",
     assigned_to: "",
     assigned_from: "",
+    field_staff: "",
+    partner_name: "",
+    partner_company_name: "",
+    partner_location: "",
+    partner_phone: "",
     comment: "",
   });
 
-  const assignedToOptions = ["Sachin", "Hari", "Deepak"];
+  const assignedToOptions = ["Rohit", "Sangeeta", "Bandana", "Pari"];
   const assignedFromOptions = ["Pratha", "Richa", "Archana", "Gurmeen", "Dipesh"];
+
+  const buildClientEditForm = (source) => ({
+    name: source.name || "",
+    phone: source.phone || "",
+    assigned_to: source.assigned_to || "",
+    assigned_from: source.assigned_from || "",
+    field_staff: source.field_staff || "",
+    partner_name: source.partner_name || "",
+    partner_company_name: source.partner_company_name || "",
+    partner_location: source.partner_location || "",
+    partner_phone: source.partner_phone || "",
+    comment: source.comment || "",
+  });
 
   const loadClient = useCallback(async () => {
     try {
@@ -51,13 +73,7 @@ export default function ClientDetails() {
       };
 
       setClient(nextClient);
-      setEditForm({
-        name: nextClient.name || "",
-        phone: nextClient.phone || "",
-        assigned_to: nextClient.assigned_to || "",
-        assigned_from: nextClient.assigned_from || "",
-        comment: nextClient.comment || "",
-      });
+      setEditForm(buildClientEditForm(nextClient));
     } catch (err) {
       console.error("Error loading client:", err);
     } finally {
@@ -85,6 +101,13 @@ export default function ClientDetails() {
       loadCases();
     }
   }, [id, loadCases, loadClient]);
+
+  useEffect(() => {
+    if (!editingClient) return;
+
+    const firstField = editModalRef.current?.querySelector("input, textarea, select, button:not(:disabled)");
+    window.requestAnimationFrame(() => firstField?.focus());
+  }, [editingClient]);
 
   const formatDate = (dateStr) => {
     if (!dateStr) return "-";
@@ -124,13 +147,7 @@ export default function ClientDetails() {
   };
 
   const openEditModal = () => {
-    setEditForm({
-      name: client.name || "",
-      phone: client.phone || "",
-      assigned_to: client.assigned_to || "",
-      assigned_from: client.assigned_from || "",
-      comment: client.comment || "",
-    });
+    setEditForm(buildClientEditForm(client));
     setEditingClient(true);
   };
 
@@ -218,14 +235,29 @@ export default function ClientDetails() {
 
   const handleEditChange = (e) => {
     const { name, value } = e.target;
+    let nextValue = value;
+
+    if (name === "name") {
+      nextValue = value.replace(/[^A-Za-z ]/g, "");
+    }
+
+    if (name === "phone" || name === "partner_phone") {
+      let digits = value.replace(/\D/g, "");
+      if (digits.startsWith("91")) digits = digits.slice(2);
+      digits = digits.slice(0, 10);
+      nextValue = digits ? `+91${digits}` : "";
+      if (name === "phone" && !digits) nextValue = "+91";
+    }
 
     setEditForm((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: nextValue,
     }));
   };
 
   const handleSaveClient = async () => {
+    if (!editForm.assigned_to.trim()) return;
+
     try {
       setSavingClient(true);
       await updateClient(id, editForm);
@@ -239,10 +271,48 @@ export default function ClientDetails() {
     }
   };
 
+  const handleEditModalKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeEditModal();
+    }
+
+    if (event.key === "Enter" && event.target.tagName?.toLowerCase() !== "textarea") {
+      event.preventDefault();
+      handleSaveClient();
+    }
+  };
+
   if (loadingClient) return <p>Loading client...</p>;
 
   if (!client) return <p>Client not found</p>;
 
+  const editErrors = {
+    assigned_to: editForm.assigned_to.trim() ? "" : "Select an Ops Owner before saving.",
+  };
+  const canSaveClient = !editErrors.assigned_to && !savingClient;
+  const ownerOptions = [...new Set([editForm.assigned_to, client.assigned_to, ...assignedToOptions].filter(Boolean))];
+  const leadSources = [
+    client.assigned_from && {
+      type: "Telecaller Details",
+      primary: client.assigned_from,
+      details: "Lead source",
+    },
+    client.field_staff && {
+      type: "Field Staff Details",
+      primary: client.field_staff,
+      details: "Field referral",
+    },
+    (client.partner_name || client.partner_company_name || client.partner_location || client.partner_phone) && {
+      type: "Partner Details",
+      primary: client.partner_name || client.partner_company_name || client.partner_phone,
+      details: [
+        client.partner_company_name,
+        client.partner_location,
+        client.partner_phone,
+      ].filter(Boolean).join(" | "),
+    },
+  ].filter(Boolean);
   const comment = client.comment || "";
   const shouldCollapseComment = comment.length > 160 || comment.includes("\n");
   const visibleComment =
@@ -277,9 +347,12 @@ export default function ClientDetails() {
         <div className="modal-backdrop" role="presentation" onMouseDown={closeEditModal}>
           <div
             className="client-edit-modal"
+            ref={editModalRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="client-edit-title"
+            tabIndex={-1}
+            onKeyDown={handleEditModalKeyDown}
             onMouseDown={(event) => event.stopPropagation()}
           >
             <div className="client-edit-modal-header">
@@ -299,23 +372,55 @@ export default function ClientDetails() {
                 <input name="phone" className="input" value={editForm.phone} onChange={handleEditChange} />
               </label>
               <label>
-                <span>Assigned To</span>
-                <select name="assigned_to" className="input" value={editForm.assigned_to} onChange={handleEditChange}>
-                  <option value="">Select Assigned To</option>
-                  {assignedToOptions.map((option) => (
-                    <option key={option} value={option}>{option}</option>
-                  ))}
-                </select>
-              </label>
-              <label>
-                <span>Assigned From</span>
+                <span>{TELECALLER_LABEL}</span>
                 <select name="assigned_from" className="input" value={editForm.assigned_from} onChange={handleEditChange}>
-                  <option value="">Select Assigned From</option>
+                  <option value="">Select {TELECALLER_LABEL}</option>
                   {assignedFromOptions.map((option) => (
                     <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
               </label>
+              <label>
+                <span>Field Staff</span>
+                <select name="field_staff" className="input" value={editForm.field_staff} onChange={handleEditChange}>
+                  <option value="">Select Field Staff</option>
+                  {FIELD_STAFF_OPTIONS.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                <span>{OPS_ASSIGNMENT_LABEL}</span>
+                <select name="assigned_to" className="input" value={editForm.assigned_to} onChange={handleEditChange}>
+                  <option value="">Select {OPS_ASSIGNMENT_LABEL}</option>
+                  {ownerOptions.map((option) => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+                {editErrors.assigned_to && <p className="error">{editErrors.assigned_to}</p>}
+              </label>
+            </div>
+
+            <div className="client-edit-section">
+              <div className="client-edit-subtitle">Partner Details</div>
+              <div className="client-edit-grid">
+                <label>
+                  <span>Partner Name</span>
+                  <input name="partner_name" className="input" value={editForm.partner_name} onChange={handleEditChange} />
+                </label>
+                <label>
+                  <span>Company Name</span>
+                  <input name="partner_company_name" className="input" value={editForm.partner_company_name} onChange={handleEditChange} />
+                </label>
+                <label>
+                  <span>Address / Location</span>
+                  <input name="partner_location" className="input" value={editForm.partner_location} onChange={handleEditChange} />
+                </label>
+                <label>
+                  <span>Phone Number</span>
+                  <input name="partner_phone" className="input" value={editForm.partner_phone} onChange={handleEditChange} />
+                </label>
+              </div>
             </div>
 
             <label className="client-edit-comment-field">
@@ -332,7 +437,7 @@ export default function ClientDetails() {
 
             <div className="modal-actions">
               <button className="btn-secondary" onClick={closeEditModal} disabled={savingClient}>Cancel</button>
-              <button className="btn" onClick={handleSaveClient} disabled={savingClient}>
+              <button className="btn" onClick={handleSaveClient} disabled={!canSaveClient}>
                 {savingClient ? "Saving..." : "Save Changes"}
               </button>
             </div>
@@ -341,31 +446,29 @@ export default function ClientDetails() {
       )}
 
       {/* Client Info */}
-      <div className="info-card">
-
-        <div className="client-info-row">
-
+      <section className="info-card client-summary-card">
+        <div className="client-primary-grid">
           <InfoItem label="Client ID" value={client.id} />
-
-          <InfoItem label="Phone" value={client.phone} />
-
-          <InfoItem
-            label="Assigned To"
-            value={client.assigned_to}
-          />
-
-          <InfoItem
-            label="Assigned From"
-            value={client.assigned_from}
-          />
-
-          <InfoItem
-            label="Created"
-            value={formatDate(client.created_at)}
-          />
-
+          <InfoItem label="Phone Number" value={client.phone} />
+          <InfoItem label="Ops Team Member" value={client.assigned_to} />
+          <InfoItem label="Created Date" value={formatDate(client.created_at)} />
         </div>
-      </div>
+
+        {leadSources.length > 0 && (
+          <div className="lead-source-panel">
+            <div className="lead-source-title">Lead Source Information</div>
+            <div className="lead-source-table">
+              {leadSources.map((source) => (
+                <div className="lead-source-row" key={source.type}>
+                  <span>{source.type}</span>
+                  <strong>{source.primary}</strong>
+                  {source.details && <em>{source.details}</em>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </section>
 
       <div className="info-card comment-card">
         <div className="comment-header">

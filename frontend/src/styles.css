@@ -256,12 +256,41 @@ textarea {
   margin-bottom: 20px;
 }
 
-.dashboard-filters {
+.dashboard-filter-builder {
   display: grid;
-  grid-template-columns: minmax(150px, 220px) minmax(150px, 220px) auto;
+  gap: 10px;
+  margin: -8px 0 20px;
+}
+
+.filter-builder-toolbar,
+.active-filter-row {
+  display: grid;
   gap: 10px;
   align-items: center;
-  margin: -8px 0 20px;
+}
+
+.filter-builder-toolbar {
+  grid-template-columns: minmax(180px, 240px) auto auto;
+  justify-content: start;
+}
+
+.active-filter-list {
+  display: grid;
+  gap: 8px;
+}
+
+.active-filter-row {
+  grid-template-columns: minmax(170px, 220px) minmax(190px, 280px) auto;
+  width: fit-content;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.remove-filter-btn {
+  border-color: #fecaca;
+  color: #dc2626;
 }
 
 .search-highlight {
@@ -325,7 +354,7 @@ textarea:focus {
 
 .table {
   margin-top: 10px;
-  min-width: 820px;
+  min-width: 980px;
 }
 
 .table-card-header,
@@ -382,6 +411,24 @@ textarea:focus {
   font-weight: 600;
 
   background: #f9fafb;
+}
+
+.sortable-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.sortable-header:hover,
+.sortable-header:focus-visible {
+  color: #1d4ed8;
 }
 
 .cases-table-container {
@@ -499,7 +546,7 @@ textarea:focus {
   color: #075985;
 }
 
-.status-client_docs_received {
+.status-case_docs_received {
   background: #ccfbf1;
   color: #0f766e;
 }
@@ -680,8 +727,10 @@ textarea:focus {
     width: 100%;
   }
 
-  .dashboard-filters {
+  .filter-builder-toolbar,
+  .active-filter-row {
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .stats {

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   downloadAllStageDocumentsUrl,
@@ -39,11 +39,12 @@ const NON_UPLOAD_STAGE_KEYS = new Set([
 const IEPF_WORKFLOW_STAGES = new Set(["iepf_generated", "iepf_submitted", "everification"]);
 const ALLOWED_UPLOAD_ACCEPT = ".pdf,.docx,.xlsx,.jpeg,.jpg,.png,.txt";
 
-export default function Documents({ caseData, refresh }) {
+export default function Documents({ caseData, refresh, initialStageKey }) {
   const { clientId, caseId } = useParams();
 
   const [workingKey, setWorkingKey] = useState(null);
   const [pendingRemoval, setPendingRemoval] = useState(null);
+  const [activeGroupId, setActiveGroupId] = useState("");
 
   const formatDateTime = (dateStr) => {
     if (!dateStr) return "-";
@@ -119,6 +120,24 @@ export default function Documents({ caseData, refresh }) {
   }, [caseData]);
 
   const miscDocuments = sortByUploadTime(caseData?.misc_documents || []);
+
+  useEffect(() => {
+    if (!initialStageKey || activeGroupId) return;
+
+    const normalizedStageKey =
+      initialStageKey === "document-upload-stage" ? "case_docs_received" : initialStageKey;
+    const targetGroup = managedDocumentGroups.find((group) => group.key === normalizedStageKey);
+
+    if (targetGroup) {
+      setActiveGroupId(targetGroup.id);
+      window.requestAnimationFrame(() => {
+        document.getElementById("document-upload-stage")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }, [activeGroupId, initialStageKey, managedDocumentGroups]);
 
   const getFileUrl = (url) => `${API_BASE}${url}`;
 
@@ -258,7 +277,7 @@ export default function Documents({ caseData, refresh }) {
   };
 
   return (
-    <section className="info-card">
+    <section className="info-card" id="documents-section">
       <div className="section-header">
         <h3>Stage Files</h3>
         <a className="btn-outline download-file-btn" href={downloadAllStageDocumentsUrl(clientId, caseId)}>
@@ -268,8 +287,18 @@ export default function Documents({ caseData, refresh }) {
 
         <div className="stage-document-list">
           {managedDocumentGroups.map((group) => (
-            <details key={group.id} className={`stage-document-row stage-${group.type === "query" ? "query" : group.key}`}>
-              <summary>
+            <details
+              key={group.id}
+              id={group.key === "case_docs_received" ? "document-upload-stage" : undefined}
+              open={activeGroupId === group.id}
+              className={`stage-document-row ${activeGroupId === group.id ? "active" : ""} stage-${group.type === "query" ? "query" : group.key}`}
+            >
+              <summary
+                onClick={(event) => {
+                  event.preventDefault();
+                  setActiveGroupId((currentId) => (currentId === group.id ? "" : group.id));
+                }}
+              >
                 <div className="stage-document-summary">
                   <strong>{group.label}</strong>
                   <span>{getDocumentSummary(group.documents)}</span>

@@ -190,7 +190,7 @@ const DuplicateProcess = () => {
     try {
       const caseRes = await getCaseDetails(clientId, caseId);
       const caseData = caseRes.data.case;
-      const requiredStagesCompleted = ["mail_sent", "client_docs_received"].every((stageKey) =>
+      const requiredStagesCompleted = ["mail_sent", "case_docs_received"].every((stageKey) =>
         caseData.stages?.some((stage) => stage.key === stageKey && stage.completed)
       );
       const companyRes = await getCompanyById(caseData.company_id);
@@ -338,7 +338,7 @@ const DuplicateProcess = () => {
         setSaveStatus("Form Saved");
         setFeedback({
           title: "Form Saved",
-          message: "Complete Mail Sent to Client and Client Docs Received before generating documents.",
+          message: "Complete Mail Sent to Client and Case Docs Received before generating documents.",
           tone: "warning",
         });
         return;
@@ -355,7 +355,7 @@ const DuplicateProcess = () => {
       setFeedback({
         title: "Documents Generated",
         message: "The selected duplicate process documents were generated successfully.",
-        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}`),
+        onClose: () => navigate(`/clients/${clientId}/cases/${caseId}?tab=documents&stage=doc_generated`),
       });
 
       // ✅ Step 3: Redirect to Case Details
@@ -494,7 +494,7 @@ const DuplicateProcess = () => {
                 disabled={isGenerateInProgress || !isFormValid || !documentsReadyForGeneration}
                 title={
                   !documentsReadyForGeneration
-                    ? "Complete Mail Sent to Client and Client Docs Received before generating documents."
+                    ? "Complete Mail Sent to Client and Case Docs Received before generating documents."
                     : ""
                 }
               >

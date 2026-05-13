@@ -37,6 +37,16 @@
   font-weight: 650;
 }
 
+.add-client-section-title.compact {
+  margin-bottom: 12px;
+}
+
 .add-client-comment {
   margin-top: 15px;
+}
+
+.partner-section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #e5e7eb;
 }
