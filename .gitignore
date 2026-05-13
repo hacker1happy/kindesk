@@ -1,6 +1,4 @@
 data/uploads/
-data/cases.json
-data/clients.json
 backend/.venv/
 frontend/node_modules/
 frontend/dist/

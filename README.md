@@ -6,8 +6,8 @@ TrackSure is a local web application for managing client cases, stage documents,
 
 1. Install Python 3.11+.
 2. Install Node.js 20+.
-3. Double-click `setup.bat`.
-4. Double-click `start.bat`.
+3. Double-click `kindesk-setup.bat`.
+4. Double-click `kindesk.bat`.
 5. Open `http://127.0.0.1:5173` if the browser does not open automatically.
 
 Keep the two server windows open while using the application.

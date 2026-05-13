@@ -1,0 +1,29 @@
+{
+  "CL000001": {
+    "name": "Priyanshu Gupta",
+    "phone": "+919832163019",
+    "assigned_to": "Sangeeta",
+    "assigned_from": "Pratha",
+    "comment": "Test comments",
+    "created_at": "2026-05-07T10:43:47.600231",
+    "files_info": {
+      "Priyanshu_Gupta.pdf": {
+        "path": "data/uploads/CL000001/94c60ea2-f4bb-4ad4-ba03-df70ea466426_Priyanshu_Gupta.pdf",
+        "uploaded_at": "2026-05-07T10:43:47.600190"
+      }
+    },
+    "case_ids": [
+      "CSVVULIBD"
+    ]
+  },
+  "CL000002": {
+    "name": "Dipesh Jain",
+    "phone": "+919876543210",
+    "assigned_to": "Sangeeta",
+    "assigned_from": "Pratha",
+    "comment": "",
+    "created_at": "2026-05-08T02:39:03.037012",
+    "files_info": {},
+    "case_ids": []
+  }
+}
