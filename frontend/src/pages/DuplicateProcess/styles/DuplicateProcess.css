@@ -112,6 +112,32 @@
   font-weight: 600;
 }
 
+.copy-form-panel {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+  padding: 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.copy-form-panel div {
+  display: grid;
+  gap: 7px;
+}
+
+.copy-form-panel label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.copy-form-panel .btn {
+  min-height: 38px;
+}
+
 .form-section {
   margin-bottom: 14px;
   padding: 16px;
@@ -248,6 +274,10 @@
 
   .button-group {
     display: grid;
+  }
+
+  .copy-form-panel {
+    grid-template-columns: 1fr;
   }
 
   .duplicate-process .btn {

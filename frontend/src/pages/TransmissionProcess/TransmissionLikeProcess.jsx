@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCaseDetails } from "../../api/caseApi";
 import { getCompanyById } from "../../api/companyApi";
-import { getFormData, saveFormData } from "../../api/formApi";
+import { getCopyableFormData, getFormData, saveFormData } from "../../api/formApi";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import FeedbackDialog from "../../components/FeedbackDialog";
 import { useFormSubmit } from "../../hooks/useFormSubmit";
@@ -32,13 +32,15 @@ const LEGAL_HEIR_VALIDATORS = {
 const LEGAL_HEIR_REQUIRED_FIELDS = [
   ["personalDetails", "name"],
   ["personalDetails", "fatherName"],
+  ["personalDetails", "age"],
+  ["personalDetails", "relation"],
   ["personalDetails", "panNumber"],
+  ["contactDetails", "address"],
+  ["contactDetails", "city"],
+  ["contactDetails", "state"],
   ["contactDetails", "mobile"],
   ["contactDetails", "email"],
   ["contactDetails", "pinCode"],
-  ["bankDetails", "accountNumber"],
-  ["bankDetails", "ifscCode"],
-  ["bankDetails", "bankName"],
 ];
 
 const LEGAL_HEIR_REQUIRED_FIELD_KEYS = new Set(
@@ -85,6 +87,8 @@ export default function TransmissionLikeProcess({
   const [feedback, setFeedback] = useState(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [copyCaseId, setCopyCaseId] = useState("");
+  const [isCopying, setIsCopying] = useState(false);
   const [numLegalHeirs, setNumLegalHeirs] = useState(1);
   const [legalHeirs, setLegalHeirs] = useState([{ ...DEFAULT_LEGAL_HEIR }]);
   const [numShareholders, setNumShareholders] = useState(1);
@@ -301,6 +305,66 @@ export default function TransmissionLikeProcess({
     });
   };
 
+  const applyCopiedFormData = (data) => {
+    const normalizedData = normalizeLoadedFormData(data);
+    const copiedLegalHeirs = normalizedData.legalHeirs.length
+      ? normalizedData.legalHeirs.slice(0, 3)
+      : [{ ...DEFAULT_LEGAL_HEIR }];
+    const copiedShareholders = normalizedData.shareholders.length
+      ? normalizedData.shareholders.slice(0, 3)
+      : [{ ...DEFAULT_SHAREHOLDER }];
+
+    setLegalHeirs(copiedLegalHeirs);
+    setNumLegalHeirs(copiedLegalHeirs.length);
+    setShareholders(copiedShareholders);
+    setNumShareholders(copiedShareholders.length);
+    setSecurities(normalizedData.securities.length ? normalizedData.securities : [{ ...DEFAULT_SECURITY }]);
+    setCompanyInfo({
+      name: caseContext?.companyName || companyInfo.name || "",
+      address: caseContext?.companyAddress || companyInfo.address || "",
+    });
+    setRtaInfo({
+      name: caseContext?.rtaName || rtaInfo.name || "",
+      address: caseContext?.rtaAddress || rtaInfo.address || "",
+    });
+    setOtherInfo({
+      ...(normalizedData.otherInfo || { formDate: "", faceValue: "" }),
+      folioNumber: caseContext?.folioNumber || otherInfo.folioNumber || "",
+    });
+  };
+
+  const handleCopyFromCase = async () => {
+    const sourceCaseId = copyCaseId.trim().toUpperCase();
+    if (!sourceCaseId) {
+      setFeedback({
+        title: "Case ID Required",
+        message: "Enter a source Case ID to copy form data.",
+        tone: "warning",
+      });
+      return;
+    }
+
+    try {
+      setIsCopying(true);
+      const res = await getCopyableFormData(sourceCaseId, caseId);
+      applyCopiedFormData(res.data.form_data);
+      setIsEditMode(true);
+      setSaveStatus("Copied Form Data");
+      setFeedback({
+        title: "Form Data Copied",
+        message: `Copied compatible form data from ${sourceCaseId}. Save the draft to keep it on this case.`,
+      });
+    } catch (err) {
+      setFeedback({
+        title: "Copy Failed",
+        message: err.response?.data?.detail || "Could not copy form data from that case.",
+        tone: "error",
+      });
+    } finally {
+      setIsCopying(false);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -369,9 +433,11 @@ export default function TransmissionLikeProcess({
   const isLegalHeirInfoValid =
     legalHeirs.length > 0 &&
     legalHeirs.every((_, index) => validityMap[index] === true);
-  const hasRequiredShareholderName = shareholders.some((shareholder) => shareholder.name?.trim());
+  const hasRequiredShareholderEntries =
+    shareholders.length > 0 &&
+    shareholders.every((shareholder) => shareholder.name?.trim() && shareholder.dateOfDemise);
   const isGenerateInProgress = loading || isGenerating;
-  const isFormValid = isLegalHeirInfoValid && hasRequiredShareholderName;
+  const isFormValid = isLegalHeirInfoValid && hasRequiredShareholderEntries;
 
   return (
     <main className="duplicate-process container">
@@ -417,6 +483,22 @@ export default function TransmissionLikeProcess({
                 : "Save Draft is available now. Generate Documents unlocks after the prerequisite stages are completed."}
             </strong>
           </div>
+        </div>
+
+        <div className="copy-form-panel">
+          <div>
+            <label htmlFor="copy-case-id">Copy form data from Case ID</label>
+            <input
+              id="copy-case-id"
+              type="text"
+              value={copyCaseId}
+              onChange={(event) => setCopyCaseId(event.target.value.toUpperCase())}
+              placeholder="Enter Case ID"
+            />
+          </div>
+          <button type="button" className="btn btn-secondary" onClick={handleCopyFromCase} disabled={isCopying}>
+            {isCopying ? "Copying..." : "Copy Data"}
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -564,7 +646,9 @@ function ShareholderInformation({ count, shareholders, onCountChange, onChange }
               <th>
                 Shareholder Name <span className="required-marker">*</span>
               </th>
-              <th>Date of Demise</th>
+              <th>
+                Date of Demise <span className="required-marker">*</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -719,12 +803,12 @@ function LegalHeirForm({ index, data, onChange, onValidityChange }) {
         </div>
         <div className="shareholder-row">
           {renderInput("personalDetails", "fatherName", "Father's name")}
-          {renderInput("contactDetails", "city", "City", "text", { disabled: index > 0 })}
+          {renderInput("contactDetails", "city", "City")}
           {renderInput("bankDetails", "bankName", "Bank name")}
         </div>
         <div className="shareholder-row">
           {renderInput("personalDetails", "age", "Age")}
-          {renderInput("contactDetails", "state", "State", "text", { disabled: index > 0 })}
+          {renderInput("contactDetails", "state", "State")}
           {renderInput("bankDetails", "branch", "Branch")}
         </div>
         <div className="shareholder-row">
