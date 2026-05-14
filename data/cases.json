@@ -939,5 +939,468 @@
       }
     ],
     "queries": []
+  },
+  "CSYKPEKZU": {
+    "case_id": "CSYKPEKZU",
+    "folio_number": "ril",
+    "company_id": "COMP001",
+    "case_type": "joint",
+    "status": "case_docs_received",
+    "created_at": "2026-05-14T02:04:20.544852",
+    "form_data": {},
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-14T02:04:23.568703",
+        "documents": []
+      },
+      {
+        "key": "case_docs_received",
+        "label": "Case Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-14T02:04:29.643457",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSYKPEKZU/case_docs_received/df2162b7-5cfa-48e8-98c2-828cbcd5c546_aadhar-front.pdf",
+            "uploaded_at": "2026-05-14T02:04:27.697642"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CSMA0F8S1": {
+    "case_id": "CSMA0F8S1",
+    "folio_number": "Tata567",
+    "company_id": "COMP003",
+    "case_type": "duplicate",
+    "status": "case_docs_received",
+    "created_at": "2026-05-14T09:04:37.329202",
+    "form_data": {
+      "shareholders": [
+        {
+          "personalDetails": {
+            "name": "Priyanshu",
+            "fatherName": "Test father name",
+            "panNumber": "DETPG5566Q",
+            "dematAccount": "123456789"
+          },
+          "contactDetails": {
+            "email": "finassure.dataset@gmail.com",
+            "address": "TDB college raniganj",
+            "pinCode": "713347",
+            "mobile": "9123456789"
+          },
+          "bankDetails": {
+            "accountNumber": "1234567890",
+            "bankName": "HDFC",
+            "branch": "HDFC",
+            "ifscCode": "HDFC0001015"
+          }
+        },
+        {
+          "personalDetails": {
+            "name": "Priyanshu",
+            "fatherName": "test gupta",
+            "panNumber": "DETYG6789I"
+          },
+          "contactDetails": {
+            "email": "finassure.dataset@gmail.com",
+            "pinCode": "909089",
+            "mobile": "7123456789"
+          },
+          "bankDetails": {
+            "bankName": "HDFC",
+            "ifscCode": "HDFC0001015",
+            "accountNumber": "1234567890789"
+          }
+        }
+      ],
+      "securities": [
+        {
+          "certificateNumber": "123",
+          "distinctiveFrom": "45",
+          "distinctiveTo": "67",
+          "shares": "899"
+        },
+        {
+          "certificateNumber": "5677",
+          "distinctiveFrom": "34",
+          "distinctiveTo": "90",
+          "shares": "89"
+        }
+      ],
+      "companyInfo": {
+        "name": "TATA CONSULTANCY SERVICE LIMITED",
+        "address": "9th Floor, Nirmal Building,\nNariman Point, \nMumbai 400 021, India"
+      },
+      "rtaInfo": {
+        "name": "MUFG Intime India Private Limited",
+        "address": "C 101, 1st Floor, 247 Park, L.B.S.Marg,\nVikhroli (West), Mumbai - 400083"
+      },
+      "documents": [
+        {
+          "id": "auth-letter",
+          "name": "Authentication Letter",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "request-letter",
+          "name": "Request Letter",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "isr-1",
+          "name": "ISR 1",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "sh-13",
+          "name": "SH - 13",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "isr-4",
+          "name": "ISR 4",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "form-a",
+          "name": "Form A",
+          "required": false,
+          "selected": false
+        },
+        {
+          "id": "form-b-indemnity",
+          "name": "Form B Indemnity",
+          "required": false,
+          "selected": false
+        }
+      ],
+      "otherInfo": {
+        "formDate": "07-05-2026",
+        "folioNumber": "Tata567",
+        "faceValue": "123"
+      },
+      "totalShares": 988
+    },
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-14T09:04:40.826502",
+        "documents": []
+      },
+      {
+        "key": "case_docs_received",
+        "label": "Case Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-14T09:04:49.140605",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSMA0F8S1/case_docs_received/b2f60755-1f74-4be4-ae9c-cfdd1a80739e_aadhar-front.pdf",
+            "uploaded_at": "2026-05-14T09:04:46.568756"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
+  },
+  "CSLQOB05K": {
+    "case_id": "CSLQOB05K",
+    "folio_number": "Tata567",
+    "company_id": "COMP003",
+    "case_type": "transmission",
+    "status": "case_docs_received",
+    "created_at": "2026-05-14T09:07:42.659452",
+    "form_data": {},
+    "files": [],
+    "stages": [
+      {
+        "key": "mail_sent",
+        "label": "Mail Sent to Client",
+        "completed": true,
+        "updated_at": "2026-05-14T09:09:50.594569",
+        "documents": []
+      },
+      {
+        "key": "case_docs_received",
+        "label": "Case Docs Received",
+        "completed": true,
+        "updated_at": "2026-05-14T09:09:59.914825",
+        "documents": [
+          {
+            "name": "aadhar-front.pdf",
+            "url": "/data/uploads/CL000001/CSLQOB05K/case_docs_received/bb147474-76e4-48d1-b7a0-c496bd1e327e_aadhar-front.pdf",
+            "uploaded_at": "2026-05-14T09:09:57.075611"
+          }
+        ]
+      },
+      {
+        "key": "doc_generated",
+        "label": "Document Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_sent",
+        "label": "Document Sent to Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "doc_received",
+        "label": "Document Received from Client",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "ops_review",
+        "label": "Ops Review & Sign-off",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "sent_to_rta",
+        "label": "Sent to Company/RTA",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loc_received",
+        "label": "LOC Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "loe_received",
+        "label": "LOE Received",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_generated",
+        "label": "IEPF Generated",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "iepf_submitted",
+        "label": "IEPF Submitted",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "everification",
+        "label": "E-Verification",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "shares_credited",
+        "label": "Shares Credited",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      },
+      {
+        "key": "closed",
+        "label": "Case Closed",
+        "completed": false,
+        "updated_at": null,
+        "documents": []
+      }
+    ],
+    "queries": []
   }
 }

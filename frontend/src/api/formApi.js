@@ -11,6 +11,11 @@ export const saveFormData = (clientId, caseId, data) =>
 export const getFormData = (clientId, caseId) =>
   API.get(`/clients/${clientId}/cases/${caseId}/form`);
 
+export const getCopyableFormData = (sourceCaseId, targetCaseId) =>
+  API.get(`/cases/${sourceCaseId}/form-copy`, {
+    params: { target_case_id: targetCaseId },
+  });
+
 export const generateDocuments = async (
   clientId,
   caseId,
