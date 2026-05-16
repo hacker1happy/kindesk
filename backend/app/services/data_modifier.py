@@ -1,15 +1,3 @@
-# backend/app/services/data_modifier.py
-
-concat_keywords = {
-    "SIGNATURE": "Shareholder name(s)",
-    "Email": "Email address(s)",
-    "Mobile": "Mobile number(s)",
-    "LEGALHEIR": "Legal heir names(s)",
-    "LH_ADDRESS": "Legal heir address(s)",
-    "SHNAME": "Shareholder name(s)",
-    "DOD": "Shareholder date of demise(s)",
-}
-
 def concat_helper(keyword, data):
     data_value = [data[key] for key in data if keyword in key and len(data[key]) > 0]
 

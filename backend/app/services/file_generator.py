@@ -1,5 +1,3 @@
-# backend/app/services/file_generator.py
-
 import os
 from docx import Document
 
