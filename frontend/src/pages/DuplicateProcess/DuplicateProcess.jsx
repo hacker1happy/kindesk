@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useFormSubmit } from '../../hooks/useFormSubmit';
-import { saveFormData, getFormData } from '../../api/formApi';
+import { saveFormData, getFormData, getCopyableFormData } from '../../api/formApi';
 import { getCaseDetails } from '../../api/caseApi';
 import { getCompanyById } from '../../api/companyApi';
 import ConfirmationModal from '../../components/ConfirmationModal';
@@ -23,6 +23,8 @@ const DuplicateProcess = () => {
   const [feedback, setFeedback] = useState(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [copyCaseId, setCopyCaseId] = useState("");
+  const [isCopying, setIsCopying] = useState(false);
   const navigate = useNavigate();
   const { submitForm, loading, error } = useFormSubmit('duplicate');
 
@@ -322,6 +324,62 @@ const DuplicateProcess = () => {
     totalShares: calculateTotalShares()
   });
 
+  const applyFormDataToState = (data) => {
+    const normalizedData = normalizeLoadedFormData(data);
+
+    setShareholders(normalizedData.shareholders?.length ? normalizedData.shareholders.slice(0, 3) : [
+      { personalDetails: {}, contactDetails: {}, bankDetails: {} }
+    ]);
+    setNumShareholders(Math.min(normalizedData.shareholders?.length || 1, 3));
+    setSecurities(normalizedData.securities?.length ? normalizedData.securities : [
+      { certificateNumber: '', distinctiveFrom: '', distinctiveTo: '', shares: '' }
+    ]);
+    setCompanyInfo({
+      name: caseContext?.companyName || companyInfo.name || '',
+      address: caseContext?.companyAddress || companyInfo.address || ''
+    });
+    setRtaInfo({
+      name: caseContext?.rtaName || rtaInfo.name || '',
+      address: caseContext?.rtaAddress || rtaInfo.address || ''
+    });
+    setOtherInfo({
+      ...(normalizedData.otherInfo || { formDate: '', faceValue: '' }),
+      folioNumber: caseContext?.folioNumber || otherInfo.folioNumber || ''
+    });
+  };
+
+  const handleCopyFromCase = async () => {
+    const sourceCaseId = copyCaseId.trim().toUpperCase();
+    if (!sourceCaseId) {
+      setFeedback({
+        title: "Case ID Required",
+        message: "Enter a source Case ID to copy form data.",
+        tone: "warning",
+      });
+      return;
+    }
+
+    try {
+      setIsCopying(true);
+      const res = await getCopyableFormData(sourceCaseId, caseId);
+      applyFormDataToState(res.data.form_data);
+      setIsEditMode(true);
+      setSaveStatus("Copied Form Data");
+      setFeedback({
+        title: "Form Data Copied",
+        message: `Copied duplicate form data from ${sourceCaseId}. Save the draft to keep it on this case.`,
+      });
+    } catch (err) {
+      setFeedback({
+        title: "Copy Failed",
+        message: err.response?.data?.detail || "Could not copy form data from that case.",
+        tone: "error",
+      });
+    } finally {
+      setIsCopying(false);
+    }
+  };
+
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -439,6 +497,22 @@ const DuplicateProcess = () => {
                 : "Save Draft is available now. Generate Documents unlocks after the prerequisite stages are completed."}
             </strong>
           </div>
+        </div>
+
+        <div className="copy-form-panel">
+          <div>
+            <label htmlFor="copy-case-id">Copy form data from Case ID</label>
+            <input
+              id="copy-case-id"
+              type="text"
+              value={copyCaseId}
+              onChange={(event) => setCopyCaseId(event.target.value.toUpperCase())}
+              placeholder="Enter Case ID"
+            />
+          </div>
+          <button type="button" className="btn btn-secondary" onClick={handleCopyFromCase} disabled={isCopying}>
+            {isCopying ? "Copying..." : "Copy Data"}
+          </button>
         </div>
 
           {/* Number of Shareholders Selector */}

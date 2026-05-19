@@ -3,6 +3,26 @@ from typing import Any, Dict, List
 
 MAX_LEGAL_HEIRS = 3
 MAX_SECURITIES = 4
+CLAIMANT_STATUS = "claimant"
+NON_CLAIMANT_STATUS = "non-claimant"
+TRANSMISSION_FILE_NAME_MAPPING = {
+    "auth-letter": "1. Authorization_Letter.docx",
+    "request-letter": "2. Request_Letter.docx",
+    "isr-1": "3. ISR1.docx",
+    "sh-13": "4. SH-13.docx",
+    "isr5-annexure-c": "8. ISR5-AnnexureC.docx",
+    "annexure-d-heir-1": "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
+    "annexure-d-heir-2": "9A. AnnexureD-Affidavit LEGAL HEIR 2.docx",
+    "annexure-d-heir-3": "9A. AnnexureD-Affidavit LEGAL HEIR 3.docx",
+    "annexure-e-indemnity": "10. AnnexureE-Indemnity_from_LegalHeir.docx",
+    "annexure-f-undertaking": "11. AnnexureF-Undertaking_from_LegalHeir.docx",
+}
+JOINT_FILE_NAME_MAPPING = {
+    **TRANSMISSION_FILE_NAME_MAPPING,
+    "isr-4": "5. ISR4.docx",
+    "form-a": "6. FormA.docx",
+    "form-b-indemnity": "7. FormB_Indemnity.docx",
+}
 
 
 def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
@@ -17,24 +37,50 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
 
     data["NumberOfLegalHeirs"] = str(len(legal_heirs))
     data["NumberOfShareHolders"] = str(len(shareholders))
+    claimant_suffixes = []
+    non_claimant_suffixes = []
+    non_claimant_names = []
 
     for i in range(MAX_LEGAL_HEIRS):
         suffix = chr(ord("A") + i)
 
         if i < len(legal_heirs):
             heir = legal_heirs[i]
+            claimant_status = (heir.get("claimantStatus") or CLAIMANT_STATUS).lower()
+            if len(legal_heirs) == 1:
+                claimant_status = CLAIMANT_STATUS
+
+            is_non_claimant = claimant_status == NON_CLAIMANT_STATUS
+            if is_non_claimant:
+                non_claimant_suffixes.append(suffix)
+            else:
+                claimant_suffixes.append(suffix)
+
             personal = heir.get("personalDetails", {})
             contact = heir.get("contactDetails", {})
             bank = heir.get("bankDetails", {})
+            name = personal.get("name", "")
+            address = contact.get("address", "")
+            pin_code = contact.get("pinCode", "")
+            age = personal.get("age", "")
+            relation = personal.get("relation", "")
 
-            data[f"LEGALHEIR{suffix}"] = personal.get("name", "")
+            if is_non_claimant:
+                non_claimant_names.append(name)
+
+            data[f"LEGALHEIR{suffix}"] = name
+            data[f"LHSIGN{suffix}"] = "" if is_non_claimant else name
             data[f"LH{suffix}FATHER"] = personal.get("fatherName", "")
             data[f"LH{suffix}PAN"] = personal.get("panNumber", "")
             data[f"LH{suffix}DEMAT"] = personal.get("dematAccount", "")
-            data[f"LH{suffix}AGE"] = personal.get("age", "")
-            data[f"LH{suffix}RELATION"] = personal.get("relation", "")
-            data[f"LH{suffix}ADDRESS"] = contact.get("address", "")
-            data[f"LH{suffix}PIN"] = contact.get("pinCode", "")
+            data[f"LH{suffix}AGE"] = age
+            data[f"LHAGE{suffix}"] = "" if is_non_claimant else age
+            data[f"LH{suffix}RELATION"] = relation
+            data[f"LHRELATION{suffix}"] = "" if is_non_claimant else relation
+            data[f"LH{suffix}ADDRESS"] = address
+            data[f"LHADDSIGN{suffix}"] = "" if is_non_claimant else address
+            data[f"LH{suffix}PIN"] = pin_code
+            data[f"LHPINSIGN{suffix}"] = "" if is_non_claimant else pin_code
             data[f"Email{suffix}"] = contact.get("email", "")
             data[f"Mobile{suffix}"] = contact.get("mobile", "")
             data[f"LH{suffix}ACCNO"] = bank.get("accountNumber", "")
@@ -44,16 +90,22 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
             data[f"LH{suffix}MICR"] = bank.get("micrNumber", "")
             data[f"LH{suffix}BNKCITY"] = bank.get("bankCity", "")
             data[f"LH{suffix}BNKPIN"] = bank.get("bankPin", "")
+            data[f"LH{suffix}CLAIMANTSTATUS"] = claimant_status
         else:
             for key in [
                 "LEGALHEIR",
+                "LHSIGN",
                 "LH{suffix}FATHER",
                 "LH{suffix}PAN",
                 "LH{suffix}DEMAT",
                 "LH{suffix}AGE",
+                "LHAGE{suffix}",
                 "LH{suffix}RELATION",
+                "LHRELATION{suffix}",
                 "LH{suffix}ADDRESS",
+                "LHADDSIGN{suffix}",
                 "LH{suffix}PIN",
+                "LHPINSIGN{suffix}",
                 "Email",
                 "Mobile",
                 "LH{suffix}ACCNO",
@@ -63,6 +115,7 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
                 "LH{suffix}MICR",
                 "LH{suffix}BNKCITY",
                 "LH{suffix}BNKPIN",
+                "LH{suffix}CLAIMANTSTATUS",
             ]:
                 if "{suffix}" in key:
                     data[key.format(suffix=suffix)] = ""
@@ -104,35 +157,21 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
     data["ADDRESSOFTHECOMPANY"] = company_info.get("address", "")
     data["NAMEOFTHEREGISTRAR"] = rta_info.get("name", "")
     data["ADDRESSOFTHEREGISTRAR"] = rta_info.get("address", "")
+    data["_CLAIMANT_SUFFIXES"] = claimant_suffixes
+    data["_NON_CLAIMANT_SUFFIXES"] = non_claimant_suffixes
+
+    for i in range(MAX_LEGAL_HEIRS):
+        suffix = chr(ord("A") + i)
+        data[f"NONCLAIMANT{suffix}"] = non_claimant_names[i] if i < len(non_claimant_names) else ""
 
     return data
 
 
-FILE_NAME_MAPPING = {
-    "auth-letter": "1. Authorization_Letter.docx",
-    "request-letter": "2. Request_Letter.docx",
-    "isr-1": "3. ISR1.docx",
-    "sh-13": "4. SH-13.docx",
-    "isr5-annexure-c": "8. ISR5-AnnexureC.docx",
-    "annexure-d-heir-1": "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
-    "annexure-d-heir-2": "9A. AnnexureD-Affidavit LEGAL HEIR 2.docx",
-    "annexure-d-heir-3": "9A. AnnexureD-Affidavit LEGAL HEIR 3.docx",
-    "annexure-e-indemnity": "10. AnnexureE-Indemnity_from_LegalHeir.docx",
-}
-
-JOINT_FILE_NAME_MAPPING = {
-    **FILE_NAME_MAPPING,
-    "isr-4": "5. ISR4.docx",
-    "form-a": "6. FormA.docx",
-    "form-b-indemnity": "7. FormB_Indemnity.docx",
-}
-
-
 def transform_selected_files(selected_files: List[str]) -> List[str]:
     return [
-        FILE_NAME_MAPPING[file_id]
+        TRANSMISSION_FILE_NAME_MAPPING[file_id]
         for file_id in selected_files
-        if file_id in FILE_NAME_MAPPING
+        if file_id in TRANSMISSION_FILE_NAME_MAPPING
     ]
 
 

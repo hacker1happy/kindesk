@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCaseDetails } from "../../api/caseApi";
 import { getCompanyById } from "../../api/companyApi";
-import { getFormData, saveFormData } from "../../api/formApi";
+import { getCopyableFormData, getFormData, saveFormData } from "../../api/formApi";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import FeedbackDialog from "../../components/FeedbackDialog";
 import { useFormSubmit } from "../../hooks/useFormSubmit";
@@ -32,13 +32,15 @@ const LEGAL_HEIR_VALIDATORS = {
 const LEGAL_HEIR_REQUIRED_FIELDS = [
   ["personalDetails", "name"],
   ["personalDetails", "fatherName"],
+  ["personalDetails", "age"],
+  ["personalDetails", "relation"],
   ["personalDetails", "panNumber"],
+  ["contactDetails", "address"],
+  ["contactDetails", "city"],
+  ["contactDetails", "state"],
   ["contactDetails", "mobile"],
   ["contactDetails", "email"],
   ["contactDetails", "pinCode"],
-  ["bankDetails", "accountNumber"],
-  ["bankDetails", "ifscCode"],
-  ["bankDetails", "bankName"],
 ];
 
 const LEGAL_HEIR_REQUIRED_FIELD_KEYS = new Set(
@@ -54,7 +56,10 @@ function normalizeLoadedFormData(data) {
 
   return {
     legalHeirs: data.legalHeirs?.map((heir) => {
-      const nextHeir = { ...heir };
+      const nextHeir = {
+        ...heir,
+        claimantStatus: heir.claimantStatus || "claimant",
+      };
       delete nextHeir.deceasedShareholder;
       return nextHeir;
     }) || [],
@@ -85,6 +90,8 @@ export default function TransmissionLikeProcess({
   const [feedback, setFeedback] = useState(null);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [copyCaseId, setCopyCaseId] = useState("");
+  const [isCopying, setIsCopying] = useState(false);
   const [numLegalHeirs, setNumLegalHeirs] = useState(1);
   const [legalHeirs, setLegalHeirs] = useState([{ ...DEFAULT_LEGAL_HEIR }]);
   const [numShareholders, setNumShareholders] = useState(1);
@@ -99,10 +106,23 @@ export default function TransmissionLikeProcess({
     folioNumber: "",
     faceValue: "",
   });
+  const hasNonClaimantLegalHeir = useMemo(
+    () =>
+      numLegalHeirs > 1 &&
+      legalHeirs
+        .slice(0, numLegalHeirs)
+        .some((heir) => (heir.claimantStatus || "claimant") === "non-claimant"),
+    [legalHeirs, numLegalHeirs]
+  );
 
   const visibleDocuments = useMemo(
-    () => documents.filter((doc) => !doc.heirIndex || doc.heirIndex <= numLegalHeirs),
-    [documents, numLegalHeirs]
+    () =>
+      documents.filter((doc) => {
+        if (doc.heirIndex && doc.heirIndex > numLegalHeirs) return false;
+        if (doc.requiresNonClaimant && !hasNonClaimantLegalHeir) return false;
+        return true;
+      }),
+    [documents, hasNonClaimantLegalHeir, numLegalHeirs]
   );
 
   const mergeSavedDocuments = useCallback((savedDocuments = []) => {
@@ -216,13 +236,20 @@ export default function TransmissionLikeProcess({
 
   const handleLegalHeirChange = (index, section, field, value) => {
     const updatedLegalHeirs = [...legalHeirs];
-    updatedLegalHeirs[index] = {
-      ...updatedLegalHeirs[index],
-      [section]: {
-        ...updatedLegalHeirs[index][section],
-        [field]: value,
-      },
-    };
+    if (section === "claimantStatus") {
+      updatedLegalHeirs[index] = {
+        ...updatedLegalHeirs[index],
+        claimantStatus: value,
+      };
+    } else {
+      updatedLegalHeirs[index] = {
+        ...updatedLegalHeirs[index],
+        [section]: {
+          ...updatedLegalHeirs[index][section],
+          [field]: value,
+        },
+      };
+    }
     setLegalHeirs(updatedLegalHeirs);
   };
 
@@ -301,6 +328,66 @@ export default function TransmissionLikeProcess({
     });
   };
 
+  const applyCopiedFormData = (data) => {
+    const normalizedData = normalizeLoadedFormData(data);
+    const copiedLegalHeirs = normalizedData.legalHeirs.length
+      ? normalizedData.legalHeirs.slice(0, 3)
+      : [{ ...DEFAULT_LEGAL_HEIR }];
+    const copiedShareholders = normalizedData.shareholders.length
+      ? normalizedData.shareholders.slice(0, 3)
+      : [{ ...DEFAULT_SHAREHOLDER }];
+
+    setLegalHeirs(copiedLegalHeirs);
+    setNumLegalHeirs(copiedLegalHeirs.length);
+    setShareholders(copiedShareholders);
+    setNumShareholders(copiedShareholders.length);
+    setSecurities(normalizedData.securities.length ? normalizedData.securities : [{ ...DEFAULT_SECURITY }]);
+    setCompanyInfo({
+      name: caseContext?.companyName || companyInfo.name || "",
+      address: caseContext?.companyAddress || companyInfo.address || "",
+    });
+    setRtaInfo({
+      name: caseContext?.rtaName || rtaInfo.name || "",
+      address: caseContext?.rtaAddress || rtaInfo.address || "",
+    });
+    setOtherInfo({
+      ...(normalizedData.otherInfo || { formDate: "", faceValue: "" }),
+      folioNumber: caseContext?.folioNumber || otherInfo.folioNumber || "",
+    });
+  };
+
+  const handleCopyFromCase = async () => {
+    const sourceCaseId = copyCaseId.trim().toUpperCase();
+    if (!sourceCaseId) {
+      setFeedback({
+        title: "Case ID Required",
+        message: "Enter a source Case ID to copy form data.",
+        tone: "warning",
+      });
+      return;
+    }
+
+    try {
+      setIsCopying(true);
+      const res = await getCopyableFormData(sourceCaseId, caseId);
+      applyCopiedFormData(res.data.form_data);
+      setIsEditMode(true);
+      setSaveStatus("Copied Form Data");
+      setFeedback({
+        title: "Form Data Copied",
+        message: `Copied compatible form data from ${sourceCaseId}. Save the draft to keep it on this case.`,
+      });
+    } catch (err) {
+      setFeedback({
+        title: "Copy Failed",
+        message: err.response?.data?.detail || "Could not copy form data from that case.",
+        tone: "error",
+      });
+    } finally {
+      setIsCopying(false);
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -369,9 +456,14 @@ export default function TransmissionLikeProcess({
   const isLegalHeirInfoValid =
     legalHeirs.length > 0 &&
     legalHeirs.every((_, index) => validityMap[index] === true);
-  const hasRequiredShareholderName = shareholders.some((shareholder) => shareholder.name?.trim());
+  const hasRequiredShareholderEntries =
+    shareholders.length > 0 &&
+    shareholders.every((shareholder) => shareholder.name?.trim() && shareholder.dateOfDemise);
+  const hasAtLeastOneClaimant =
+    legalHeirs.length === 1 ||
+    legalHeirs.some((heir) => (heir.claimantStatus || "claimant") === "claimant");
   const isGenerateInProgress = loading || isGenerating;
-  const isFormValid = isLegalHeirInfoValid && hasRequiredShareholderName;
+  const isFormValid = isLegalHeirInfoValid && hasRequiredShareholderEntries && hasAtLeastOneClaimant;
 
   return (
     <main className="duplicate-process container">
@@ -417,6 +509,22 @@ export default function TransmissionLikeProcess({
                 : "Save Draft is available now. Generate Documents unlocks after the prerequisite stages are completed."}
             </strong>
           </div>
+        </div>
+
+        <div className="copy-form-panel">
+          <div>
+            <label htmlFor="copy-case-id">Copy form data from Case ID</label>
+            <input
+              id="copy-case-id"
+              type="text"
+              value={copyCaseId}
+              onChange={(event) => setCopyCaseId(event.target.value.toUpperCase())}
+              placeholder="Enter Case ID"
+            />
+          </div>
+          <button type="button" className="btn btn-secondary" onClick={handleCopyFromCase} disabled={isCopying}>
+            {isCopying ? "Copying..." : "Copy Data"}
+          </button>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -564,7 +672,9 @@ function ShareholderInformation({ count, shareholders, onCountChange, onChange }
               <th>
                 Shareholder Name <span className="required-marker">*</span>
               </th>
-              <th>Date of Demise</th>
+              <th>
+                Date of Demise <span className="required-marker">*</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -662,6 +772,10 @@ function LegalHeirForm({ index, data, onChange, onValidityChange }) {
     onChange(index, section, field, formatValue(field, value));
   };
 
+  const handleClaimantStatusChange = (value) => {
+    onChange(index, "claimantStatus", null, value);
+  };
+
   useEffect(() => {
     const isValid = LEGAL_HEIR_REQUIRED_FIELDS.every(([section, field]) => {
       const value = data[section]?.[field];
@@ -705,7 +819,18 @@ function LegalHeirForm({ index, data, onChange, onValidityChange }) {
 
   return (
     <div className="shareholder-section">
-      <h3>Legal Heir {index + 1}</h3>
+      <div className="legal-heir-title-row">
+        <h3>Legal Heir {index + 1}</h3>
+        <label className="claimant-status-select">
+          <select
+            value={data.claimantStatus || "claimant"}
+            onChange={(event) => handleClaimantStatusChange(event.target.value)}
+          >
+            <option value="claimant">Claimant</option>
+            <option value="non-claimant">Non-Claimant</option>
+          </select>
+        </label>
+      </div>
       <div className="shareholder-table">
         <div className="shareholder-row header">
           <div className="header-cell">Personal details</div>
@@ -719,12 +844,12 @@ function LegalHeirForm({ index, data, onChange, onValidityChange }) {
         </div>
         <div className="shareholder-row">
           {renderInput("personalDetails", "fatherName", "Father's name")}
-          {renderInput("contactDetails", "city", "City", "text", { disabled: index > 0 })}
+          {renderInput("contactDetails", "city", "City")}
           {renderInput("bankDetails", "bankName", "Bank name")}
         </div>
         <div className="shareholder-row">
           {renderInput("personalDetails", "age", "Age")}
-          {renderInput("contactDetails", "state", "State", "text", { disabled: index > 0 })}
+          {renderInput("contactDetails", "state", "State")}
           {renderInput("bankDetails", "branch", "Branch")}
         </div>
         <div className="shareholder-row">

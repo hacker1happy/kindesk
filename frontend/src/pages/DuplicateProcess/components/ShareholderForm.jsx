@@ -110,12 +110,10 @@ const ShareholderForm = ({ index, data, onChange, onValidityChange }) => {
     "name",
     "fatherName",
     "panNumber",
+    "address",
     "mobile",
     "email",
     "pinCode",
-    "accountNumber",
-    "ifscCode",
-    "bankName",
   ]);
 
   const renderLabel = (field, label) => (
@@ -126,22 +124,20 @@ const ShareholderForm = ({ index, data, onChange, onValidityChange }) => {
   );
 
   const isShareholderValid = () => {
-  const requiredFields = [
-    { key: "name", value: data.personalDetails?.name },
-    { key: "fatherName", value: data.personalDetails?.fatherName },
-    { key: "panNumber", value: data.personalDetails?.panNumber },
-    { key: "mobile", value: data.contactDetails?.mobile },
-    { key: "email", value: data.contactDetails?.email },
-    { key: "pinCode", value: data.contactDetails?.pinCode },
-    { key: "accountNumber", value: data.bankDetails?.accountNumber },
-    { key: "ifscCode", value: data.bankDetails?.ifscCode },
-    { key: "bankName", value: data.bankDetails?.bankName },
-  ];
+    const requiredFields = [
+      { key: "name", value: data.personalDetails?.name },
+      { key: "fatherName", value: data.personalDetails?.fatherName },
+      { key: "panNumber", value: data.personalDetails?.panNumber },
+      { key: "address", value: data.contactDetails?.address },
+      { key: "mobile", value: data.contactDetails?.mobile },
+      { key: "email", value: data.contactDetails?.email },
+      { key: "pinCode", value: data.contactDetails?.pinCode },
+    ];
 
-  return requiredFields.every(
-    ({ key, value }) => value && validateField(key, value)
-  );
-};
+    return requiredFields.every(
+      ({ key, value }) => value && validateField(key, value)
+    );
+  };
 
   useEffect(() => {
   if (typeof onValidityChange === "function") {
@@ -176,7 +172,7 @@ const ShareholderForm = ({ index, data, onChange, onValidityChange }) => {
           </div>
 
           <div className="form-cell">
-            <label>Address</label>
+            <label>{renderLabel("address", "Address")}</label>
             <input
               type="text"
               value={data.contactDetails?.address || ""}
@@ -187,7 +183,7 @@ const ShareholderForm = ({ index, data, onChange, onValidityChange }) => {
           </div>
 
           <div className="form-cell">
-            <label>{renderLabel("accountNumber", "Account number")}</label>
+            <label>Account number</label>
             <input
               type="text"
               value={data.bankDetails?.accountNumber || ""}
@@ -238,7 +234,7 @@ const ShareholderForm = ({ index, data, onChange, onValidityChange }) => {
           </div>
 
           <div className="form-cell">
-            <label>{renderLabel("bankName", "Bank Name")}</label>
+            <label>Bank Name</label>
             <input
               type="text"
               value={data.bankDetails?.bankName || ""}
@@ -327,7 +323,7 @@ const ShareholderForm = ({ index, data, onChange, onValidityChange }) => {
           </div>
 
           <div className="form-cell">
-            <label>{renderLabel("ifscCode", "IFSC code")}</label>
+            <label>IFSC code</label>
             <input
               type="text"
               value={data.bankDetails?.ifscCode || ""}
