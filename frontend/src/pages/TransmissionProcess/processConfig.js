@@ -1,4 +1,5 @@
 export const DEFAULT_LEGAL_HEIR = {
+  claimantStatus: "claimant",
   personalDetails: {},
   contactDetails: {},
   bankDetails: {},
@@ -26,6 +27,7 @@ export const TRANSMISSION_DOCUMENTS = [
   { id: "annexure-d-heir-2", name: "Annexure D - Affidavit Legal Heir 2", heirIndex: 2, selected: false },
   { id: "annexure-d-heir-3", name: "Annexure D - Affidavit Legal Heir 3", heirIndex: 3, selected: false },
   { id: "annexure-e-indemnity", name: "Annexure E - Indemnity from Legal Heir", selected: false },
+  { id: "annexure-f-undertaking", name: "Annexure F - Undertaking from Legal Heir", requiresNonClaimant: true, selected: false },
 ];
 
 export const JOINT_DOCUMENTS = [
@@ -41,4 +43,5 @@ export const JOINT_DOCUMENTS = [
   { id: "annexure-d-heir-2", name: "Annexure D - Affidavit Legal Heir 2", heirIndex: 2, selected: false },
   { id: "annexure-d-heir-3", name: "Annexure D - Affidavit Legal Heir 3", heirIndex: 3, selected: false },
   { id: "annexure-e-indemnity", name: "Annexure E - Indemnity from Legal Heir", selected: false },
+  { id: "annexure-f-undertaking", name: "Annexure F - Undertaking from Legal Heir", requiresNonClaimant: true, selected: false },
 ];

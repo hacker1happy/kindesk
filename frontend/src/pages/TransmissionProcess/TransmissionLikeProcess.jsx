@@ -56,7 +56,10 @@ function normalizeLoadedFormData(data) {
 
   return {
     legalHeirs: data.legalHeirs?.map((heir) => {
-      const nextHeir = { ...heir };
+      const nextHeir = {
+        ...heir,
+        claimantStatus: heir.claimantStatus || "claimant",
+      };
       delete nextHeir.deceasedShareholder;
       return nextHeir;
     }) || [],
@@ -103,10 +106,23 @@ export default function TransmissionLikeProcess({
     folioNumber: "",
     faceValue: "",
   });
+  const hasNonClaimantLegalHeir = useMemo(
+    () =>
+      numLegalHeirs > 1 &&
+      legalHeirs
+        .slice(0, numLegalHeirs)
+        .some((heir) => (heir.claimantStatus || "claimant") === "non-claimant"),
+    [legalHeirs, numLegalHeirs]
+  );
 
   const visibleDocuments = useMemo(
-    () => documents.filter((doc) => !doc.heirIndex || doc.heirIndex <= numLegalHeirs),
-    [documents, numLegalHeirs]
+    () =>
+      documents.filter((doc) => {
+        if (doc.heirIndex && doc.heirIndex > numLegalHeirs) return false;
+        if (doc.requiresNonClaimant && !hasNonClaimantLegalHeir) return false;
+        return true;
+      }),
+    [documents, hasNonClaimantLegalHeir, numLegalHeirs]
   );
 
   const mergeSavedDocuments = useCallback((savedDocuments = []) => {
@@ -220,13 +236,20 @@ export default function TransmissionLikeProcess({
 
   const handleLegalHeirChange = (index, section, field, value) => {
     const updatedLegalHeirs = [...legalHeirs];
-    updatedLegalHeirs[index] = {
-      ...updatedLegalHeirs[index],
-      [section]: {
-        ...updatedLegalHeirs[index][section],
-        [field]: value,
-      },
-    };
+    if (section === "claimantStatus") {
+      updatedLegalHeirs[index] = {
+        ...updatedLegalHeirs[index],
+        claimantStatus: value,
+      };
+    } else {
+      updatedLegalHeirs[index] = {
+        ...updatedLegalHeirs[index],
+        [section]: {
+          ...updatedLegalHeirs[index][section],
+          [field]: value,
+        },
+      };
+    }
     setLegalHeirs(updatedLegalHeirs);
   };
 
@@ -436,8 +459,11 @@ export default function TransmissionLikeProcess({
   const hasRequiredShareholderEntries =
     shareholders.length > 0 &&
     shareholders.every((shareholder) => shareholder.name?.trim() && shareholder.dateOfDemise);
+  const hasAtLeastOneClaimant =
+    legalHeirs.length === 1 ||
+    legalHeirs.some((heir) => (heir.claimantStatus || "claimant") === "claimant");
   const isGenerateInProgress = loading || isGenerating;
-  const isFormValid = isLegalHeirInfoValid && hasRequiredShareholderEntries;
+  const isFormValid = isLegalHeirInfoValid && hasRequiredShareholderEntries && hasAtLeastOneClaimant;
 
   return (
     <main className="duplicate-process container">
@@ -746,6 +772,10 @@ function LegalHeirForm({ index, data, onChange, onValidityChange }) {
     onChange(index, section, field, formatValue(field, value));
   };
 
+  const handleClaimantStatusChange = (value) => {
+    onChange(index, "claimantStatus", null, value);
+  };
+
   useEffect(() => {
     const isValid = LEGAL_HEIR_REQUIRED_FIELDS.every(([section, field]) => {
       const value = data[section]?.[field];
@@ -789,7 +819,18 @@ function LegalHeirForm({ index, data, onChange, onValidityChange }) {
 
   return (
     <div className="shareholder-section">
-      <h3>Legal Heir {index + 1}</h3>
+      <div className="legal-heir-title-row">
+        <h3>Legal Heir {index + 1}</h3>
+        <label className="claimant-status-select">
+          <select
+            value={data.claimantStatus || "claimant"}
+            onChange={(event) => handleClaimantStatusChange(event.target.value)}
+          >
+            <option value="claimant">Claimant</option>
+            <option value="non-claimant">Non-Claimant</option>
+          </select>
+        </label>
+      </div>
       <div className="shareholder-table">
         <div className="shareholder-row header">
           <div className="header-cell">Personal details</div>

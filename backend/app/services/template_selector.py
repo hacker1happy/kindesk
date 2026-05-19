@@ -13,7 +13,7 @@ def build_template_paths(process, data, selected_files):
         N = data.get("NumberOfShareHolders", "1")
         dir_name = f"NumberOfShareHolders{N}"
 
-    elif process in ["transmission", "both"]:
+    elif process in ["transmission", "both", "transmission_duplicate"]:
         N = data.get("NumberOfLegalHeirs", "1")
         dir_name = f"NumberOfLegalHeirs{N}"
 
