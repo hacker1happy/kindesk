@@ -14,6 +14,24 @@ def concat_helper(keyword, data):
 def concat_keys(keys, data):
     data_value = [data.get(key, "") for key in keys if data.get(key, "")]
 
+    return join_values(data_value)
+
+def claimant_keys(key_builder, data):
+    return [key_builder(suffix) for suffix in data.get("_CLAIMANT_SUFFIXES", ["A", "B", "C"])]
+
+def concat_shareholder_died_on(data):
+    values = []
+    for suffix in ["A", "B", "C"]:
+        name = data.get(f"SH{suffix}NAME", "")
+        dod = data.get(f"SH{suffix}DOD", "")
+        if name and dod:
+            values.append(f"{name} died on {dod}")
+        elif name:
+            values.append(name)
+
+    return join_values(values)
+
+def join_values(data_value):
     values = len(data_value)
     if values == 1:
         return data_value[0]
@@ -44,17 +62,20 @@ def duplicate(data):
     return add_static_value(data)
 
 def transmission(data):
-    data["LHNAMES"] = concat_keys(["LEGALHEIRA", "LEGALHEIRB", "LEGALHEIRC"], data)
-    data["LHFATHERNAMES"] = concat_keys(["LHAFATHER", "LHBFATHER", "LHCFATHER"], data)
-    data["LHADDRESSES"] = concat_keys(["LHAADDRESS", "LHBADDRESS", "LHCADDRESS"], data)
-    data["EMAILADDRESSES"] = concat_helper("Email", data)
-    data["MOBILENUMBERS"] = concat_helper("Mobile", data)
+    data["LHNAMES"] = concat_keys(claimant_keys(lambda suffix: f"LEGALHEIR{suffix}", data), data)
+    data["LHFATHERNAMES"] = concat_keys(claimant_keys(lambda suffix: f"LH{suffix}FATHER", data), data)
+    data["LHADDRESSES"] = concat_keys(claimant_keys(lambda suffix: f"LH{suffix}ADDRESS", data), data)
+    data["EMAILADDRESSES"] = concat_keys(claimant_keys(lambda suffix: f"Email{suffix}", data), data)
+    data["MOBILENUMBERS"] = concat_keys(claimant_keys(lambda suffix: f"Mobile{suffix}", data), data)
     data["SHNAMES"] = concat_keys(["SHANAME", "SHBNAME", "SHCNAME"], data)
     data["SHAREHOLDERDOD"] = concat_keys(["SHADOD", "SHBDOD", "SHCDOD"], data)
+    data["SHNAMEDIEDONSHDOD"] = concat_shareholder_died_on(data)
+    data["REQUESTLETTERSUBJECT"] = "Transmission of Shares in the name of Legal Heir"
     return data
 
 def both_process(data):
     data = transmission(data)
+    data["REQUESTLETTERSUBJECT"] = "Issuance of Duplicate Shares and Transmission of Shares in the name of Legal Heir"
     return add_static_value(data)
 
 def modify_data(data, process):

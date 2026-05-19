@@ -159,6 +159,30 @@
   font-weight: 650;
 }
 
+.legal-heir-title-row {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.legal-heir-title-row h3 {
+  margin-bottom: 0;
+}
+
+.claimant-status-select {
+  display: grid;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.claimant-status-select span {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 .form-group {
   display: grid;
   gap: 7px;
@@ -278,6 +302,14 @@
 
   .copy-form-panel {
     grid-template-columns: 1fr;
+  }
+
+  .legal-heir-title-row {
+    display: grid;
+  }
+
+  .claimant-status-select {
+    min-width: 0;
   }
 
   .duplicate-process .btn {

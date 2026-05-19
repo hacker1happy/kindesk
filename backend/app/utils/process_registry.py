@@ -22,13 +22,13 @@ PROCESS_CONFIGS = {
     "transmission": ProcessConfig(
         transformer=transmission_form_data_transformer.transform_input_data,
         selected_files_transformer=transmission_form_data_transformer.transform_selected_files,
-        template_process="transmission",
+        template_process="transmission_duplicate",
         modifier_process="transmission",
     ),
     "joint": ProcessConfig(
         transformer=transmission_form_data_transformer.transform_input_data,
         selected_files_transformer=transmission_form_data_transformer.transform_joint_selected_files,
-        template_process="both",
+        template_process="transmission_duplicate",
         modifier_process="both",
     ),
 }

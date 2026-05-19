@@ -965,7 +965,8 @@
             "mobile": "8765432190",
             "email": "test@fin.com"
           },
-          "bankDetails": {}
+          "bankDetails": {},
+          "claimantStatus": "claimant"
         },
         {
           "personalDetails": {
@@ -983,7 +984,8 @@
             "mobile": "8123456789",
             "email": "test2@fin.com"
           },
-          "bankDetails": {}
+          "bankDetails": {},
+          "claimantStatus": "claimant"
         }
       ],
       "shareholders": [
@@ -1012,42 +1014,42 @@
         {
           "id": "auth-letter",
           "name": "Authorization Letter",
-          "selected": false
+          "selected": true
         },
         {
           "id": "request-letter",
           "name": "Request Letter",
-          "selected": false
+          "selected": true
         },
         {
           "id": "isr-1",
           "name": "ISR 1",
-          "selected": false
+          "selected": true
         },
         {
           "id": "sh-13",
           "name": "SH - 13",
-          "selected": false
+          "selected": true
         },
         {
           "id": "isr-4",
           "name": "ISR 4",
-          "selected": false
+          "selected": true
         },
         {
           "id": "form-a",
           "name": "Form A",
-          "selected": false
+          "selected": true
         },
         {
           "id": "form-b-indemnity",
           "name": "Form B Indemnity",
-          "selected": false
+          "selected": true
         },
         {
           "id": "isr5-annexure-c",
           "name": "ISR5 - Annexure C",
-          "selected": false
+          "selected": true
         },
         {
           "id": "annexure-d-heir-1",
@@ -1070,6 +1072,12 @@
         {
           "id": "annexure-e-indemnity",
           "name": "Annexure E - Indemnity from Legal Heir",
+          "selected": true
+        },
+        {
+          "id": "annexure-f-undertaking",
+          "name": "Annexure F - Undertaking from Legal Heir",
+          "requiresNonClaimant": true,
           "selected": false
         }
       ],
@@ -1083,17 +1091,17 @@
       "totalShares": 678
     },
     "files": [
-      "3. ISR1.docx",
-      "8. ISR5-AnnexureC.docx",
-      "4. SH-13.docx",
-      "10. AnnexureE-Indemnity_from_LegalHeir.docx",
       "2. Request_Letter.docx",
+      "4. SH-13.docx",
+      "1. Authorization_Letter.docx",
+      "10. AnnexureE-Indemnity_from_LegalHeir.docx",
+      "8. ISR5-AnnexureC.docx",
       "6. FormA.docx",
-      "7. FormB_Indemnity.docx",
       "9A. AnnexureD-Affidavit LEGAL HEIR 1.docx",
-      "5. ISR4.docx",
       "9A. AnnexureD-Affidavit LEGAL HEIR 2.docx",
-      "1. Authorization_Letter.docx"
+      "5. ISR4.docx",
+      "3. ISR1.docx",
+      "7. FormB_Indemnity.docx"
     ],
     "stages": [
       {
@@ -1120,7 +1128,7 @@
         "key": "doc_generated",
         "label": "Document Generated",
         "completed": true,
-        "updated_at": "2026-05-16T03:11:13.174032",
+        "updated_at": "2026-05-18T22:04:52.147076",
         "documents": [
           {
             "name": "1. Authorization_Letter.docx",
