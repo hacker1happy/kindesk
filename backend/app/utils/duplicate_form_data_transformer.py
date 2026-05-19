@@ -3,6 +3,15 @@ from typing import Dict, Any, List
 
 MAX_SHAREHOLDERS = 3
 MAX_SECURITIES = 4
+DUPLICATE_FILE_NAME_MAPPING = {
+    "auth-letter": "1. Authorization_Letter.docx",
+    "request-letter": "2. Request_Letter.docx",
+    "isr-1": "3. ISR1.docx",
+    "sh-13": "4. SH-13.docx",
+    "isr-4": "5. ISR4.docx",
+    "form-a": "6. FormA.docx",
+    "form-b-indemnity": "7. FormB_Indemnity.docx",
+}
 
 
 def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
@@ -99,24 +108,13 @@ def transform_input_data(payload: Dict[str, Any]) -> Dict[str, str]:
     return data
 
 
-FILE_NAME_MAPPING = {
-    "auth-letter": "1. Authorization_Letter.docx",
-    "request-letter": "2. Request_Letter.docx",
-    "isr-1": "3. ISR1.docx",
-    "sh-13": "4. SH-13.docx",
-    "isr-4": "5. ISR4.docx",
-    "form-a": "6. FormA.docx",
-    "form-b-indemnity": "7. FormB_Indemnity.docx",
-}
-
-
 def transform_selected_files(selected_files: List[str]) -> List[str]:
     """
     Transforms frontend document identifiers into
     numbered backend template filenames.
     """
     return [
-        FILE_NAME_MAPPING[file_id]
+        DUPLICATE_FILE_NAME_MAPPING[file_id]
         for file_id in selected_files
-        if file_id in FILE_NAME_MAPPING
+        if file_id in DUPLICATE_FILE_NAME_MAPPING
     ]
